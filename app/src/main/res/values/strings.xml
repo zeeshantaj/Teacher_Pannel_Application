@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Teacher_Panel_Application</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="admob_app_id">ca-app-pub-4144305165966580~6299934712</string>
+    <string name="admob_banner_id">ca-app-pub-4144305165966580/3630690721</string>
+
+</resources>

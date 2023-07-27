@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "1089141671924",
+    "firebase_url": "https://teacherpanelapp-default-rtdb.firebaseio.com",
+    "project_id": "teacherpanelapp",
+    "storage_bucket": "teacherpanelapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089141671924:android:fc5a063201dd602f615ba1",
+        "android_client_info": {
+          "package_name": "com.example.teacher_admin_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089141671924-f84lnkos013v3mvmrm43cfl8jadrtc4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNCph7A6BB3mlZdMKGjncOtWUWWz81umQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089141671924-f84lnkos013v3mvmrm43cfl8jadrtc4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089141671924:android:ab48aca41d38d618615ba1",
+        "android_client_info": {
+          "package_name": "com.example.teacher_data_show"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089141671924-f84lnkos013v3mvmrm43cfl8jadrtc4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNCph7A6BB3mlZdMKGjncOtWUWWz81umQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089141671924-f84lnkos013v3mvmrm43cfl8jadrtc4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089141671924:android:9141db8612f552ca615ba1",
+        "android_client_info": {
+          "package_name": "com.example.teacher_panel_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089141671924-f84lnkos013v3mvmrm43cfl8jadrtc4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNCph7A6BB3mlZdMKGjncOtWUWWz81umQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089141671924-f84lnkos013v3mvmrm43cfl8jadrtc4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089141671924:android:8f9c18d1dc65ca14615ba1",
+        "android_client_info": {
+          "package_name": "com.example.techer_panel_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089141671924-s4nsvgd6b5lpb1ikakadsh56lvipueq8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.techer_panel_application",
+            "certificate_hash": "928a4408c9fe81b78d679b54f34a9bf2fd49e51a"
+          }
+        },
+        {
+          "client_id": "1089141671924-f84lnkos013v3mvmrm43cfl8jadrtc4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNCph7A6BB3mlZdMKGjncOtWUWWz81umQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089141671924-f84lnkos013v3mvmrm43cfl8jadrtc4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
