@@ -34,51 +34,11 @@ import java.util.HashMap;
 import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditDataFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EditDataFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public EditDataFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditDataFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditDataFragment newInstance(String param1, String param2) {
-        EditDataFragment fragment = new EditDataFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     private BlurView blurView;
@@ -95,7 +55,7 @@ public class EditDataFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_data, container, false);
 
-        blurView = view.findViewById(R.id.blurView);
+            blurView = view.findViewById(R.id.blurView);
         tName = view.findViewById(R.id.teacherNameEditFragment);
         depart = view.findViewById(R.id.departmentEditFragment);
         location = view.findViewById(R.id.locationEditFragment);

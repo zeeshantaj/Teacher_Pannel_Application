@@ -6,203 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Upload_Details_Activity">
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginEnd="30dp"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/teacherName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Teacher Name"
-                        android:inputType="textEmailAddress" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout3"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/department"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Department"
-                        android:inputType="textPersonName" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout6"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Class Location" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout4"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/subject"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Subject" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout5"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/todayTopic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Today's Topic" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout7"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edKey"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Key" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <EditText
-                    android:id="@+id/edMinutes"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:hint="Minutes"
-                    android:inputType="number" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="34dp"
-                    android:text="Enter class session time in\n minutes"
-                    android:textAlignment="center"
-                    android:textColor="@color/red"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/uploadBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:background="@drawable/btn_bg"
-                    android:backgroundTint="@color/darkBlue"
-                    android:text="Upload"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progress"
-        style="?android:attr/progressBarStyleHorizontal"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:max="100"
-        android:progress="1"
-        android:visibility="gone"
-        android:layoutDirection="rtl"
-        android:progressDrawable="@drawable/custom_progress_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabBackground="?attr/selectableItemBackground"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="?attr/colorAccent"
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="fixed"
+        app:tabRippleColor="?attr/colorControlHighlight"
+        app:tabSelectedTextColor="@color/darkBlueshade"
+        app:tabTextAppearance="?android:attr/textAppearanceMedium"
+        app:tabTextColor="@color/darkBlue" />
 
-    <TextView
-        android:id="@+id/progressCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/myViewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
-        android:gravity="center"
-        android:textColor="@color/darkBlueshade"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/progress"
-        app:layout_constraintStart_toStartOf="@+id/progress"
-        app:layout_constraintTop_toBottomOf="@+id/progress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,17 @@
 package com.example.teacher_panel_application.Activities;
 
+import static android.app.ProgressDialog.show;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,21 +19,21 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.teacher_panel_application.Adapters.MyPagerAdapter;
+import com.example.teacher_panel_application.Create_Fragments.Notification_Announcement;
+import com.example.teacher_panel_application.Create_Fragments.Upload_Class_Data_Fragment;
 import com.example.teacher_panel_application.Models.NetworkUtils;
 import com.example.teacher_panel_application.R;
-import com.github.ybq.android.spinkit.SpinKitView;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.MultiplePulse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wajahatkarim3.easyflipviewpager.CardFlipPageTransformer2;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -44,27 +50,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Objects;
-
 public class Upload_Details_Activity extends AppCompatActivity {
 
-
-    private TextInputEditText tName,depart,location,subject,topic,key;
-    private EditText minutes;
-    private Button uploadBtn;
+    private DatabaseReference reference1,reference;
     private FirebaseAuth auth;
-    private FirebaseDatabase database;
-    private DatabaseReference reference,reference1;
-    private ProgressBar progressBar;
-
-    boolean isRunning = false;
-    private long timeRemainingInMillis;
-    long milis = 5000;
-
-    private TextView progressCount;
+    private ViewPager2 myViewPager;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -72,161 +62,55 @@ public class Upload_Details_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_details);
 
-        getSupportActionBar().setTitle("Upload Details Here");
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
 
-        progressBar = findViewById(R.id.progress);
-        progressCount = findViewById(R.id.progressCount);
-        tName = findViewById(R.id.teacherName);
-        depart = findViewById(R.id.department);
-        location = findViewById(R.id.location);
-        subject = findViewById(R.id.subject);
-        topic = findViewById(R.id.todayTopic);
-        key = findViewById(R.id.edKey);
-        minutes = findViewById(R.id.edMinutes);
-        uploadBtn = findViewById(R.id.uploadBtn);
+        myViewPager = findViewById(R.id.myViewpager);
+        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Notification_Announcement()}; // Replace with your fragment classes
 
-        auth = FirebaseAuth.getInstance();
-       // String uid = auth.getCurrentUser().getUid();
-        String uid = auth.getUid();
-        reference  =  FirebaseDatabase.getInstance().getReference("Teacher_Data").child(uid);
+        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(this,pages);
+        myViewPager.setAdapter(myPagerAdapter);
 
 
+// Create an object of page transformer
+        CardFlipPageTransformer2 cardFlipPageTransformer = new CardFlipPageTransformer2();
 
-        uploadData();
-    }
-    private void uploadData(){
+// Enable / Disable scaling while flipping. If false, then card will only flip as in Poker card example.
+// Otherwise card will also scale like in Gallery demo. By default, its true.
+        cardFlipPageTransformer.setScalable(false);
+
+        myViewPager.setPageTransformer(cardFlipPageTransformer);
 
 
-
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
+        myViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onClick(View view) {
+            public void onPageSelected(int position) {
+                // The 'position' parameter indicates the currently selected page.
+                // You can use it to identify the currently displayed fragment.
 
-                String name = tName.getText().toString();
-                String dep = depart.getText().toString();
-                String loc = location.getText().toString();
-                String sub = subject.getText().toString();
-                String topi = topic.getText().toString();
-                String key1 = key.getText().toString();
-                String minute = minutes.getText().toString();
-
-
-
-                if (name.isEmpty() ){
-                    tName.setError("name is empty");
-                }
-                if (dep.isEmpty() ){
-                    depart.setError("department is empty");
-                }
-                if (loc.isEmpty() ){
-                    location.setError("location is empty");
-                }
-                if (sub.isEmpty() ){
-                    subject.setError("subject is empty");
-                }
-                if (topi.isEmpty() ){
-                    topic.setError("topic is empty");
-                }
-                if (key1.isEmpty() ){
-                    key.setError("key is empty");
-                }
-                if (minute.isEmpty() ){
-                    minutes.setError("name is empty");
-                }
-
-                else {
-
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressCount.setVisibility(View.VISIBLE);
-                    progressBar.setProgress(0);
-
-                    CountDownTimer countDownTimer = new CountDownTimer(milis,1000) {
-                        @Override
-                        public void onTick(long l) {
-
-                            int progress = (int) (100 * l / milis);
-                            progressBar.incrementProgressBy(progress);
-                            progressCount.setText("Uploading Data....\n"+"Progress "+progress);
-                            progressBar.setProgress(progress);
-                        }
-
-                        @Override
-                        public void onFinish() {
-
-                            HashMap<String, String> hashMap = new HashMap<>();
-                            hashMap.put("Name",name);
-                            hashMap.put("department",dep);
-                            hashMap.put("location",loc);
-                            hashMap.put("subject",sub);
-                            hashMap.put("topic",topi);
-                            hashMap.put("key",key1);
-                            hashMap.put("minutes",minute);
-                            hashMap.put("endDateTime",minute);
-
-
-                            String formattedTime;
-                            LocalTime currentTime = null;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                currentTime = LocalTime.now();
-                            }
-                            DateTimeFormatter formatter = null;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                formatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
-                            }
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                formattedTime = currentTime.format(formatter);
-                                hashMap.put("currentTime",formattedTime);
-                            }
-
-
-                            int minute1 = Integer.parseInt(minute);
-                            //long addMinutes = Long.parseLong(minute);
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                LocalTime updateTime = currentTime.plusMinutes(minute1);
-                                String endTime = updateTime.format(formatter);
-                                hashMap.put("endTime",endTime);
-                            }
-
-                            LocalDateTime dateTime = null; // Use LocalDateTime instead of LocalTime
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                dateTime = LocalDateTime.now();
-                            }
-                            DateTimeFormatter dateTimeFormatter = null; // Include date and time pattern
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
-                            }
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                LocalDateTime updateTime = dateTime.plusMinutes(minute1);
-                                String dateTimeString = updateTime.format(dateTimeFormatter);
-                                hashMap.put("endDateTime", dateTimeString);
-                            }
-
-                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Intent intent = new Intent(Upload_Details_Activity.this,Home_Activity.class);
-                                        startActivity(intent);
-                                        Toast.makeText(Upload_Details_Activity.this, "Details Uploaded", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(Upload_Details_Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    };
-                    countDownTimer.start();
-
-
+                if (position == 0) {
+                    getSupportActionBar().setTitle("Upload Class Here");
+                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
+                } else if (position == 1) {
+                    getSupportActionBar().setTitle("Upload Announcement Here");
+                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
                 }
             }
         });
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, myViewPager,
+                (tab, position) -> {
+                    // Customize the tab text and titles based on your needs.
+                    if (position == 0) {
+                        tab.setText("Upload Class");
+                    } else if (position == 1) {
+                        tab.setText("Announcements");
+                    }
+                }
+        );
+        tabLayoutMediator.attach();
     }
+
     private void updateProgressBar() {
 
         // Calculate the percentage of time remaining and update the ProgressBar
@@ -296,13 +180,14 @@ public class Upload_Details_Activity extends AppCompatActivity {
                                 // ...
                                 auth = FirebaseAuth.getInstance();
                                 String uid = auth.getCurrentUser().getUid();
+                                reference  =  FirebaseDatabase.getInstance().getReference("Teacher_Data").child(uid);
                                 reference1 = FirebaseDatabase.getInstance().getReference("Teacher_Data").child(uid);
                                 reference1.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         if (!snapshot.exists()) {
                                             Toast.makeText(Upload_Details_Activity.this, "You can Upload Details Here", Toast.LENGTH_SHORT).show();
-                                            } else {
+                                        } else {
 
                                             String endTimeString = snapshot.child("endDateTime").getValue(String.class);
 //                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -363,7 +248,7 @@ public class Upload_Details_Activity extends AppCompatActivity {
 //                                                    e.printStackTrace();
 //                                                }
 //                                            }
-                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
                                                 LocalDateTime localTime = LocalDateTime.now();
                                                 String formattedTime = localTime.format(formatter);
@@ -434,6 +319,10 @@ public class Upload_Details_Activity extends AppCompatActivity {
             });
             snackbar.show();
         }
+
+
+
     }
+
 
 }
