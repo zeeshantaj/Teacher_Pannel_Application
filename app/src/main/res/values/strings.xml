@@ -5,5 +5,7 @@
 
     <string name="admob_app_id">ca-app-pub-4144305165966580~6299934712</string>
     <string name="admob_banner_id">ca-app-pub-4144305165966580/3630690721</string>
+    <string name="announcementimage">announcementImage</string>
+    <string name="upload">Upload</string>
 
 </resources>

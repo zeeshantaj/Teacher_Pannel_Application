@@ -14,10 +14,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.teacher_panel_application.Announcement_Home_Fragment.Ann_Home_Fragment;
+import com.example.teacher_panel_application.Create_Fragments.Notification_Announcement;
 import com.example.teacher_panel_application.Fragments.EditDataFragment;
 import com.example.teacher_panel_application.R;
 import com.google.android.gms.ads.AdRequest;
@@ -156,10 +161,10 @@ public class Home_Activity extends AppCompatActivity {
                             public void onFinish() {
                                 // Perform any actions after the countdown finishes
                                 Log.d("MyApp","onFinished");
-                                reference.removeValue();
-                                Intent intent = new Intent(Home_Activity.this, Upload_Details_Activity.class);
-                                startActivity(intent);
-                                finish();
+                                //reference.removeValue();
+//                                Intent intent = new Intent(Home_Activity.this, Upload_Details_Activity.class);
+//                                startActivity(intent);
+//                                finish();
                             }
                         };
                         countDownTimer.start();
@@ -214,6 +219,24 @@ public class Home_Activity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.announcementData){
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(android.R.id.content,new Ann_Home_Fragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        return false;
+    }
 
     @Override
     protected void onResume() {
