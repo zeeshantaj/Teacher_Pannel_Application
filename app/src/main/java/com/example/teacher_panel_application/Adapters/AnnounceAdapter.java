@@ -42,34 +42,42 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
         AnnouncementModel model = announcementModelList.get(position);
 
         holder.date.setText(model.getCurrent_date());
+        holder.title.setText(model.getTitle());
+        holder.title.setVisibility(View.VISIBLE);
+        holder.description.setText(model.getDescription());
+        holder.description.setVisibility(View.VISIBLE);
+        holder.dueDate.setText(model.getDue_date());
+        holder.date.setVisibility(View.VISIBLE);
 
-        if (!model.getTitle().isEmpty()){
-            holder.title.setText(model.getTitle());
-            holder.title.setVisibility(View.VISIBLE);
-            holder.description.setText(model.getDescription());
-            holder.description.setVisibility(View.VISIBLE);
-            holder.dueDate.setText(model.getDue_date());
-            holder.date.setVisibility(View.VISIBLE);
-        }
-        if (model.getImageUrl() != null){
-            holder.image.setVisibility(View.VISIBLE);
-            Glide.with(holder.itemView.getContext())
-                    .load(model.getImageUrl())
-                    .into(holder.image);
-        }
+        holder.image.setVisibility(View.VISIBLE);
+        Glide.with(holder.itemView.getContext())
+                .load(model.getImageUrl())
+                .into(holder.image);
+            
+            //        if (!model.getTitle().isEmpty()){
+//            holder.title.setText(model.getTitle());
+//            holder.title.setVisibility(View.VISIBLE);
+//            holder.description.setText(model.getDescription());
+//            holder.description.setVisibility(View.VISIBLE);
+//            holder.dueDate.setText(model.getDue_date());
+//            holder.date.setVisibility(View.VISIBLE);
+//        }
+//        if (model.getImageUrl() != null){
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.expandableView.getVisibility() == View.VISIBLE) {
-                    // If the inner layout is visible, hide it to collapse
-                    holder.expandableView.setVisibility(View.GONE);
-                } else {
-                    // If the inner layout is not visible, show it to expand
-                    holder.expandableView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+//        }
+
+//        holder.cardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (holder.expandableView.getVisibility() == View.VISIBLE) {
+//                    // If the inner layout is visible, hide it to collapse
+//                    holder.expandableView.setVisibility(View.GONE);
+//                } else {
+//                    // If the inner layout is not visible, show it to expand
+//                    holder.expandableView.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
 
     }
 
@@ -96,6 +104,19 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
             image = itemView.findViewById(R.id.itemImage);
             cardView = itemView.findViewById(R.id.card);
             expandableView = itemView.findViewById(R.id.myExpandableLayout);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (expandableView.getVisibility() == View.VISIBLE) {
+                        // If the inner layout is visible, hide it to collapse
+                        expandableView.setVisibility(View.GONE);
+                    } else {
+                        // If the inner layout is not visible, show it to expand
+                        expandableView.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
 
         }
 
