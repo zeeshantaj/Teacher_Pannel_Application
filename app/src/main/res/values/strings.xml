@@ -7,5 +7,27 @@
     <string name="admob_banner_id">ca-app-pub-4144305165966580/3630690721</string>
     <string name="announcementimage">announcementImage</string>
     <string name="upload">Upload</string>
+    <string name="teacher_name">Teacher Name</string>
+    <string name="department">Department</string>
+    <string name="department1">Department:</string>
+    <string name="class_location">Class Location</string>
+    <string name="subject">Subject</string>
+    <string name="subject1">Subject:</string>
+    <string name="today_s_topic">Today\'s Topic</string>
+    <string name="key">Key</string>
+    <string name="minutes">Minutes</string>
+    <string name="enter_class_session_time_in_n_minutes">Enter class session time in\n minutes</string>
+    <string name="announcement_title">Announcement Title</string>
+    <string name="description_optional">Description optional</string>
+    <string name="due_date">Due Date</string>
+    <string name="or">OR</string>
+    <string name="select_an_image">Select an Image</string>
+    <string name="online">Online</string>
+    <string name="name">Name:</string>
+    <string name="duration">Duration:</string>
+    <string name="location">Location:</string>
+    <string name="topic">Topic:</string>
+    <string name="started_at">Started At:</string>
+    <string name="time_left">Time Left:</string>
 
 </resources>

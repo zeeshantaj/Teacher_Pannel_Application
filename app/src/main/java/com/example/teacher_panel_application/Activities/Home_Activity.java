@@ -160,11 +160,10 @@ public class Home_Activity extends AppCompatActivity {
                             @Override
                             public void onFinish() {
                                 // Perform any actions after the countdown finishes
-                                Log.d("MyApp","onFinished");
-                                //reference.removeValue();
-//                                Intent intent = new Intent(Home_Activity.this, Upload_Details_Activity.class);
-//                                startActivity(intent);
-//                                finish();
+                                reference.removeValue();
+                                Intent intent = new Intent(Home_Activity.this, Upload_Details_Activity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         };
                         countDownTimer.start();

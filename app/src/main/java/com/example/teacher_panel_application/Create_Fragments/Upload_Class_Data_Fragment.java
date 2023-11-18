@@ -77,6 +77,7 @@ public class Upload_Class_Data_Fragment extends Fragment {
         minutes = view.findViewById(R.id.edMinutes);
         uploadBtn = view.findViewById(R.id.uploadBtn);
 
+        progressBar = new ProgressBar(getActivity());
         auth = FirebaseAuth.getInstance();
         // String uid = auth.getCurrentUser().getUid();
         String uid = auth.getUid();
@@ -97,8 +98,6 @@ public class Upload_Class_Data_Fragment extends Fragment {
                 String topi = topic.getText().toString();
                 String key1 = key.getText().toString();
                 String minute = minutes.getText().toString();
-
-
 
                 if (name.isEmpty() ){
                     tName.setError("name is empty");
@@ -123,107 +122,71 @@ public class Upload_Class_Data_Fragment extends Fragment {
                 }
 
                 else {
-                    float radius = 7f;
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    hashMap.put("Name",name);
+                    hashMap.put("department",dep);
+                    hashMap.put("location",loc);
+                    hashMap.put("subject",sub);
+                    hashMap.put("topic",topi);
+                    hashMap.put("key",key1);
+                    hashMap.put("minutes",minute);
+                    hashMap.put("endDateTime",minute);
 
-                    View decorView = getActivity().getWindow().getDecorView();
-                    // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
-                    ViewGroup rootView = (ViewGroup) decorView.findViewById(android.R.id.content);
 
-                    // Optional:
-                    // Set drawable to draw in the beginning of each blurred frame.
-                    // Can be used in case your layout has a lot of transparent space and your content
-                    // gets a too low alpha value after blur is applied.
-                    Drawable windowBackground = decorView.getBackground();
+                    String formattedTime;
+                    LocalTime currentTime = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        currentTime = LocalTime.now();
+                    }
+                    DateTimeFormatter formatter = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        formatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        formattedTime = currentTime.format(formatter);
+                        hashMap.put("currentTime",formattedTime);
+                    }
 
-//                    blurView.setupWith(rootView, new RenderScriptBlur(getActivity())) // or RenderEffectBlur
-//                            .setFrameClearDrawable(windowBackground) // Optional
-//                            .setBlurRadius(radius);
-//
-//                    progressBar.setVisibility(View.VISIBLE);
-//                    progressCount.setVisibility(View.VISIBLE);
-//                    progressBar.setProgress(0);
 
-                    CountDownTimer countDownTimer = new CountDownTimer(milis,1000) {
+                    int minute1 = Integer.parseInt(minute);
+                    //long addMinutes = Long.parseLong(minute);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        LocalTime updateTime = currentTime.plusMinutes(minute1);
+                        String endTime = updateTime.format(formatter);
+                        hashMap.put("endTime",endTime);
+                    }
+
+                    LocalDateTime dateTime = null; // Use LocalDateTime instead of LocalTime
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        dateTime = LocalDateTime.now();
+                    }
+                    DateTimeFormatter dateTimeFormatter = null; // Include date and time pattern
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        LocalDateTime updateTime = dateTime.plusMinutes(minute1);
+                        String dateTimeString = updateTime.format(dateTimeFormatter);
+                        hashMap.put("endDateTime", dateTimeString);
+                    }
+
+                    reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onTick(long l) {
-
-                            int progress = (int) (100 * l / milis);
-                            progressBar.incrementProgressBy(progress);
-                            progressCount.setText("Uploading Data....\n"+"Progress "+progress);
-                            progressBar.setProgress(progress);
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Intent intent = new Intent(getActivity(), Home_Activity.class);
+                                startActivity(intent);
+                                getActivity().finish();
+                                Toast.makeText(getActivity(), "Details Uploaded", Toast.LENGTH_SHORT).show();
+                            }
                         }
-
+                    }).addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFinish() {
-
-                            HashMap<String, String> hashMap = new HashMap<>();
-                            hashMap.put("Name",name);
-                            hashMap.put("department",dep);
-                            hashMap.put("location",loc);
-                            hashMap.put("subject",sub);
-                            hashMap.put("topic",topi);
-                            hashMap.put("key",key1);
-                            hashMap.put("minutes",minute);
-                            hashMap.put("endDateTime",minute);
-
-
-                            String formattedTime;
-                            LocalTime currentTime = null;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                currentTime = LocalTime.now();
-                            }
-                            DateTimeFormatter formatter = null;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                formatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
-                            }
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                formattedTime = currentTime.format(formatter);
-                                hashMap.put("currentTime",formattedTime);
-                            }
-
-
-                            int minute1 = Integer.parseInt(minute);
-                            //long addMinutes = Long.parseLong(minute);
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                LocalTime updateTime = currentTime.plusMinutes(minute1);
-                                String endTime = updateTime.format(formatter);
-                                hashMap.put("endTime",endTime);
-                            }
-
-                            LocalDateTime dateTime = null; // Use LocalDateTime instead of LocalTime
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                dateTime = LocalDateTime.now();
-                            }
-                            DateTimeFormatter dateTimeFormatter = null; // Include date and time pattern
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
-                            }
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                LocalDateTime updateTime = dateTime.plusMinutes(minute1);
-                                String dateTimeString = updateTime.format(dateTimeFormatter);
-                                hashMap.put("endDateTime", dateTimeString);
-                            }
-
-                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Intent intent = new Intent(getActivity(), Home_Activity.class);
-                                        startActivity(intent);
-                                        Toast.makeText(getActivity(), "Details Uploaded", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    };
-                    countDownTimer.start();
-
+                    });
 
                 }
             }

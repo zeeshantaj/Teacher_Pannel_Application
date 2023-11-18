@@ -9,11 +9,14 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -29,7 +32,7 @@
                     android:id="@+id/announceTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Announcement Title" />
+                    android:hint="@string/announcement_title" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,7 +52,7 @@
                     android:id="@+id/announceDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Description optional" />
+                    android:hint="@string/description_optional" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +71,7 @@
                     android:id="@+id/lastDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Last Date" />
+                    android:hint="@string/due_date" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="OR"
+                    android:text="@string/or"
                     android:textColor="@color/darkBlueshade"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -107,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Select an Image"
+                android:text="@string/select_an_image"
                 android:textColor="@color/darkBlueshade"
                 android:textSize="24sp" />
 
