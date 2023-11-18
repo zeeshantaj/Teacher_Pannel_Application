@@ -1,6 +1,7 @@
 package com.example.teacher_panel_application.Adapters;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,17 +44,18 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
 
         holder.date.setText(model.getCurrent_date());
         holder.title.setText(model.getTitle());
-        holder.title.setVisibility(View.VISIBLE);
+       // holder.title.setVisibility(View.VISIBLE);
         holder.description.setText(model.getDescription());
-        holder.description.setVisibility(View.VISIBLE);
+        //holder.description.setVisibility(View.VISIBLE);
         holder.dueDate.setText(model.getDue_date());
-        holder.date.setVisibility(View.VISIBLE);
+        holder.dueDate.setVisibility(View.VISIBLE);
+        //holder.date.setVisibility(View.VISIBLE);
 
         holder.image.setVisibility(View.VISIBLE);
         Glide.with(holder.itemView.getContext())
                 .load(model.getImageUrl())
                 .into(holder.image);
-            
+        Log.e("MyApp","itemImageUrl"+model.getImageUrl());
             //        if (!model.getTitle().isEmpty()){
 //            holder.title.setText(model.getTitle());
 //            holder.title.setVisibility(View.VISIBLE);
@@ -114,12 +116,15 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
                     } else {
                         // If the inner layout is not visible, show it to expand
                         expandableView.setVisibility(View.VISIBLE);
+//                        title.setVisibility(View.VISIBLE);
+//                        //dueDate.setVisibility(View.VISIBLE);
+//                        description.setVisibility(View.VISIBLE);
+//                        image.setVisibility(View.VISIBLE);
+
                     }
                 }
             });
 
         }
-
-
     }
 }

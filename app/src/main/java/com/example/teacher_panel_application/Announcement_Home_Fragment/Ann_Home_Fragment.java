@@ -61,11 +61,6 @@ public class Ann_Home_Fragment extends Fragment {
                             String dueDate = dataSnapshot.child("due_date").getValue(String.class);
                             String des = dataSnapshot.child("description").getValue(String.class);
 
-                            Log.e("MyApp","title"+title);
-                            Log.e("MyApp","title"+date);
-                            Log.e("MyApp","title"+dueDate);
-                            Log.e("MyApp","title"+des);
-
                             model.setDue_date(dueDate);
                             model.setTitle(title);
                             model.setDescription(des);
@@ -74,7 +69,6 @@ public class Ann_Home_Fragment extends Fragment {
                         if (dataSnapshot.child("imageUrl").exists()){
                             String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
                             String date = dataSnapshot.child("current_date").getValue(String.class);
-                            Log.e("MyApp","title"+imageUrl);
                             model.setImageUrl(imageUrl);
                             model.setCurrent_date(date);
                         }
