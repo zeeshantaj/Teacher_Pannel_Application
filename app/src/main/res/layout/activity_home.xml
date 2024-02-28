@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Home_Activity">
+    tools:context=".Home.Home_Activity">
+
+
 
 
     <androidx.cardview.widget.CardView
@@ -17,7 +19,6 @@
         android:layout_margin="15dp"
         app:cardCornerRadius="20dp"
         android:backgroundTint="@color/darkBlueshade">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -271,5 +272,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/homeViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/home_bottom_nav_menu"
+        app:itemRippleColor="@color/darkBlue"
+        app:itemTextColor="@color/black"
+        app:itemTextAppearanceActive="@color/darkBlue"
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

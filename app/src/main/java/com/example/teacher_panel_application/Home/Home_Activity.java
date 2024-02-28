@@ -1,4 +1,4 @@
-package com.example.teacher_panel_application.Activities;
+package com.example.teacher_panel_application.Home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,18 +15,16 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.teacher_panel_application.Activities.Upload_Details_Activity;
 import com.example.teacher_panel_application.Announcement_Home_Fragment.Ann_Home_Fragment;
-import com.example.teacher_panel_application.Create_Fragments.Notification_Announcement;
 import com.example.teacher_panel_application.Fragments.EditDataFragment;
 import com.example.teacher_panel_application.R;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -45,10 +43,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Home_Activity extends AppCompatActivity {
-
-
     private TextView name,depart,subject,duration,locataion,topic,startedAt,timer;
-
     private CardView cardNode;
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -63,7 +58,6 @@ public class Home_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
 
         getSupportActionBar().setTitle("Class Details");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));

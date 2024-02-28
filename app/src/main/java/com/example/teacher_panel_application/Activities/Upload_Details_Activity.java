@@ -8,33 +8,23 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.Adapters.MyPagerAdapter;
 import com.example.teacher_panel_application.Create_Fragments.Notification_Announcement;
 import com.example.teacher_panel_application.Create_Fragments.Upload_Class_Data_Fragment;
+import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.NetworkUtils;
 import com.example.teacher_panel_application.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,13 +33,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wajahatkarim3.easyflipviewpager.CardFlipPageTransformer2;
 
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+
 public class Upload_Details_Activity extends AppCompatActivity {
 
     private DatabaseReference reference1,reference;

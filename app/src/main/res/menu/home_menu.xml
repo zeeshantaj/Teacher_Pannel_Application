@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/announcementData"
-        android:title="Announcement data"
+        android:title="@string/announcement_data"
         app:showAsAction="collapseActionView"/>
 
 </menu>

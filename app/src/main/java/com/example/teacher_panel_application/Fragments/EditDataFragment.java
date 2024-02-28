@@ -15,8 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.teacher_panel_application.Activities.Home_Activity;
-import com.example.teacher_panel_application.Activities.Upload_Details_Activity;
+import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

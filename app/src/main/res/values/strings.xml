@@ -29,5 +29,7 @@
     <string name="topic">Topic:</string>
     <string name="started_at">Started At:</string>
     <string name="time_left">Time Left:</string>
+    <string name="announcement_data">Announcement data</string>
+    <string name="home">Home</string>
 
 </resources>
