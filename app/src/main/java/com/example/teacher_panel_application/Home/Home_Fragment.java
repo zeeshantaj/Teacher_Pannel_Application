@@ -84,7 +84,7 @@ public class Home_Fragment extends Fragment {
 
         adView.loadAd(adRequest);
         cardNode.setOnLongClickListener(view1 -> {
-      //      showEditDataAlertDialog();
+            showEditDataAlertDialog();
             return true;
         });
     }

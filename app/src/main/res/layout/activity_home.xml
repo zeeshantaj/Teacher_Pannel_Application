@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Home.Home_Activity">
 
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        app:adSize="BANNER"
-        app:adUnitId="@string/admob_banner_id"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/homeViewPager"
         android:layout_width="match_parent"
@@ -32,13 +18,13 @@
         style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
         app:itemRippleColor="@color/darkBlue"
         app:itemTextAppearanceActive="@color/darkBlue"
-        app:itemTextColor="@color/black"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/home_bottom_nav_menu" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

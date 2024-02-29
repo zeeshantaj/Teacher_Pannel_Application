@@ -6,14 +6,17 @@
         android:id="@+id/navHome"
         app:showAsAction="ifRoom"
         android:title="@string/home"
+        android:icon="@drawable/home_icon"
         />
     <item
         android:id="@+id/navHistory"
         android:title="History"
+        android:icon="@drawable/history_icon"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/Profile"
+        android:id="@+id/navProfile"
         android:title="Profile"
+        android:icon="@drawable/profile_icon"
         app:showAsAction="ifRoom" />
 
 </menu>

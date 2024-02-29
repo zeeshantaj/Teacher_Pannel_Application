@@ -30,6 +30,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,14 +54,59 @@ public class Home_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         ViewPager2 viewPager2 = findViewById(R.id.homeViewPager);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         getSupportActionBar().setTitle("Class Details");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
 
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                bottomNavigationView.setSelectedItemId(getNavigationItem(position));
+
+            }
+        });
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                int pos = getPositionForNavigationItem(itemId);
+                if (pos != -1){
+                    viewPager2.setCurrentItem(pos,true);
+                    return true;
+                }
+                return false;
+            }
+        });
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
         viewPager2.setAdapter(viewPagerAdapter);
     }
 
+    private int getNavigationItem(int position) {
+        switch (position) {
+            case 0:
+                return R.id.navHome;
+            case 1:
+                return R.id.navHistory;
+            case 2:
+                return R.id.navProfile;
+            // Add more cases as needed
+        }
+        return 0;
+    }
+    private int getPositionForNavigationItem(int itemId) {
+        int id = itemId;
+        if (id == R.id.navHome){
+            return 0;
+        }else if (id == R.id.navHistory){
+            return 1;
+        }else if (id == R.id.navProfile){
+            return 2;
+        }
+        return -1;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
