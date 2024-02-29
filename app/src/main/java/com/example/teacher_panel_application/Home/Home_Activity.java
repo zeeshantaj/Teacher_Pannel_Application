@@ -44,9 +44,13 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Home_Activity extends AppCompatActivity {
 
+    private String homeTitle = "Class Details";
+    private String historyTitle = "Uploaded History";
+    private String profileTitle = "Profile";
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class Home_Activity extends AppCompatActivity {
         ViewPager2 viewPager2 = findViewById(R.id.homeViewPager);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        getSupportActionBar().setTitle("Class Details");
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
 
 
@@ -68,17 +72,14 @@ public class Home_Activity extends AppCompatActivity {
 
             }
         });
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                int pos = getPositionForNavigationItem(itemId);
-                if (pos != -1){
-                    viewPager2.setCurrentItem(pos,true);
-                    return true;
-                }
-                return false;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            int pos = getPositionForNavigationItem(itemId);
+            if (pos != -1){
+                viewPager2.setCurrentItem(pos,true);
+                return true;
             }
+            return false;
         });
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
         viewPager2.setAdapter(viewPagerAdapter);
@@ -87,45 +88,47 @@ public class Home_Activity extends AppCompatActivity {
     private int getNavigationItem(int position) {
         switch (position) {
             case 0:
+                Objects.requireNonNull(getSupportActionBar()).setTitle(homeTitle);
                 return R.id.navHome;
             case 1:
+                Objects.requireNonNull(getSupportActionBar()).setTitle(historyTitle);
                 return R.id.navHistory;
             case 2:
+                Objects.requireNonNull(getSupportActionBar()).setTitle(profileTitle);
                 return R.id.navProfile;
             // Add more cases as needed
         }
         return 0;
     }
     private int getPositionForNavigationItem(int itemId) {
-        int id = itemId;
-        if (id == R.id.navHome){
+        if (itemId == R.id.navHome){
             return 0;
-        }else if (id == R.id.navHistory){
+        }else if (itemId == R.id.navHistory){
             return 1;
-        }else if (id == R.id.navProfile){
+        }else if (itemId == R.id.navProfile){
             return 2;
         }
         return -1;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.announcementData){
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(android.R.id.content,new Ann_Home_Fragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.home_menu,menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.announcementData){
+//            FragmentManager manager = getSupportFragmentManager();
+//            FragmentTransaction transaction = manager.beginTransaction();
+//            transaction.replace(android.R.id.content,new Ann_Home_Fragment());
+//            transaction.addToBackStack(null);
+//            transaction.commit();
+//        }
+//        return false;
+//    }
 
 //    @Override
 //    protected void onResume() {
