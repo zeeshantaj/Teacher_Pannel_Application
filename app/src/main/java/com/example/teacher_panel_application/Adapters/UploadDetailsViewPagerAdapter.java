@@ -4,12 +4,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class MyPagerAdapter extends FragmentStateAdapter {
+public class UploadDetailsViewPagerAdapter extends FragmentStateAdapter {
 
     // Define an array of Fragment objects to hold your pages
     private Fragment[] pages;
 
-    public MyPagerAdapter(FragmentActivity fragmentActivity, Fragment[] pages) {
+    public UploadDetailsViewPagerAdapter(FragmentActivity fragmentActivity, Fragment[] pages) {
         super(fragmentActivity);
         this.pages = pages;
     }

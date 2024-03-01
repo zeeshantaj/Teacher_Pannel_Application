@@ -1,63 +1,31 @@
 package com.example.teacher_panel_application.Home;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.teacher_panel_application.Activities.Upload_Details_Activity;
-import com.example.teacher_panel_application.Announcement_Home_Fragment.Ann_Home_Fragment;
-import com.example.teacher_panel_application.Fragments.EditDataFragment;
 import com.example.teacher_panel_application.R;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 
 public class Home_Activity extends AppCompatActivity {
-
     private String homeTitle = "Class Details";
     private String historyTitle = "Uploaded History";
     private String profileTitle = "Profile";
+    private String postDetails = "Post Details";
+
+    public static ViewPager2 viewPager2;
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ViewPager2 viewPager2 = findViewById(R.id.homeViewPager);
+        viewPager2 = findViewById(R.id.homeViewPager);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
 
@@ -69,19 +37,19 @@ public class Home_Activity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 bottomNavigationView.setSelectedItemId(getNavigationItem(position));
-
+                viewPager2.setCurrentItem(position,true);
             }
         });
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             int pos = getPositionForNavigationItem(itemId);
-            if (pos != -1){
-                viewPager2.setCurrentItem(pos,true);
+            if (pos != -1) {
+                viewPager2.setCurrentItem(pos, true);
                 return true;
             }
             return false;
         });
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+        Main_HomeViewPagerAdapter viewPagerAdapter = new Main_HomeViewPagerAdapter(this);
         viewPager2.setAdapter(viewPagerAdapter);
     }
 
@@ -91,31 +59,32 @@ public class Home_Activity extends AppCompatActivity {
                 Objects.requireNonNull(getSupportActionBar()).setTitle(homeTitle);
                 return R.id.navHome;
             case 1:
+                Objects.requireNonNull(getSupportActionBar()).setTitle(postDetails);
+                return R.id.navUploadDetails;
+            case 2:
                 Objects.requireNonNull(getSupportActionBar()).setTitle(historyTitle);
                 return R.id.navHistory;
-            case 2:
-                Objects.requireNonNull(getSupportActionBar()).setTitle(profileTitle);
-                return R.id.navProfile;
             case 3:
                 Objects.requireNonNull(getSupportActionBar()).setTitle(profileTitle);
-                return R.id.navUploadDetails;
+                return R.id.navProfile;
+
             // Add more cases as needed
         }
         return 0;
     }
+
     private int getPositionForNavigationItem(int itemId) {
-        if (itemId == R.id.navHome){
+        if (itemId == R.id.navHome) {
             return 0;
-        }else if (itemId == R.id.navHistory){
-            return 1;
-        }else if (itemId == R.id.navProfile){
-            return 2;
         } else if (itemId == R.id.navUploadDetails) {
+            return 1;
+        } else if (itemId == R.id.navHistory) {
+            return 2;
+        } else if (itemId == R.id.navProfile) {
             return 3;
         }
-        return -1;
-    }
-
+            return -1;
+        }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.home_menu,menu);

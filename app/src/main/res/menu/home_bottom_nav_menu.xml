@@ -4,23 +4,23 @@
 
     <item
         android:id="@+id/navHome"
-        app:showAsAction="ifRoom"
-        android:title="@string/home"
         android:icon="@drawable/home_icon"
-        /> <item
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/navUploadDetails"
-        app:showAsAction="ifRoom"
-        android:title="Upload Class"
-        />
+        android:icon="@drawable/add_class_icon"
+        android:title="Post Details"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navHistory"
-        android:title="History"
         android:icon="@drawable/history_icon"
+        android:title="History"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navProfile"
-        android:title="Profile"
         android:icon="@drawable/profile_icon"
+        android:title="Profile"
         app:showAsAction="ifRoom" />
 
 </menu>

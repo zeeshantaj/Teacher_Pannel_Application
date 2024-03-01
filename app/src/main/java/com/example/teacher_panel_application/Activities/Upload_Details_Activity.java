@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.teacher_panel_application.Adapters.MyPagerAdapter;
+import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdapter;
 import com.example.teacher_panel_application.Create_Fragments.Notification_Announcement;
 import com.example.teacher_panel_application.Create_Fragments.Upload_Class_Data_Fragment;
 import com.example.teacher_panel_application.Home.Home_Activity;
@@ -52,8 +52,8 @@ public class Upload_Details_Activity extends AppCompatActivity {
         myViewPager = findViewById(R.id.myViewpager);
         Fragment[] pages = {new Upload_Class_Data_Fragment(), new Notification_Announcement()}; // Replace with your fragment classes
 
-        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(this,pages);
-        myViewPager.setAdapter(myPagerAdapter);
+        //UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(this,pages);
+        //myViewPager.setAdapter(myPagerAdapter);
 
 
 // Create an object of page transformer
