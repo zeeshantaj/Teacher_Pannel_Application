@@ -11,7 +11,7 @@ public class Main_HomeViewPagerAdapter extends FragmentStateAdapter {
     public Main_HomeViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
-
+    
     @NonNull
     @Override
     public Fragment createFragment(int position) {

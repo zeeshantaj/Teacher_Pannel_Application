@@ -25,17 +25,31 @@ public class UploadDetails_Fragment extends Fragment {
     private DatabaseReference reference1,reference;
     private FirebaseAuth auth;
     private ViewPager2 myViewPager;
+    private TabLayout tabLayout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.activity_upload_details,container,false);
 
         myViewPager = view.findViewById(R.id.myViewpager);
+
         Fragment[] pages = {new Upload_Class_Data_Fragment(), new Notification_Announcement()}; // Replace with your fragment classes
 
-        UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
-        myViewPager.setAdapter(myPagerAdapter);
+        //UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
 
+
+        tabLayout = view.findViewById(R.id.tabLayout);
+
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity());
+        myViewPager.setAdapter(myPagerAdapter);
 
 // Create an object of page transformer
         CardFlipPageTransformer2 cardFlipPageTransformer = new CardFlipPageTransformer2();
@@ -47,16 +61,16 @@ public class UploadDetails_Fragment extends Fragment {
         myViewPager.setPageTransformer(cardFlipPageTransformer);
 
 
-
-        TabLayout tabLayout = view.findViewById(R.id.tabLayout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, myViewPager,
                 (tab, position) -> {
                     // Customize the tab text and titles based on your needs.
-                    if (position == 5) {
+                    if (position == 0) {
+                        myViewPager.setCurrentItem(position);
                         tab.setText("Upload Class");
                     } else if (position == 1) {
+                        myViewPager.setCurrentItem(position);
                         tab.setText("Announcements");
                     }
                 }
@@ -67,30 +81,25 @@ public class UploadDetails_Fragment extends Fragment {
             public void onPageSelected(int position) {
                 // The 'position' parameter indicates the currently selected page.
                 // You can use it to identify the currently displayed fragment.
+                //((Home_Activity)getActivity()).getActivityViewPager().setCurrentItem(position, true);
+                Toast.makeText(getContext(), "Child viewpger ", Toast.LENGTH_SHORT).show();
+                if (position == 0) {
 
-                if (position == 5) {
+                    myViewPager.setCurrentItem(position,true);
                     Toast.makeText(getContext(), "pos"+position, Toast.LENGTH_SHORT).show();
-                    Home_Activity.viewPager2.setCurrentItem(position,true);
+                    //Home_Activity.viewPager2.setCurrentItem(position,true);
 //                    getSupportActionBar().setTitle("Upload Class Here");
 //                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
-                } else if (position == 6) {
+                } else if (position == 1) {
+                    myViewPager.setCurrentItem(position,true);
+
                     Toast.makeText(getContext(), "pos"+position, Toast.LENGTH_SHORT).show();
-                    Home_Activity.viewPager2.setCurrentItem(position,true);
+                    //Home_Activity.viewPager2.setCurrentItem(position,true);
 //                    getSupportActionBar().setTitle("Upload Announcement Here");
 //                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
                 }
             }
         });
-
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
     }
 
     @Override

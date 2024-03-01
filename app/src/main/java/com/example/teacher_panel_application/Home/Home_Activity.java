@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.teacher_panel_application.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,7 +19,7 @@ public class Home_Activity extends AppCompatActivity {
     private String profileTitle = "Profile";
     private String postDetails = "Post Details";
 
-    public static ViewPager2 viewPager2;
+    public ViewPager2 viewPager2;
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class Home_Activity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 bottomNavigationView.setSelectedItemId(getNavigationItem(position));
+
                 viewPager2.setCurrentItem(position,true);
             }
         });
@@ -83,8 +85,12 @@ public class Home_Activity extends AppCompatActivity {
         } else if (itemId == R.id.navProfile) {
             return 3;
         }
+
             return -1;
         }
+    public ViewPager2 getActivityViewPager() {
+        return viewPager2;
+    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.home_menu,menu);
