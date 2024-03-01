@@ -96,6 +96,9 @@ public class Home_Activity extends AppCompatActivity {
             case 2:
                 Objects.requireNonNull(getSupportActionBar()).setTitle(profileTitle);
                 return R.id.navProfile;
+            case 3:
+                Objects.requireNonNull(getSupportActionBar()).setTitle(profileTitle);
+                return R.id.navUploadDetails;
             // Add more cases as needed
         }
         return 0;
@@ -107,6 +110,8 @@ public class Home_Activity extends AppCompatActivity {
             return 1;
         }else if (itemId == R.id.navProfile){
             return 2;
+        } else if (itemId == R.id.navUploadDetails) {
+            return 3;
         }
         return -1;
     }

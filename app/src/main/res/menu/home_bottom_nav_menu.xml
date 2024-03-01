@@ -7,6 +7,10 @@
         app:showAsAction="ifRoom"
         android:title="@string/home"
         android:icon="@drawable/home_icon"
+        /> <item
+        android:id="@+id/navUploadDetails"
+        app:showAsAction="ifRoom"
+        android:title="Upload Class"
         />
     <item
         android:id="@+id/navHistory"

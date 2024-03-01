@@ -7,7 +7,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
-    private static final int NUM_PAGES = 3;
+    private static final int NUM_PAGES = 4;
 
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -23,6 +23,8 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 return new History_Fragment();
             case 2:
                 return new Profile_Fragment();
+            case 3:
+                return new UploadDetails_Fragment();
             default:
                 return new Home_Fragment();
         }
