@@ -33,9 +33,7 @@ public class UploadDetails_Fragment extends Fragment {
 
         myViewPager = view.findViewById(R.id.myViewpager);
 
-        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Notification_Announcement()}; // Replace with your fragment classes
 
-        //UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
 
 
         tabLayout = view.findViewById(R.id.tabLayout);
@@ -48,7 +46,9 @@ public class UploadDetails_Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity());
+
+        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Notification_Announcement()}; // Replace with your fragment classes
+        UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
         myViewPager.setAdapter(myPagerAdapter);
 
 // Create an object of page transformer
@@ -67,10 +67,10 @@ public class UploadDetails_Fragment extends Fragment {
                 (tab, position) -> {
                     // Customize the tab text and titles based on your needs.
                     if (position == 0) {
-                        myViewPager.setCurrentItem(position);
+                        myViewPager.setCurrentItem(position,true);
                         tab.setText("Upload Class");
                     } else if (position == 1) {
-                        myViewPager.setCurrentItem(position);
+                        myViewPager.setCurrentItem(position,true);
                         tab.setText("Announcements");
                     }
                 }
@@ -85,13 +85,13 @@ public class UploadDetails_Fragment extends Fragment {
                 Toast.makeText(getContext(), "Child viewpger ", Toast.LENGTH_SHORT).show();
                 if (position == 0) {
 
-                    myViewPager.setCurrentItem(position,true);
+                //    myViewPager.setCurrentItem(position,true);
                     Toast.makeText(getContext(), "pos"+position, Toast.LENGTH_SHORT).show();
                     //Home_Activity.viewPager2.setCurrentItem(position,true);
 //                    getSupportActionBar().setTitle("Upload Class Here");
 //                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
                 } else if (position == 1) {
-                    myViewPager.setCurrentItem(position,true);
+                  //  myViewPager.setCurrentItem(position,true);
 
                     Toast.makeText(getContext(), "pos"+position, Toast.LENGTH_SHORT).show();
                     //Home_Activity.viewPager2.setCurrentItem(position,true);

@@ -87,6 +87,7 @@ public class Home_Fragment extends Fragment {
             showEditDataAlertDialog();
             return true;
         });
+
     }
     public void getValues(){
         auth = FirebaseAuth.getInstance();

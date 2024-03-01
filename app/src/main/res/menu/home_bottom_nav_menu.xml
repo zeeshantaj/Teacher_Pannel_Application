@@ -4,8 +4,9 @@
 
     <item
         android:id="@+id/navHome"
-        android:icon="@drawable/home_icon"
-        android:title="@string/home"
+        android:icon="@drawable/uploaded_class_icon"
+
+        android:title="Add Details"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navUploadDetails"
