@@ -173,6 +173,18 @@
                     android:textSize="18sp"
                     app:drawableStartCompat="@drawable/baseline_logout_24" />
             </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/rateTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rate this App"
+                android:textSize="24sp"
+                android:textAlignment="center"/>
+
+
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
