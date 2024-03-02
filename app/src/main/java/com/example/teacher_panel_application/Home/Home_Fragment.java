@@ -22,12 +22,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.teacher_panel_application.Activities.Upload_Details_Activity;
 import com.example.teacher_panel_application.Fragments.EditDataFragment;
+import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Home_Fragment extends Fragment {
@@ -95,7 +100,8 @@ public class Home_Fragment extends Fragment {
         String uid = auth.getCurrentUser().getUid();
         database = FirebaseDatabase.getInstance();
         reference  = FirebaseDatabase.getInstance().getReference("Teacher_Data").child(uid);
-        reference.addValueEventListener(new ValueEventListener() {
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -123,6 +129,7 @@ public class Home_Fragment extends Fragment {
                     topic.setSelected(true);
                     startedAt.setText(start);
                     startedAt.setSelected(true);
+
 
                     try {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -154,7 +161,25 @@ public class Home_Fragment extends Fragment {
                             @Override
                             public void onFinish() {
                                 // Perform any actions after the countdown finishes
-                                reference.removeValue();
+
+                                UploadClassModel uploadClassModel = new UploadClassModel(name1,dep,loc,sub,topi,minute1,start);
+                                DatabaseReference addToQueueReference  = FirebaseDatabase.getInstance().getReference("PostedData").child(uid).child(start);
+                               // addToQueueReference.child(start);
+                                addToQueueReference.setValue(uploadClassModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            reference.removeValue();
+                                            cardNode.setVisibility(View.GONE);
+                                            noClassTxt.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
 //                                Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
 //                                startActivity(intent);
 //                                getActivity().finish();
@@ -166,7 +191,7 @@ public class Home_Fragment extends Fragment {
 
                 }
                 else {
-                    Toast.makeText(getActivity(), "You have not posted class yet", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "You have not posted class yet", Toast.LENGTH_SHORT).show();
                     cardNode.setVisibility(View.GONE);
                     noClassTxt.setVisibility(View.VISIBLE);
 
@@ -175,7 +200,7 @@ public class Home_Fragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("MyApp",error.toString());
+                Toast.makeText(getActivity(), "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

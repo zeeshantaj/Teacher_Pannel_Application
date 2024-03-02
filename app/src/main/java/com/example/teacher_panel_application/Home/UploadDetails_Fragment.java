@@ -22,8 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.wajahatkarim3.easyflipviewpager.CardFlipPageTransformer2;
 
 public class UploadDetails_Fragment extends Fragment {
-    private DatabaseReference reference1,reference;
-    private FirebaseAuth auth;
     private ViewPager2 myViewPager;
     private TabLayout tabLayout;
     @Nullable
@@ -32,14 +30,7 @@ public class UploadDetails_Fragment extends Fragment {
         View view =  inflater.inflate(R.layout.activity_upload_details,container,false);
 
         myViewPager = view.findViewById(R.id.myViewpager);
-
-
-
-
         tabLayout = view.findViewById(R.id.tabLayout);
-
-
-
         return view;
     }
 
@@ -67,44 +58,38 @@ public class UploadDetails_Fragment extends Fragment {
                 (tab, position) -> {
                     // Customize the tab text and titles based on your needs.
                     if (position == 0) {
-                        myViewPager.setCurrentItem(position,true);
+                        //myViewPager.setCurrentItem(position,true);
                         tab.setText("Upload Class");
                     } else if (position == 1) {
-                        myViewPager.setCurrentItem(position,true);
+                        //myViewPager.setCurrentItem(position,true);
                         tab.setText("Announcements");
                     }
                 }
         );
         tabLayoutMediator.attach();
-        myViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                // The 'position' parameter indicates the currently selected page.
-                // You can use it to identify the currently displayed fragment.
-                //((Home_Activity)getActivity()).getActivityViewPager().setCurrentItem(position, true);
-                Toast.makeText(getContext(), "Child viewpger ", Toast.LENGTH_SHORT).show();
-                if (position == 0) {
-
-                //    myViewPager.setCurrentItem(position,true);
-                    Toast.makeText(getContext(), "pos"+position, Toast.LENGTH_SHORT).show();
-                    //Home_Activity.viewPager2.setCurrentItem(position,true);
-//                    getSupportActionBar().setTitle("Upload Class Here");
-//                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
-                } else if (position == 1) {
-                  //  myViewPager.setCurrentItem(position,true);
-
-                    Toast.makeText(getContext(), "pos"+position, Toast.LENGTH_SHORT).show();
-                    //Home_Activity.viewPager2.setCurrentItem(position,true);
-//                    getSupportActionBar().setTitle("Upload Announcement Here");
-//                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
+//        myViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                // The 'position' parameter indicates the currently selected page.
+//                // You can use it to identify the currently displayed fragment.
+//                //((Home_Activity)getActivity()).getActivityViewPager().setCurrentItem(position, true);
+//
+//                if (position == 0) {
+//
+//                //    myViewPager.setCurrentItem(position,true);
+//
+//                    //Home_Activity.viewPager2.setCurrentItem(position,true);
+////                    getSupportActionBar().setTitle("Upload Class Here");
+////                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
+//                } else if (position == 1) {
+//                  //  myViewPager.setCurrentItem(position,true);
+//
+//
+//                    //Home_Activity.viewPager2.setCurrentItem(position,true);
+////                    getSupportActionBar().setTitle("Upload Announcement Here");
+////                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
+//                }
+//            }
+//        });
     }
 }
