@@ -49,7 +49,7 @@ public class Home_Fragment extends Fragment {
         return inflater.inflate(R.layout.home_fragment,container,false);
     }
 
-    private TextView name,depart,subject,duration,locataion,topic,startedAt,timer;
+    private TextView name,depart,subject,duration,locataion,topic,startedAt,timer,noClassTxt;
     private CardView cardNode;
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -67,6 +67,7 @@ public class Home_Fragment extends Fragment {
         duration = view.findViewById(R.id.durationTxt);
         locataion = view.findViewById(R.id.locationTxt);
         topic = view.findViewById(R.id.topopicTxt);
+        noClassTxt = view.findViewById(R.id.noClass);
         startedAt = view.findViewById(R.id.startedTxt);
         timer = view.findViewById(R.id.countTImer);
         cardNode = view.findViewById(R.id.card_node);
@@ -87,7 +88,7 @@ public class Home_Fragment extends Fragment {
             showEditDataAlertDialog();
             return true;
         });
-
+        getValues();
     }
     public void getValues(){
         auth = FirebaseAuth.getInstance();
@@ -98,6 +99,8 @@ public class Home_Fragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    noClassTxt.setVisibility(View.GONE);
+                    cardNode.setVisibility(View.VISIBLE);
                     String name1 = snapshot.child("Name").getValue(String.class);
                     String dep = snapshot.child("department").getValue(String.class);
                     String loc = snapshot.child("location").getValue(String.class);
@@ -162,6 +165,12 @@ public class Home_Fragment extends Fragment {
                     }
 
                 }
+                else {
+                    Toast.makeText(getActivity(), "You have not posted class yet", Toast.LENGTH_SHORT).show();
+                    cardNode.setVisibility(View.GONE);
+                    noClassTxt.setVisibility(View.VISIBLE);
+
+                }
             }
 
             @Override
@@ -197,6 +206,25 @@ public class Home_Fragment extends Fragment {
                 })
                 .show();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e("MyApp","onstart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("MyApp","onstop");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("MyApp","onresume");
+    }
+
     private void openEditDataFragment() {
         // Create an instance of the transparent fragment
         EditDataFragment editDataFragment = new EditDataFragment();
