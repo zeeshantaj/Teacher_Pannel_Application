@@ -155,9 +155,9 @@ public class Home_Fragment extends Fragment {
                             public void onFinish() {
                                 // Perform any actions after the countdown finishes
                                 reference.removeValue();
-                                Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
-                                startActivity(intent);
-                                getActivity().finish();
+//                                Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
+//                                startActivity(intent);
+//                                getActivity().finish();
                             }
                         };
                         countDownTimer.start();
