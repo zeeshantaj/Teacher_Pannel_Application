@@ -67,29 +67,5 @@ public class UploadDetails_Fragment extends Fragment {
                 }
         );
         tabLayoutMediator.attach();
-//        myViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-//            @Override
-//            public void onPageSelected(int position) {
-//                // The 'position' parameter indicates the currently selected page.
-//                // You can use it to identify the currently displayed fragment.
-//                //((Home_Activity)getActivity()).getActivityViewPager().setCurrentItem(position, true);
-//
-//                if (position == 0) {
-//
-//                //    myViewPager.setCurrentItem(position,true);
-//
-//                    //Home_Activity.viewPager2.setCurrentItem(position,true);
-////                    getSupportActionBar().setTitle("Upload Class Here");
-////                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
-//                } else if (position == 1) {
-//                  //  myViewPager.setCurrentItem(position,true);
-//
-//
-//                    //Home_Activity.viewPager2.setCurrentItem(position,true);
-////                    getSupportActionBar().setTitle("Upload Announcement Here");
-////                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
-//                }
-//            }
-//        });
     }
 }
