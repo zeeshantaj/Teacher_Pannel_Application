@@ -36,8 +36,8 @@ public class ClassHistory_Fragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.classHistory_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        List<AnnouncementModel> modelList = new ArrayList<>();
-        AnnounceAdapter adapter = new AnnounceAdapter(modelList);
+        List<UploadClassModel> modelList = new ArrayList<>();
+        ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList);
         recyclerView.setAdapter(adapter);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -49,7 +49,7 @@ public class ClassHistory_Fragment extends Fragment {
                 if (snapshot.exists()){
                     for (DataSnapshot dataSnapshot:snapshot.getChildren()){
 
-                        UploadClassModel model = new UploadClassModel(dataSnapshot.getValue(UploadClassModel.class));
+                        UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
 
 //                        AnnouncementModel model = new AnnouncementModel();
 //                        if (dataSnapshot.child("title").exists()){
