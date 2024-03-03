@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teacher_panel_application.Models.UploadClassModel;
@@ -47,6 +48,7 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name,sub,topic,dur,loc,startedAt,dep,itemDate;
+        private ConstraintLayout expandableView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.classHistory_nametxt);
@@ -57,6 +59,25 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
             startedAt = itemView.findViewById(R.id.classHistory_startedTxt);
             dep = itemView.findViewById(R.id.classHistory_departText);
             itemDate = itemView.findViewById(R.id.classHistory_itemDate);
+            expandableView = itemView.findViewById(R.id.expandableLayoutClassHistory);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (expandableView.getVisibility() == View.VISIBLE) {
+                        // If the inner layout is visible, hide it to collapse
+                        expandableView.setVisibility(View.GONE);
+                    } else {
+                        // If the inner layout is not visible, show it to expand
+                        expandableView.setVisibility(View.VISIBLE);
+//                        title.setVisibility(View.VISIBLE);
+//                        //dueDate.setVisibility(View.VISIBLE);
+//                        description.setVisibility(View.VISIBLE);
+//                        image.setVisibility(View.VISIBLE);
+
+                    }
+                }
+            });
         }
     }
 }
