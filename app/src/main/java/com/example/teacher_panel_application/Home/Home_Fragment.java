@@ -107,7 +107,7 @@ public class Home_Fragment extends Fragment {
                 if (snapshot.exists()) {
                     noClassTxt.setVisibility(View.GONE);
                     cardNode.setVisibility(View.VISIBLE);
-                    String name1 = snapshot.child("Name").getValue(String.class);
+                    String name1 = snapshot.child("name").getValue(String.class);
                     String dep = snapshot.child("department").getValue(String.class);
                     String loc = snapshot.child("location").getValue(String.class);
                     String sub = snapshot.child("subject").getValue(String.class);
@@ -165,7 +165,6 @@ public class Home_Fragment extends Fragment {
 
                                 UploadClassModel uploadClassModel = new UploadClassModel(name1,dep,loc,sub,topi,minute1,dateTime);
                                 DatabaseReference addToQueueReference  = FirebaseDatabase.getInstance().getReference("PostedData").child(uid).child(dateTime);
-                               // addToQueueReference.child(start);
                                 addToQueueReference.setValue(uploadClassModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
