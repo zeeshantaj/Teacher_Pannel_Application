@@ -38,6 +38,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.uzairiqbal.circulartimerview.CircularTimerListener;
+import com.uzairiqbal.circulartimerview.CircularTimerView;
+import com.uzairiqbal.circulartimerview.TimeFormatEnum;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -63,6 +66,7 @@ public class Home_Fragment extends Fragment {
     private long timeRemainingInMillis,timeDifferenceMillis;
 
     private AdView adView;
+    private CircularTimerView progressBar;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,6 +80,7 @@ public class Home_Fragment extends Fragment {
         startedAt = view.findViewById(R.id.startedTxt);
         timer = view.findViewById(R.id.countTImer);
         cardNode = view.findViewById(R.id.card_node);
+         progressBar = view.findViewById(R.id.progress_circular);
         //getValues();
         MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
             @Override
@@ -93,6 +98,28 @@ public class Home_Fragment extends Fragment {
             showEditDataAlertDialog();
             return true;
         });
+
+        progressBar.setProgress(0);
+        progressBar.setCircularTimerListener(new CircularTimerListener() {
+            @Override
+            public String updateDataOnTick(long remainingTimeInMs) {
+                return String.valueOf((int)Math.ceil((remainingTimeInMs / 1000.f)));
+            }
+
+            @Override
+            public void onTimerFinished() {
+                Toast.makeText(getActivity(), "FINISHED", Toast.LENGTH_SHORT).show();
+                progressBar.setPrefix("");
+                progressBar.setSuffix("");
+                progressBar.setText("FINISHED THANKS!");
+            }
+        }, 2, TimeFormatEnum.MINUTES, 10);
+
+        progressBar.startTimer();
+
+// To Initialize Timer
+
+
         getValues();
     }
     public void getValues(){
@@ -149,6 +176,8 @@ public class Home_Fragment extends Fragment {
                         e.printStackTrace();
                     }
                     if (countDownTimer == null){
+
+// To start timer
                         countDownTimer = new CountDownTimer(timeDifferenceMillis, 1000) {
                             @SuppressLint("ResourceAsColor")
                             @Override

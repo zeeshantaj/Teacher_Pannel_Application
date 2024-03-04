@@ -269,6 +269,27 @@
     </androidx.cardview.widget.CardView>
 
 
+    <com.uzairiqbal.circulartimerview.CircularTimerView
+        android:id="@+id/progress_circular"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:backgroundColor="@color/colorOverlay"
+        app:backgroundWidth="8"
+        app:isClockwise="false"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_node"
+        app:maxValue="100"
+        app:prefix=""
+        app:progressBackgroundColor="@color/white"
+        app:progressColor="@color/darkBlueshade"
+        app:progressText="9"
+        app:progressTextColor="@color/darkBlueshade"
+        app:startingPoint="bottom"
+        app:suffix=" minutes"
+        app:textSize="14sp" />
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
