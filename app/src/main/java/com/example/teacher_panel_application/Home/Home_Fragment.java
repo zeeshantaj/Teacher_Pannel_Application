@@ -114,6 +114,7 @@ public class Home_Fragment extends Fragment {
                     String topi = snapshot.child("topic").getValue(String.class);
                     String minute1 = snapshot.child("minutes").getValue(String.class);
                     String start = snapshot.child("currentTime").getValue(String.class);
+                    String dateTime = snapshot.child("dateTime").getValue(String.class);
                     String endTimeString = snapshot.child("endTime").getValue(String.class);
                     name.setText(name1);
                     name.setSelected(true);
@@ -162,8 +163,8 @@ public class Home_Fragment extends Fragment {
                             public void onFinish() {
                                 // Perform any actions after the countdown finishes
 
-                                UploadClassModel uploadClassModel = new UploadClassModel(name1,dep,loc,sub,topi,minute1,start);
-                                DatabaseReference addToQueueReference  = FirebaseDatabase.getInstance().getReference("PostedData").child(uid).child(start);
+                                UploadClassModel uploadClassModel = new UploadClassModel(name1,dep,loc,sub,topi,minute1,dateTime);
+                                DatabaseReference addToQueueReference  = FirebaseDatabase.getInstance().getReference("PostedData").child(uid).child(dateTime);
                                // addToQueueReference.child(start);
                                 addToQueueReference.setValue(uploadClassModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override

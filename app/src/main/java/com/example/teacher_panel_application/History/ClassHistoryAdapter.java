@@ -31,13 +31,13 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
     @Override
     public void onBindViewHolder(@NonNull ClassHistoryAdapter.ViewHolder holder, int position) {
         UploadClassModel model = modelList.get(position);
-        holder.itemDate.setText(model.getCurrentTime());
+        holder.itemDate.setText(model.getDateTime());
         holder.name.setText(model.getName());
         holder.sub.setText(model.getSubject());
         holder.topic.setText(model.getTopic());
         holder.dur.setText(model.getMinutes());
         holder.loc.setText(model.getLocation());
-        holder.startedAt.setText(model.getCurrentTime());
+        holder.startedAt.setText(model.getDateTime());
         holder.dep.setText(model.getDepartment());
 
     }
@@ -70,10 +70,6 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
                     } else {
                         // If the inner layout is not visible, show it to expand
                         expandableView.setVisibility(View.VISIBLE);
-//                        title.setVisibility(View.VISIBLE);
-//                        //dueDate.setVisibility(View.VISIBLE);
-//                        description.setVisibility(View.VISIBLE);
-//                        image.setVisibility(View.VISIBLE);
 
                     }
                 }

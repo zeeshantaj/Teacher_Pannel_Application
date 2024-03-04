@@ -1,4 +1,4 @@
-package com.example.teacher_panel_application.Create_Fragments;
+package com.example.teacher_panel_application.InsertData_Fragments;
 
 import android.content.Intent;
 import android.os.Build;
@@ -26,9 +26,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.checkerframework.checker.units.qual.C;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class Upload_Class_Data_Fragment extends Fragment {
@@ -73,6 +76,10 @@ public class Upload_Class_Data_Fragment extends Fragment {
         // String uid = auth.getCurrentUser().getUid();
         String uid = auth.getUid();
         reference  =  FirebaseDatabase.getInstance().getReference("Teacher_Data").child(uid);
+
+
+        // Get the current date and time
+
 
         uploadData();
         return view;
@@ -155,6 +162,7 @@ public class Upload_Class_Data_Fragment extends Fragment {
                     DateTimeFormatter dateTimeFormatter = null; // Include date and time pattern
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         LocalDateTime updateTime = dateTime.plusMinutes(minute1);
@@ -162,6 +170,15 @@ public class Upload_Class_Data_Fragment extends Fragment {
                         hashMap.put("endDateTime", dateTimeString);
                     }
 
+                    LocalDateTime dateTime1 = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        dateTime1 = LocalDateTime.now();
+
+                        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
+                        String formattedDateTime = dateTime1.format(formatter1);
+                        hashMap.put("dateTime",formattedDateTime);
+                        System.out.println(formattedDateTime);
+                    }
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

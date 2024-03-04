@@ -1,42 +1,22 @@
 package com.example.teacher_panel_application.Home;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.teacher_panel_application.Adapters.AnnounceAdapter;
 import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdapter;
-import com.example.teacher_panel_application.Create_Fragments.Notification_Announcement;
-import com.example.teacher_panel_application.Create_Fragments.Upload_Class_Data_Fragment;
 import com.example.teacher_panel_application.History.ClassHistory_Fragment;
 import com.example.teacher_panel_application.History.NotificationHistory_Fragment;
-import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.wajahatkarim3.easyflipviewpager.CardFlipPageTransformer2;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class History_Fragment extends Fragment {
 

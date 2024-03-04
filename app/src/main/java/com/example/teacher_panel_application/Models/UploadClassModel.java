@@ -1,19 +1,19 @@
 package com.example.teacher_panel_application.Models;
 
 public class UploadClassModel {
-    private String Name,department,location,subject,topic,key,minutes,endDateTime,currentTime,endTime;
+    private String Name,department,location,subject,topic,key,minutes,endDateTime,currentTime,endTime,dateTime;
 
     public UploadClassModel() {
     }
 
-    public UploadClassModel(String name, String department, String location, String subject, String topic, String minutes, String endDateTime) {
+    public UploadClassModel(String name, String department, String location, String subject, String topic, String minutes, String dateTime) {
         Name = name;
         this.department = department;
         this.location = location;
         this.subject = subject;
         this.topic = topic;
         this.minutes = minutes;
-        this.endDateTime = endDateTime;
+        this.dateTime = dateTime;
     }
 
     public UploadClassModel(String name, String department, String location, String subject, String topic, String key, String minutes, String endDateTime, String currentTime, String endTime) {
@@ -28,6 +28,14 @@ public class UploadClassModel {
         this.endDateTime = endDateTime;
         this.currentTime = currentTime;
         this.endTime = endTime;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getName() {

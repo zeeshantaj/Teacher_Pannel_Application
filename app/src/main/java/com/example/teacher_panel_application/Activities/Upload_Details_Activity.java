@@ -16,9 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdapter;
-import com.example.teacher_panel_application.Create_Fragments.Notification_Announcement;
-import com.example.teacher_panel_application.Create_Fragments.Upload_Class_Data_Fragment;
+import com.example.teacher_panel_application.InsertData_Fragments.Notification_Announcement;
+import com.example.teacher_panel_application.InsertData_Fragments.Upload_Class_Data_Fragment;
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.NetworkUtils;
 import com.example.teacher_panel_application.R;
