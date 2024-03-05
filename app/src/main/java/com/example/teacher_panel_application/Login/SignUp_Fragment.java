@@ -1,10 +1,11 @@
-package com.example.teacher_panel_application.Fragments;
+package com.example.teacher_panel_application.Login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -19,10 +20,9 @@ import android.widget.Toast;
 
 import com.example.teacher_panel_application.Activities.Upload_Details_Activity;
 import com.example.teacher_panel_application.R;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.teacher_panel_application.databinding.FragmentSignUpBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,57 +34,48 @@ public class SignUp_Fragment extends Fragment {
         // Required empty public constructor
     }
 
-    private View view;
-    private TextView signUpText;
     private FrameLayout parentFrameLayout;
-    private Button signUpBtn;
-    private TextInputEditText Name,Email,Pass,ConPass;
     private FirebaseAuth  auth;
     private ProgressDialog dialog;
-
     private static final String EMAIL_PATTERN =
             "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-
+    private FragmentSignUpBinding binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view    =   inflater.inflate(R.layout.fragment_sign_up_, container, false);
+        binding = FragmentSignUpBinding.inflate(inflater, container, false);
 
         dialog = new ProgressDialog(getActivity());
-
-        signUpText = view.findViewById(R.id.loginText);
-        signUpBtn = view.findViewById(R.id.singUpBtn);
-        Name = view.findViewById(R.id.SignUpName);
-        Email = view.findViewById(R.id.SignUpEmail);
-        Pass = view.findViewById(R.id.SignUpPass);
-        ConPass = view.findViewById(R.id.SignUpConPass);
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         auth = FirebaseAuth.getInstance();
 
-        signUpText.setOnClickListener(new View.OnClickListener() {
+        binding.loginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setFragment(new Login_Fragment());
             }
         });
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
+        binding.singUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = Name.getText().toString();
-                String email = Email.getText().toString();
-                String pass = Pass.getText().toString();
-                String conPass = ConPass.getText().toString();
+                String name = binding.SignUpName.getText().toString();
+                String email = binding.SignUpEmail.getText().toString();
+                String pass = binding.SignUpPass.getText().toString();
+                String conPass = binding.SignUpConPass.getText().toString();
 
                 if (email.isEmpty() && !email.matches(EMAIL_PATTERN)){
-                    Email.setError("Email should be in correct pattern and can not be empty");
-
-
+                    binding.SignUpEmail.setError("Email should be in correct pattern and can not be empty");
                 }
                 if (name.isEmpty()){
-                    Name.setError("Name is Empty");
+                    binding.SignUpName.setError("Name is Empty");
 
 
                 }
@@ -119,24 +110,19 @@ public class SignUp_Fragment extends Fragment {
                             getActivity().finish();
                             dialog.dismiss();
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                    }).addOnFailureListener(e -> {
 
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("MyApp",e.getLocalizedMessage());
-                            dialog.dismiss();
-                        }
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("MyApp",e.getLocalizedMessage());
+                        dialog.dismiss();
                     });
 
                 }
 
             }
         });
-
-
-        return view;
     }
+
     private void setFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         //fragmentTransaction.setCustomAnimations(R.anim.slide_from_right,R.anim.slideout_from_left);

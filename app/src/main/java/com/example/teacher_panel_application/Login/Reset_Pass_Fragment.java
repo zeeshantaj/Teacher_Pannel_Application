@@ -1,4 +1,4 @@
-package com.example.teacher_panel_application.Fragments;
+package com.example.teacher_panel_application.Login;
 
 import android.os.Bundle;
 
@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.databinding.FragmentResetPassBinding;
 
 public class Reset_Pass_Fragment extends Fragment {
 
@@ -21,27 +22,26 @@ public class Reset_Pass_Fragment extends Fragment {
         // Required empty public constructor
     }
 
-    private View view;
-    private TextView backLogin;
+    private FragmentResetPassBinding binding;
     private FrameLayout parentFrameLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_reset__pass_, container, false);
+        binding  = FragmentResetPassBinding.inflate(inflater, container, false);
 
 
-        backLogin = view.findViewById(R.id.backLoginText);
+        //backLogin = view.findViewById(R.id.backLoginText);
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
 
-        backLogin.setOnClickListener(new View.OnClickListener() {
+        binding.backLoginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setFragment(new Login_Fragment());
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
     private void setFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
