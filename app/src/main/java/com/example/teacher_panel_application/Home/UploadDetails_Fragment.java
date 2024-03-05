@@ -14,21 +14,18 @@ import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdap
 import com.example.teacher_panel_application.InsertData_Fragments.Upload_Announcement_Fragment;
 import com.example.teacher_panel_application.InsertData_Fragments.Upload_Class_Data_Fragment;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.databinding.FragmentUploadBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.wajahatkarim3.easyflipviewpager.CardFlipPageTransformer2;
 
 public class UploadDetails_Fragment extends Fragment {
-    private ViewPager2 myViewPager;
-    private TabLayout tabLayout;
+    private FragmentUploadBinding binding;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.activity_upload_details,container,false);
-
-        myViewPager = view.findViewById(R.id.myViewpager);
-        tabLayout = view.findViewById(R.id.tabLayout);
-        return view;
+        binding  =  FragmentUploadBinding.inflate(inflater,container,false);
+        return binding.getRoot();
     }
 
     @Override
@@ -37,7 +34,7 @@ public class UploadDetails_Fragment extends Fragment {
 
         Fragment[] pages = {new Upload_Class_Data_Fragment(), new Upload_Announcement_Fragment()}; // Replace with your fragment classes
         UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
-        myViewPager.setAdapter(myPagerAdapter);
+        binding.myViewpager.setAdapter(myPagerAdapter);
 
 // Create an object of page transformer
         CardFlipPageTransformer2 cardFlipPageTransformer = new CardFlipPageTransformer2();
@@ -46,12 +43,12 @@ public class UploadDetails_Fragment extends Fragment {
 // Otherwise card will also scale like in Gallery demo. By default, its true.
         cardFlipPageTransformer.setScalable(false);
 
-        myViewPager.setPageTransformer(cardFlipPageTransformer);
+        binding.myViewpager.setPageTransformer(cardFlipPageTransformer);
 
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        binding.tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, myViewPager,
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(binding.tabLayout, binding.myViewpager,
                 (tab, position) -> {
                     // Customize the tab text and titles based on your needs.
                     if (position == 0) {

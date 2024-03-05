@@ -45,7 +45,7 @@ public class Upload_Details_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_details);
+        setContentView(R.layout.fragment_upload);
 
 
         myViewPager = findViewById(R.id.myViewpager);

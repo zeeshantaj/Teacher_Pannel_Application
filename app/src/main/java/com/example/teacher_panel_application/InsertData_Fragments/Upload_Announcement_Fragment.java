@@ -44,12 +44,7 @@ public class Upload_Announcement_Fragment extends Fragment {
     public Upload_Announcement_Fragment(){
 
     }
-
-    private TextInputEditText title,description,lastDate;
-    private ImageView announceImage;
-    private Button uploadBtn;
     private Uri selectedImageUri;
-
     private DatabaseReference reference;
     private FirebaseAuth auth;
     private FragmentUploadAnnouncementBinding binding;
@@ -57,12 +52,6 @@ public class Upload_Announcement_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentUploadAnnouncementBinding.inflate(inflater, container, false);
-
-//        title = view.findViewById(R.id.announceTitle);
-//        description = view.findViewById(R.id.announceDescription);
-//        lastDate = view.findViewById(R.id.lastDate);
-//        announceImage = view.findViewById(R.id.announcementImage);
-//        uploadBtn = view.findViewById(R.id.announcementUploadBtn);
 
         return binding.getRoot();
     }
@@ -111,7 +100,6 @@ public class Upload_Announcement_Fragment extends Fragment {
 
                 HashMap<String, String> hashMap = new HashMap<>();
                 if (selectedImageUri != null && !titleStr.isEmpty()) {
-                    // Both image and text are selected, show a Snackbar.
                     Toast.makeText(getActivity(), "you can either upload image or text data", Toast.LENGTH_SHORT).show();
                     Snackbar snackbar = Snackbar.make(v ,"you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
                     snackbar.setAction("DISMISS", new View.OnClickListener() {
@@ -135,19 +123,11 @@ public class Upload_Announcement_Fragment extends Fragment {
                                 hashMap.put("current_date",formattedDate);
                             }
                             hashMap.put("imageUrl",downloadUrl);
-                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Toast.makeText(getActivity(), "Image Successfully Uploaded", Toast.LENGTH_SHORT).show();
-                                    }
+                            reference.setValue(hashMap).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()){
+                                    Toast.makeText(getActivity(), "Image Successfully Uploaded", Toast.LENGTH_SHORT).show();
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "Errror "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Errror "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
 
                         });
@@ -171,28 +151,15 @@ public class Upload_Announcement_Fragment extends Fragment {
                         hashMap.put("description",desStr);
 
 
-                        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Toast.makeText(getActivity(), "Uploaded ", Toast.LENGTH_SHORT).show();
-                                }
+                        reference.setValue(hashMap).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()){
+                                Toast.makeText(getActivity(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
                     }
                     else {
                         Snackbar snackbar = Snackbar.make(v,"date is empty", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                        snackbar.setAction("DISMISS", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                snackbar.dismiss();
-                            }
-                        });
+                        snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
                         snackbar.show();
                     }
                 }
@@ -205,7 +172,7 @@ public class Upload_Announcement_Fragment extends Fragment {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                     selectedImageUri = result.getData().getData();
-                    announceImage.setImageURI(selectedImageUri);
+                    binding.announcementImage.setImageURI(selectedImageUri);
                     //uploadTask = imageRef.putFile(selectedImageUri);
                 }
             });
