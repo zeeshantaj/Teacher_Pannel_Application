@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.Activities.Upload_Details_Activity;
+import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,7 +51,7 @@ public class Login_Fragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign-in success, update UI accordingly
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
+                            Intent intent = new Intent(getActivity(), Home_Activity.class);
                             startActivity(intent);
                             getActivity().finish();
                             // You can now access the signed-in user information
@@ -67,7 +68,7 @@ public class Login_Fragment extends Fragment {
         FirebaseUser user = auth.getCurrentUser();
 
         if (user != null){
-            Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
+            Intent intent = new Intent(getActivity(), Home_Activity.class);
             startActivity(intent);
             getActivity().finish();
 
