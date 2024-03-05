@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.teacher_panel_application.InsertData_Fragments.Notification_Announcement;
+import com.example.teacher_panel_application.InsertData_Fragments.Upload_Announcement_Fragment;
 import com.example.teacher_panel_application.InsertData_Fragments.Upload_Class_Data_Fragment;
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.NetworkUtils;
@@ -49,7 +49,7 @@ public class Upload_Details_Activity extends AppCompatActivity {
 
 
         myViewPager = findViewById(R.id.myViewpager);
-        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Notification_Announcement()}; // Replace with your fragment classes
+        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Upload_Announcement_Fragment()}; // Replace with your fragment classes
 
         //UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(this,pages);
         //myViewPager.setAdapter(myPagerAdapter);

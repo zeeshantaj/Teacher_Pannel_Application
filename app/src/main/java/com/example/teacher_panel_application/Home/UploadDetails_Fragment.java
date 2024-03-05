@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdapter;
-import com.example.teacher_panel_application.InsertData_Fragments.Notification_Announcement;
+import com.example.teacher_panel_application.InsertData_Fragments.Upload_Announcement_Fragment;
 import com.example.teacher_panel_application.InsertData_Fragments.Upload_Class_Data_Fragment;
 import com.example.teacher_panel_application.R;
 import com.google.android.material.tabs.TabLayout;
@@ -35,7 +35,7 @@ public class UploadDetails_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Notification_Announcement()}; // Replace with your fragment classes
+        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Upload_Announcement_Fragment()}; // Replace with your fragment classes
         UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
         myViewPager.setAdapter(myPagerAdapter);
 

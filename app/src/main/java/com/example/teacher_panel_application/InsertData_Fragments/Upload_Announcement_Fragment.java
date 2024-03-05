@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncementBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -38,9 +39,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class Notification_Announcement extends Fragment {
+public class Upload_Announcement_Fragment extends Fragment {
 
-    public Notification_Announcement(){
+    public Upload_Announcement_Fragment(){
 
     }
 
@@ -51,18 +52,25 @@ public class Notification_Announcement extends Fragment {
 
     private DatabaseReference reference;
     private FirebaseAuth auth;
-
+    private FragmentUploadAnnouncementBinding binding;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fagment_notification_annoucement, container, false);
+        binding = FragmentUploadAnnouncementBinding.inflate(inflater, container, false);
 
-        title = view.findViewById(R.id.announceTitle);
-        description = view.findViewById(R.id.announceDescription);
-        lastDate = view.findViewById(R.id.lastDate);
-        announceImage = view.findViewById(R.id.announcementImage);
-        uploadBtn = view.findViewById(R.id.announcementUploadBtn);
-        announceImage.setOnClickListener((v -> {
+//        title = view.findViewById(R.id.announceTitle);
+//        description = view.findViewById(R.id.announceDescription);
+//        lastDate = view.findViewById(R.id.lastDate);
+//        announceImage = view.findViewById(R.id.announcementImage);
+//        uploadBtn = view.findViewById(R.id.announcementUploadBtn);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.announcementImage.setOnClickListener((v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imageLauncher.launch(intent);
         }));
@@ -71,7 +79,7 @@ public class Notification_Announcement extends Fragment {
         auth = FirebaseAuth.getInstance();
         String  uid = auth.getUid();
 
-        announceImage.setOnLongClickListener(new View.OnLongClickListener() {
+        binding.announcementImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (selectedImageUri != null){
@@ -82,12 +90,12 @@ public class Notification_Announcement extends Fragment {
             }
         });
 
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
+        binding.announcementUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String titleStr = title.getText().toString();
-                String desStr = description.getText().toString();
-                String lastDateStr = lastDate.getText().toString();
+                String titleStr = binding.announceTitle.getText().toString();
+                String desStr = binding.announceDescription.getText().toString();
+                String lastDateStr = binding.lastDate.getText().toString();
 
                 //todo for image
                 FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -103,18 +111,18 @@ public class Notification_Announcement extends Fragment {
 
                 HashMap<String, String> hashMap = new HashMap<>();
                 if (selectedImageUri != null && !titleStr.isEmpty()) {
-                        // Both image and text are selected, show a Snackbar.
+                    // Both image and text are selected, show a Snackbar.
                     Toast.makeText(getActivity(), "you can either upload image or text data", Toast.LENGTH_SHORT).show();
-                        Snackbar snackbar = Snackbar.make(v ,"you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                        snackbar.setAction("DISMISS", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                snackbar.dismiss();
-                            }
+                    Snackbar snackbar = Snackbar.make(v ,"you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                    snackbar.setAction("DISMISS", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.dismiss();
+                        }
 
-                        });
-                        snackbar.show();
-                    } else if (selectedImageUri != null) {
+                    });
+                    snackbar.show();
+                } else if (selectedImageUri != null) {
                     UploadTask uploadTask = imageRef.putFile(selectedImageUri);
 
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
@@ -148,56 +156,51 @@ public class Notification_Announcement extends Fragment {
                     });
 
                 } else if (!TextUtils.isEmpty(titleStr)) {
-                        if (!desStr.isEmpty()){
+                    if (!desStr.isEmpty()){
 
 
 
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
-                                String formattedDate = LocalDate.now().format(formatter);
-                                hashMap.put("current_date",formattedDate);
+                            String formattedDate = LocalDate.now().format(formatter);
+                            hashMap.put("current_date",formattedDate);
+                        }
+
+                        hashMap.put("title",titleStr);
+                        hashMap.put("due_date",lastDateStr);
+                        hashMap.put("description",desStr);
+
+
+                        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Toast.makeText(getActivity(), "Uploaded ", Toast.LENGTH_SHORT).show();
+                                }
                             }
-
-                            hashMap.put("title",titleStr);
-                            hashMap.put("due_date",lastDateStr);
-                            hashMap.put("description",desStr);
-
-
-                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Toast.makeText(getActivity(), "Uploaded ", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                        else {
-                            Snackbar snackbar = Snackbar.make(v,"date is empty", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                            snackbar.setAction("DISMISS", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    snackbar.dismiss();
-                                }
-                            });
-                            snackbar.show();
-                        }
-
-
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
-
+                    else {
+                        Snackbar snackbar = Snackbar.make(v,"date is empty", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                        snackbar.setAction("DISMISS", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                snackbar.dismiss();
+                            }
+                        });
+                        snackbar.show();
+                    }
+                }
             }
-
-
         });
 
-        return view;
     }
+
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
