@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.databinding.ClasshistoryRecyclerItemBinding;
 
 import java.util.List;
 
@@ -24,21 +25,22 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
     @NonNull
     @Override
     public ClassHistoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.classhistory_recycler_item,parent,false);
-        return new ViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ClasshistoryRecyclerItemBinding binding = ClasshistoryRecyclerItemBinding.inflate(inflater,parent,false);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ClassHistoryAdapter.ViewHolder holder, int position) {
         UploadClassModel model = modelList.get(position);
-        holder.itemDate.setText(model.getDateTime());
-        holder.name.setText(model.getName());
-        holder.sub.setText(model.getSubject());
-        holder.topic.setText(model.getTopic());
-        holder.dur.setText(model.getMinutes());
-        holder.loc.setText(model.getLocation());
-        holder.startedAt.setText(model.getDateTime());
-        holder.dep.setText(model.getDepartment());
+        holder.binding.classHistoryItemDate.setText(model.getDateTime());
+        holder.binding.classHistoryNametxt.setText(model.getName());
+        holder.binding.classHistorySubjectTxt.setText(model.getSubject());
+        holder.binding.classHistoryTopopicTxt.setText(model.getTopic());
+        holder.binding.classHistoryDurationTxt.setText(model.getMinutes());
+        holder.binding.classHistoryLocationTxt.setText(model.getLocation());
+        holder.binding.classHistoryStartedTxt.setText(model.getDateTime());
+        holder.binding.classHistoryDepartText.setText(model.getDepartment());
 
     }
     @Override
@@ -47,31 +49,19 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView name,sub,topic,dur,loc,startedAt,dep,itemDate;
-        private ConstraintLayout expandableView;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            name = itemView.findViewById(R.id.classHistory_nametxt);
-            sub = itemView.findViewById(R.id.classHistory_subjectTxt);
-            topic = itemView.findViewById(R.id.classHistory_topopicTxt);
-            dur = itemView.findViewById(R.id.classHistory_durationTxt);
-            loc = itemView.findViewById(R.id.classHistory_locationTxt);
-            startedAt = itemView.findViewById(R.id.classHistory_startedTxt);
-            dep = itemView.findViewById(R.id.classHistory_departText);
-            itemDate = itemView.findViewById(R.id.classHistory_itemDate);
-            expandableView = itemView.findViewById(R.id.expandableLayoutClassHistory);
+        private ClasshistoryRecyclerItemBinding binding;
+        public ViewHolder(@NonNull ClasshistoryRecyclerItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (expandableView.getVisibility() == View.VISIBLE) {
-                        // If the inner layout is visible, hide it to collapse
-                        expandableView.setVisibility(View.GONE);
-                    } else {
-                        // If the inner layout is not visible, show it to expand
-                        expandableView.setVisibility(View.VISIBLE);
+            binding.getRoot().setOnClickListener(v -> {
+                if (binding.expandableLayoutClassHistory.getVisibility() == View.VISIBLE) {
+                    // If the inner layout is visible, hide it to collapse
+                    binding.expandableLayoutClassHistory.setVisibility(View.GONE);
+                } else {
+                    // If the inner layout is not visible, show it to expand
+                    binding.expandableLayoutClassHistory.setVisibility(View.VISIBLE);
 
-                    }
                 }
             });
         }

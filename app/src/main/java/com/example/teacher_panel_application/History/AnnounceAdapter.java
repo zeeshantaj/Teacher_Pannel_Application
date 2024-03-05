@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.databinding.AnnounceDataLayoutBinding;
+import com.example.teacher_panel_application.databinding.ClasshistoryRecyclerItemBinding;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.util.List;
@@ -30,8 +32,9 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
     @NonNull
     @Override
     public AnnounceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.announce_data_layout,parent,false);
-        return new ViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        AnnounceDataLayoutBinding binding = AnnounceDataLayoutBinding.inflate(inflater,parent,false);
+        return new ViewHolder(binding);
     }
 
     @Override
@@ -39,44 +42,20 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
 
         AnnouncementModel model = announcementModelList.get(position);
 
-        holder.date.setText(model.getCurrent_date());
-        holder.title.setText(model.getTitle());
+        holder.binding.itemDate.setText(model.getCurrent_date());
+        holder.binding.itemTItle.setText(model.getTitle());
        // holder.title.setVisibility(View.VISIBLE);
-        holder.description.setText(model.getDescription());
+        holder.binding.itemDes.setText(model.getDescription());
         //holder.description.setVisibility(View.VISIBLE);
-        holder.dueDate.setText(model.getDue_date());
-        holder.dueDate.setVisibility(View.VISIBLE);
+        holder.binding.itemDueDate.setText(model.getDue_date());
+        holder.binding.itemDueDate.setVisibility(View.VISIBLE);
         //holder.date.setVisibility(View.VISIBLE);
 
-        holder.image.setVisibility(View.VISIBLE);
-        Glide.with(holder.itemView.getContext())
+        holder.binding.itemImage.setVisibility(View.VISIBLE);
+        Glide.with(holder.binding.itemImage.getContext())
                 .load(model.getImageUrl())
-                .into(holder.image);
+                .into(holder.binding.itemImage);
         Log.e("MyApp","itemImageUrl"+model.getImageUrl());
-            //        if (!model.getTitle().isEmpty()){
-//            holder.title.setText(model.getTitle());
-//            holder.title.setVisibility(View.VISIBLE);
-//            holder.description.setText(model.getDescription());
-//            holder.description.setVisibility(View.VISIBLE);
-//            holder.dueDate.setText(model.getDue_date());
-//            holder.date.setVisibility(View.VISIBLE);
-//        }
-//        if (model.getImageUrl() != null){
-
-//        }
-
-//        holder.cardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (holder.expandableView.getVisibility() == View.VISIBLE) {
-//                    // If the inner layout is visible, hide it to collapse
-//                    holder.expandableView.setVisibility(View.GONE);
-//                } else {
-//                    // If the inner layout is not visible, show it to expand
-//                    holder.expandableView.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
 
     }
 
@@ -86,42 +65,19 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
-
-        private TextView title,description,date,dueDate;
-        private PhotoView image;
-        private CardView cardView;
-        private ConstraintLayout expandableView;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            title = itemView.findViewById(R.id.itemTItle);
-            date = itemView.findViewById(R.id.itemDate);
-            dueDate = itemView.findViewById(R.id.itemDueDate);
-            description = itemView.findViewById(R.id.itemDes);
-            image = itemView.findViewById(R.id.itemImage);
-            cardView = itemView.findViewById(R.id.card);
-            expandableView = itemView.findViewById(R.id.myExpandableLayout);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (expandableView.getVisibility() == View.VISIBLE) {
-                        // If the inner layout is visible, hide it to collapse
-                        expandableView.setVisibility(View.GONE);
-                    } else {
-                        // If the inner layout is not visible, show it to expand
-                        expandableView.setVisibility(View.VISIBLE);
-//                        title.setVisibility(View.VISIBLE);
-//                        //dueDate.setVisibility(View.VISIBLE);
-//                        description.setVisibility(View.VISIBLE);
-//                        image.setVisibility(View.VISIBLE);
-
-                    }
+        private AnnounceDataLayoutBinding binding;
+        public ViewHolder(@NonNull AnnounceDataLayoutBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            binding.getRoot().setOnClickListener(v -> {
+                if (binding.myExpandableLayout.getVisibility() == View.VISIBLE) {
+                    // If the inner layout is visible, hide it to collapse
+                    binding.myExpandableLayout.setVisibility(View.GONE);
+                } else {
+                    // If the inner layout is not visible, show it to expand
+                    binding.myExpandableLayout.setVisibility(View.VISIBLE);
                 }
             });
-
         }
     }
 }
