@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:21.5.1'
     implementation 'com.google.firebase:firebase-auth-ktx:22.3.1'
     implementation 'com.google.firebase:firebase-database-ktx:20.3.1'
+    implementation 'com.google.firebase:firebase-messaging:23.4.1'
     implementation 'com.google.firebase:firebase-storage:20.3.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -60,4 +61,9 @@ dependencies {
     implementation 'com.github.vimalcvs:Material-Smart-Rating:6.0.0'
 
     implementation 'com.github.uzairiqbal91:CircularTimerView:1.0'
+
+    implementation 'com.github.realpacific:click-shrink-effect:2.0'
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
 }

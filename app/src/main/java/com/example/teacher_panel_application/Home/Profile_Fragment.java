@@ -15,11 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.teacher_panel_application.CreateGroup.CreateGroup_Activity;
 import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.realpacific.clickshrinkeffect.ClickShrinkEffect;
+import com.realpacific.clickshrinkeffect.ClickShrinkUtils;
 import com.vimalcvs.materialrating.MaterialRating;
 
 
@@ -30,11 +33,13 @@ public class Profile_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater,container,false);
 
+        ClickShrinkUtils.applyClickShrink(binding.rateTxt);
         binding.rateTxt.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             MaterialRating materialRating = new MaterialRating();
             materialRating.show(fragmentManager,"Rating");
         });
+        ClickShrinkUtils.applyClickShrink(binding.logoutCard);
         binding.logoutCard.setOnClickListener(v -> {
             FirebaseAuth auth = FirebaseAuth.getInstance();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -57,6 +62,13 @@ public class Profile_Fragment extends Fragment {
                     })
                     .show();
         });
+
+        ClickShrinkUtils.applyClickShrink(binding.createGroupCard);
+        binding.createGroupCard.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), CreateGroup_Activity.class);
+            startActivity(intent);
+        });
+
 
         return binding.getRoot();
     }

@@ -1,5 +1,7 @@
 package com.example.teacher_panel_application.Models;
 
+import android.content.Intent;
+
 public class UploadClassModel {
     private String Name,department,location,subject,topic,key,minutes,endDateTime,currentTime,endTime,dateTime;
 
@@ -87,9 +89,17 @@ public class UploadClassModel {
     }
 
     public String getMinutes() {
-        return minutes;
-    }
+        String[] parts = minutes.split("\\s+");
+        int min = Integer.parseInt(parts[0]); // Assuming the first part is the number
 
+        if (min < 60) {
+            return min + " minute";
+        } else {
+            int hours = min / 60;
+            int remainingMinutes = min % 60;
+            return hours + " hour " + remainingMinutes + " min";
+        }
+    }
     public void setMinutes(String minutes) {
         this.minutes = minutes;
     }

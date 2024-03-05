@@ -64,7 +64,6 @@
                     android:textAlignment="center"
                     android:textSize="14sp" />
             </LinearLayout>
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,7 +121,23 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/createGroupCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                app:cardCornerRadius="10dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="12dp"
+                    android:padding="15dp"
+                    android:text="Create Group"
+                    android:textSize="18sp"
+                    app:drawableStartCompat="@drawable/baseline_term_24" />
+            </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -139,7 +154,6 @@
                     android:textSize="18sp"
                     app:drawableStartCompat="@drawable/baseline_term_24" />
             </androidx.cardview.widget.CardView>
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -156,7 +170,6 @@
                     android:textSize="18sp"
                     app:drawableStartCompat="@drawable/baseline_support_agent_24" />
             </androidx.cardview.widget.CardView>
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/logoutCard"
                 android:layout_width="match_parent"
@@ -174,8 +187,6 @@
                     android:textSize="18sp"
                     app:drawableStartCompat="@drawable/baseline_logout_24" />
             </androidx.cardview.widget.CardView>
-
-
             <TextView
                 android:id="@+id/rateTxt"
                 android:layout_width="match_parent"

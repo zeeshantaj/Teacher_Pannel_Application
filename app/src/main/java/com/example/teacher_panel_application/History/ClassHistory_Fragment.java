@@ -31,7 +31,12 @@ public class ClassHistory_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding  =  HistoryClassBinding.inflate(inflater,container,false);
-        binding.classHistoryRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        return binding.getRoot();
+    }
+    private void initRecyclerData(){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        binding.classHistoryRecycler.setLayoutManager(layoutManager);
         List<UploadClassModel> modelList = new ArrayList<>();
         ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList);
         binding.classHistoryRecycler.setAdapter(adapter);
@@ -55,7 +60,11 @@ public class ClassHistory_Fragment extends Fragment {
                 Toast.makeText(getActivity(), "Error "+ error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        return binding.getRoot();
+    @Override
+    public void onStart() {
+        super.onStart();
+        initRecyclerData();
     }
 }

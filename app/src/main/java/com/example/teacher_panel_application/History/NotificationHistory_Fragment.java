@@ -31,6 +31,11 @@ public class NotificationHistory_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = HistoryNotificationBinding.inflate(inflater,container,false);
+
+
+        return binding.getRoot();
+    }
+    private void initRecyclerData(){
         binding.announcementRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         List<AnnouncementModel> modelList = new ArrayList<>();
@@ -76,7 +81,17 @@ public class NotificationHistory_Fragment extends Fragment {
                 Toast.makeText(getActivity(), "Error "+ error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        return binding.getRoot();
+    @Override
+    public void onResume() {
+        super.onResume();
+        initRecyclerData();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initRecyclerData();
     }
 }

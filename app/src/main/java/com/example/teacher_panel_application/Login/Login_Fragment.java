@@ -30,7 +30,6 @@ public class Login_Fragment extends Fragment {
     public Login_Fragment() {
         // Required empty public constructor
     }
-
    private FrameLayout parentFrameLayout;
     private FirebaseAuth auth;
     private FragmentLoginBinding binding;
