@@ -14,22 +14,18 @@ import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdap
 import com.example.teacher_panel_application.History.ClassHistory_Fragment;
 import com.example.teacher_panel_application.History.NotificationHistory_Fragment;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.databinding.FragmentHistoryBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.wajahatkarim3.easyflipviewpager.CardFlipPageTransformer2;
 
 public class History_Fragment extends Fragment {
-
-    private ViewPager2 myViewPager;
-    private TabLayout tabLayout;
+    private FragmentHistoryBinding binding;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_history,container,false);
-
-        myViewPager = view.findViewById(R.id.myViewpagerHistory);
-        tabLayout = view.findViewById(R.id.tabLayoutHistory);
-        return view;
+        binding  =  FragmentHistoryBinding.inflate(inflater,container,false);;
+        return binding.getRoot();
     }
 
     @Override
@@ -38,7 +34,7 @@ public class History_Fragment extends Fragment {
 
         Fragment[] pages = {new ClassHistory_Fragment(), new NotificationHistory_Fragment()}; // Replace with your fragment classes
         UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
-        myViewPager.setAdapter(myPagerAdapter);
+        binding.myViewpagerHistory.setAdapter(myPagerAdapter);
 
 // Create an object of page transformer
         CardFlipPageTransformer2 cardFlipPageTransformer = new CardFlipPageTransformer2();
@@ -47,12 +43,12 @@ public class History_Fragment extends Fragment {
 // Otherwise card will also scale like in Gallery demo. By default, its true.
         cardFlipPageTransformer.setScalable(false);
 
-        myViewPager.setPageTransformer(cardFlipPageTransformer);
+        binding.myViewpagerHistory.setPageTransformer(cardFlipPageTransformer);
 
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        binding.tabLayoutHistory.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, myViewPager,
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(binding.tabLayoutHistory, binding.myViewpagerHistory,
                 (tab, position) -> {
                     // Customize the tab text and titles based on your needs.
                     if (position == 0) {

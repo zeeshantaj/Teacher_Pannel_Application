@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.teacher_panel_application.Adapters.AnnounceAdapter;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.databinding.HistoryNotificationBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,17 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationHistory_Fragment extends Fragment {
+    private HistoryNotificationBinding binding;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.history_notification,container,false);
-
-        RecyclerView recyclerView = view.findViewById(R.id.announcement_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding = HistoryNotificationBinding.inflate(inflater,container,false);
+        binding.announcementRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         List<AnnouncementModel> modelList = new ArrayList<>();
         AnnounceAdapter adapter = new AnnounceAdapter(modelList);
-        recyclerView.setAdapter(adapter);
+        binding.announcementRecycler.setAdapter(adapter);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
@@ -78,6 +77,6 @@ public class NotificationHistory_Fragment extends Fragment {
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
 }

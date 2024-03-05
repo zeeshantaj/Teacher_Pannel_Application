@@ -1,4 +1,4 @@
-package com.example.teacher_panel_application.Adapters;
+package com.example.teacher_panel_application.History;
 
 
 import android.util.Log;
@@ -6,20 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
 import com.github.chrisbanes.photoview.PhotoView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
