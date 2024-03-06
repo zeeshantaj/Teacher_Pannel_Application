@@ -89,6 +89,9 @@ public class UploadClassModel {
     }
 
     public String getMinutes() {
+        return minutes;
+    }
+    public String minutesBuilder(String minutes){
         String[] parts = minutes.split("\\s+");
         int min = Integer.parseInt(parts[0]); // Assuming the first part is the number
 

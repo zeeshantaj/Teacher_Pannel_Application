@@ -178,20 +178,7 @@ public class Home_Fragment extends Fragment {
                     String dateTime = snapshot.child("dateTime").getValue(String.class);
                     String endTimeString = snapshot.child("endTime").getValue(String.class);
 
-                    binding.nametxt.setText(name);
-                    binding.nametxt.setSelected(true);
-                    binding.durationTxt.setText(minute);
-                    binding.durationTxt.setSelected(true);
-                    binding.departText.setText(dep);
-                    binding.departText.setSelected(true);
-                    binding.locationTxt.setText(loc);
-                    binding.locationTxt.setSelected(true);
-                    binding.subjectTxt.setText(sub);
-                    binding.subjectTxt.setSelected(true);
-                    binding.topopicTxt.setText(topi);
-                    binding.topopicTxt.setSelected(true);
-                    binding.startedTxt.setText(start);
-                    binding.startedTxt.setSelected(true);
+                setTextView(name,dep,minute,loc,sub,topi,start);
 
                     try {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -239,7 +226,7 @@ public class Home_Fragment extends Fragment {
 
 
 
-                        setNotification(timeDifferenceMillis,uid);
+                        setNotification(timeDifferenceMillis,uid,name,dep,loc,sub,topi,minute,dateTime);
                         countDownTimer = new CountDownTimer(timeDifferenceMillis, 1000) {
                             @SuppressLint("ResourceAsColor")
                             @Override
@@ -284,10 +271,17 @@ public class Home_Fragment extends Fragment {
             }
         });
     }
-    private void setNotification(long milis,String uid){
+    private void setNotification(long milis,String uid,String name,String dep,String loc,String sub,String topic,String min,String dateTime){
         long deliveryTimeMillis = System.currentTimeMillis() + milis;
         Intent intent = new Intent(requireContext(), NotificationBroadcastReceiver.class);
         intent.putExtra("CurrentUID",uid);
+        intent.putExtra("name",name);
+        intent.putExtra("dep",dep);
+        intent.putExtra("loc",loc);
+        intent.putExtra("sub",sub);
+        intent.putExtra("topic",topic);
+        intent.putExtra("min",min);
+        intent.putExtra("dateTime",dateTime);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, deliveryTimeMillis, pendingIntent);
@@ -300,6 +294,22 @@ public class Home_Fragment extends Fragment {
 
         String timeFormatted = String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds);
         binding.countTImer.setText(timeFormatted);
+    }
+    private void setTextView(String name,String dep,String minute,String loc,String sub,String topi,String start){
+        binding.nametxt.setText(name);
+        binding.nametxt.setSelected(true);
+        binding.durationTxt.setText(minute);
+        binding.durationTxt.setSelected(true);
+        binding.departText.setText(dep);
+        binding.departText.setSelected(true);
+        binding.locationTxt.setText(loc);
+        binding.locationTxt.setSelected(true);
+        binding.subjectTxt.setText(sub);
+        binding.subjectTxt.setSelected(true);
+        binding.topopicTxt.setText(topi);
+        binding.topopicTxt.setSelected(true);
+        binding.startedTxt.setText(start);
+        binding.startedTxt.setSelected(true);
     }
 
     private void showEditDataAlertDialog() {
