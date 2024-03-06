@@ -1,19 +1,14 @@
 package com.example.teacher_panel_application.History;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teacher_panel_application.Models.AnnouncementModel;
-import com.example.teacher_panel_application.databinding.HistoryNotificationBinding;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,41 +18,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationHistory_Fragment extends Fragment {
-    private HistoryNotificationBinding binding;
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = HistoryNotificationBinding.inflate(inflater,container,false);
+public class LoadNotificationData extends AsyncTask<Void,Void, List<AnnouncementModel>> {
+    private RecyclerView recyclerView;
+    private String uid;
+    private Context context;
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String uid = auth.getUid();
-        LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,uid,getActivity());
-        loadDataInBackground.execute();
-
-
-        return binding.getRoot();
+    public LoadNotificationData(RecyclerView recyclerView, String uid, Context context) {
+        this.recyclerView = recyclerView;
+        this.uid = uid;
+        this.context = context;
     }
-    private void initRecyclerData(){
-        binding.announcementRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+    @Override
+    protected List<AnnouncementModel> doInBackground(Void... voids) {
 
-        List<AnnouncementModel> modelList = new ArrayList<>();
-        AnnounceAdapter adapter = new AnnounceAdapter(modelList);
-        binding.announcementRecycler.setAdapter(adapter);
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String uid = auth.getUid();
-        LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,uid,getActivity());
-        loadDataInBackground.execute();
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid);
-
+        final List<AnnouncementModel> modelList = new ArrayList<>();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-
 
                         AnnouncementModel model = new AnnouncementModel();
                         if (dataSnapshot.child("title").exists()){
@@ -79,24 +60,21 @@ public class NotificationHistory_Fragment extends Fragment {
                         }
                         modelList.add(model);
                     }
-                    adapter.notifyDataSetChanged();
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Error "+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error "+ error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-     //   initRecyclerData();
+        return modelList;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-       // initRecyclerData();
+    protected void onPostExecute(List<AnnouncementModel> modelList) {
+        super.onPreExecute();
+        AnnounceAdapter adapter = new AnnounceAdapter(modelList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(adapter);
     }
 }

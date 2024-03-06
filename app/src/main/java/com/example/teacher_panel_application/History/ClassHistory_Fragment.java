@@ -32,6 +32,11 @@ public class ClassHistory_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding  =  HistoryClassBinding.inflate(inflater,container,false);
 
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        LoadClassData loadDataInBackground = new LoadClassData(binding.classHistoryRecycler,uid,getActivity());
+        loadDataInBackground.execute();
+
         return binding.getRoot();
     }
     private void initRecyclerData(){
@@ -65,6 +70,6 @@ public class ClassHistory_Fragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        initRecyclerData();
+        //initRecyclerData();
     }
 }
