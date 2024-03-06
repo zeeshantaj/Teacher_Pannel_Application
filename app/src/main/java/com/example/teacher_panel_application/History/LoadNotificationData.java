@@ -33,7 +33,7 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid);
-        final List<AnnouncementModel> modelList = new ArrayList<>();
+        List<AnnouncementModel> modelList = new ArrayList<>();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -60,6 +60,9 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
                         }
                         modelList.add(model);
                     }
+                    AnnounceAdapter adapter = new AnnounceAdapter(modelList);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setAdapter(adapter);
                 }
             }
             @Override
@@ -68,13 +71,5 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
             }
         });
         return modelList;
-    }
-
-    @Override
-    protected void onPostExecute(List<AnnouncementModel> modelList) {
-        super.onPreExecute();
-        AnnounceAdapter adapter = new AnnounceAdapter(modelList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(adapter);
     }
 }

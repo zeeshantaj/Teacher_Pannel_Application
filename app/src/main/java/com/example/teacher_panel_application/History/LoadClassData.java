@@ -35,7 +35,7 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("PostedData").child(uid);
-        final List<UploadClassModel> modelList = new ArrayList<>();
+        List<UploadClassModel> modelList = new ArrayList<>();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -44,6 +44,9 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                         UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
                         modelList.add(model);
                     }
+                    ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setAdapter(adapter);
                 }
             }
 
@@ -53,13 +56,5 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
             }
         });
         return modelList;
-    }
-
-    @Override
-    protected void onPostExecute(List<UploadClassModel> modelList) {
-        super.onPreExecute();
-        ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(adapter);
     }
 }
