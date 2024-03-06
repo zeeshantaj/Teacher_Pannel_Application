@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -27,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.teacher_panel_application.Fragments.EditDataFragment;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.Notification.ClassEnded_NotificationService;
+import com.example.teacher_panel_application.Notification.NotificationBroadcastReceiver;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.HomeFragmentBinding;
 import com.google.android.gms.ads.AdRequest;
@@ -51,6 +53,7 @@ import com.uzairiqbal.circulartimerview.TimeFormatEnum;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -81,7 +84,7 @@ public class Home_Fragment extends Fragment {
         MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-                Toast.makeText(getActivity(), " successful ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), " successful ", Toast.LENGTH_SHORT).show();
             }
         });
 //        adView = view.findViewById(R.id.adView);
@@ -115,33 +118,39 @@ public class Home_Fragment extends Fragment {
 
 // To Initialize Timer
 
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful()) {
-                    String fcmToken = task.getResult();
+//        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+//            @Override
+//            public void onComplete(@NonNull Task<String> task) {
+//                if (task.isSuccessful()) {
+//                    String fcmToken = task.getResult();
+//
+//                    Map<String, String> notificationMessage = new HashMap<>();
+//                    notificationMessage.put("title", "Your notification title");
+//                    notificationMessage.put("body", "Your notification message");
+//
+//                    // Specify the delivery time (in UNIX time milliseconds)
+//                    long deliveryTimeMillis = System.currentTimeMillis() + (2 * 60 * 1000); // 5 minutes from now
+//
+//                    // Build the message payload
+//                    Map<String, String> messagePayload = new HashMap<>();
+//                    messagePayload.put("message", new Gson().toJson(notificationMessage));
+//                    messagePayload.put("schedule", String.valueOf(deliveryTimeMillis));
+//
+//                    // Send the message to the FCM token
+//                    FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(fcmToken)
+//                            .setData(messagePayload)
+//                            .build());
+//                } else {
+//                    Log.e("MyApp", "Failed to get FCM token");
+//                }
+//            }
+//        });
 
-                    Map<String, String> notificationMessage = new HashMap<>();
-                    notificationMessage.put("title", "Your notification title");
-                    notificationMessage.put("body", "Your notification message");
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 14);
+//        calendar.set(Calendar.MINUTE, 13);
+//        calendar.set(Calendar.SECOND, 0);
 
-                    // Specify the delivery time (in UNIX time milliseconds)
-                    long deliveryTimeMillis = System.currentTimeMillis() + (2 * 60 * 1000); // 5 minutes from now
-
-                    // Build the message payload
-                    Map<String, String> messagePayload = new HashMap<>();
-                    messagePayload.put("message", new Gson().toJson(notificationMessage));
-                    messagePayload.put("schedule", String.valueOf(deliveryTimeMillis));
-
-                    // Send the message to the FCM token
-                    FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(fcmToken)
-                            .setData(messagePayload)
-                            .build());
-                } else {
-                    Log.e("MyApp", "Failed to get FCM token");
-                }
-            }
-        });
 
 
         getValues();
@@ -171,7 +180,7 @@ public class Home_Fragment extends Fragment {
 
                     binding.nametxt.setText(name);
                     binding.nametxt.setSelected(true);
-                    binding.durationTxt.setText(minute + " minutes");
+                    binding.durationTxt.setText(minute);
                     binding.durationTxt.setSelected(true);
                     binding.departText.setText(dep);
                     binding.departText.setSelected(true);
@@ -229,6 +238,8 @@ public class Home_Fragment extends Fragment {
 // To start timer
 
 
+
+                        setNotification(timeDifferenceMillis,uid);
                         countDownTimer = new CountDownTimer(timeDifferenceMillis, 1000) {
                             @SuppressLint("ResourceAsColor")
                             @Override
@@ -273,7 +284,15 @@ public class Home_Fragment extends Fragment {
             }
         });
     }
-
+    private void setNotification(long milis,String uid){
+        long deliveryTimeMillis = System.currentTimeMillis() + milis;
+        Intent intent = new Intent(requireContext(), NotificationBroadcastReceiver.class);
+        intent.putExtra("CurrentUID",uid);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, deliveryTimeMillis, pendingIntent);
+        Log.e("MyApp","NotificationSchedule");
+    }
     private void updateCountdownText() {
         int hours = (int) (timeRemainingInMillis / 1000) / 3600;
         int minutes = (int) ((timeRemainingInMillis / 1000) % 3600) / 60;
