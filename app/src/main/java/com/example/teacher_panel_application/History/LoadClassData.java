@@ -1,5 +1,6 @@
 package com.example.teacher_panel_application.History;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -23,11 +24,20 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
     private RecyclerView recyclerView;
     private String uid;
     private Context context;
-
+    private ProgressDialog progressDialog;
     public LoadClassData(RecyclerView recyclerView, String uid, Context context) {
         this.recyclerView = recyclerView;
         this.uid = uid;
         this.context = context;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog.show();
     }
 
     @Override
@@ -48,10 +58,12 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.dismiss();
                 Toast.makeText(context, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

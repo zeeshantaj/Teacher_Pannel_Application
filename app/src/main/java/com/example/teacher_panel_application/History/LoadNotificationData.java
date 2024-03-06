@@ -1,5 +1,6 @@
 package com.example.teacher_panel_application.History;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.impl.model.WorkProgressDao;
 
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.google.firebase.database.DataSnapshot;
@@ -22,12 +24,23 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
     private RecyclerView recyclerView;
     private String uid;
     private Context context;
+    private ProgressDialog progressDialog;
 
     public LoadNotificationData(RecyclerView recyclerView, String uid, Context context) {
         this.recyclerView = recyclerView;
         this.uid = uid;
         this.context = context;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
     }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog.show();
+    }
+
     @Override
     protected List<AnnouncementModel> doInBackground(Void... voids) {
 
@@ -64,9 +77,11 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);
                 }
+                progressDialog.dismiss(); // Dismiss the progress dialog when data is loaded
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.dismiss();
                 Toast.makeText(context, "Error "+ error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
