@@ -10,6 +10,7 @@
     <color name="red">#EA0909</color>
     <color name="green">#067509</color>
     <color name="darkBlue">#313B71</color>
+    <color name="yellow">#FFEB3B</color>
     <color name="darkBlueshade">#7880AF</color>
     <color name="colorOverlay">#78ffffff</color>
 </resources>

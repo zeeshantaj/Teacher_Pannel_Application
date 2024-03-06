@@ -8,7 +8,7 @@
         android:id="@+id/noClass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Class not posted yet"
+        android:text="@string/class_not_posted_yet"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -243,52 +243,47 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="20dp"
                 android:text="@string/time_left"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt" />
+
+
+            <ProgressBar
+                android:id="@+id/progressBarCircle"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_centerInParent="true"
+                android:background="@color/darkBlueshade"
+                android:indeterminate="false"
+                android:max="100"
+                android:padding="4dp"
+                android:progress="100"
+                android:progressDrawable="@drawable/drawable_circle_yellow"
+                android:rotation="-90"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textView14"
+                app:layout_constraintStart_toStartOf="@+id/textView14"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <TextView
                 android:id="@+id/countTImer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView14"
-                app:layout_constraintStart_toEndOf="@+id/textView14"
-                app:layout_constraintTop_toTopOf="@+id/textView14" />
-
+                app:layout_constraintBottom_toBottomOf="@+id/progressBarCircle"
+                app:layout_constraintEnd_toEndOf="@+id/progressBarCircle"
+                app:layout_constraintStart_toStartOf="@+id/progressBarCircle"
+                app:layout_constraintTop_toTopOf="@+id/progressBarCircle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
-
-
-    <com.uzairiqbal.circulartimerview.CircularTimerView
-        android:id="@+id/progress_circular"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        app:backgroundColor="@color/colorOverlay"
-        app:backgroundWidth="8"
-        app:isClockwise="false"
-        app:layout_constraintBottom_toTopOf="@+id/adView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_node"
-        app:maxValue="100"
-        app:prefix=""
-        app:progressBackgroundColor="@color/white"
-        app:progressColor="@color/darkBlueshade"
-        app:progressText="9"
-        app:progressTextColor="@color/darkBlueshade"
-        app:startingPoint="bottom"
-        app:suffix=" minutes"
-        app:textSize="14sp" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

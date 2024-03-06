@@ -77,7 +77,6 @@ public class Home_Fragment extends Fragment {
     private FirebaseAuth auth;
     private CountDownTimer countDownTimer;
     private long timeRemainingInMillis, timeDifferenceMillis;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -98,61 +97,7 @@ public class Home_Fragment extends Fragment {
             return true;
         });
 
-        binding.progressCircular.setProgress(0);
-        binding.progressCircular.setCircularTimerListener(new CircularTimerListener() {
-            @Override
-            public String updateDataOnTick(long remainingTimeInMs) {
-                return String.valueOf((int) Math.ceil((remainingTimeInMs / 1000.f)));
-            }
-
-            @Override
-            public void onTimerFinished() {
-                Toast.makeText(getActivity(), "FINISHED", Toast.LENGTH_SHORT).show();
-                binding.progressCircular.setPrefix("");
-                binding.progressCircular.setSuffix("");
-                binding.progressCircular.setText("FINISHED THANKS!");
-            }
-        }, 2, TimeFormatEnum.MINUTES, 10);
-
-        binding.progressCircular.startTimer();
-
 // To Initialize Timer
-
-//        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-//            @Override
-//            public void onComplete(@NonNull Task<String> task) {
-//                if (task.isSuccessful()) {
-//                    String fcmToken = task.getResult();
-//
-//                    Map<String, String> notificationMessage = new HashMap<>();
-//                    notificationMessage.put("title", "Your notification title");
-//                    notificationMessage.put("body", "Your notification message");
-//
-//                    // Specify the delivery time (in UNIX time milliseconds)
-//                    long deliveryTimeMillis = System.currentTimeMillis() + (2 * 60 * 1000); // 5 minutes from now
-//
-//                    // Build the message payload
-//                    Map<String, String> messagePayload = new HashMap<>();
-//                    messagePayload.put("message", new Gson().toJson(notificationMessage));
-//                    messagePayload.put("schedule", String.valueOf(deliveryTimeMillis));
-//
-//                    // Send the message to the FCM token
-//                    FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(fcmToken)
-//                            .setData(messagePayload)
-//                            .build());
-//                } else {
-//                    Log.e("MyApp", "Failed to get FCM token");
-//                }
-//            }
-//        });
-
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR_OF_DAY, 14);
-//        calendar.set(Calendar.MINUTE, 13);
-//        calendar.set(Calendar.SECOND, 0);
-
-
-
         getValues();
     }
 
@@ -228,20 +173,23 @@ public class Home_Fragment extends Fragment {
 
                         setNotification(timeDifferenceMillis,uid,name,dep,loc,sub,topi,minute,dateTime);
                         countDownTimer = new CountDownTimer(timeDifferenceMillis, 1000) {
-                            @SuppressLint("ResourceAsColor")
                             @Override
                             public void onTick(long millisUntilFinished) {
                                 timeRemainingInMillis = millisUntilFinished;
                                 updateCountdownText();
                                 if (millisUntilFinished < 50000) {
-                                    binding.countTImer.setTextColor(R.color.red);
+                                    binding.countTImer.setTextColor(getResources().getColor(R.color.red));
                                 }
+                                long elapsedTime = timeDifferenceMillis - millisUntilFinished;
+                                int progress = (int) (elapsedTime * 100 / timeDifferenceMillis);
+                                binding.progressBarCircle.setProgress(100 - progress);
+
                             }
 
                             @Override
                             public void onFinish() {
                                 // Perform any actions after the countdown finishes
-
+                                binding.progressBarCircle.setProgress(0);
                                 UploadClassModel uploadClassModel = new UploadClassModel(name, dep, loc, sub, topi, minute, dateTime);
                                 DatabaseReference addToQueueReference = FirebaseDatabase.getInstance().getReference("PostedData").child(uid).child(dateTime);
                                 addToQueueReference.setValue(uploadClassModel).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -270,6 +218,11 @@ public class Home_Fragment extends Fragment {
                 Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void setProgressBarValues(long timeCountInMilliSeconds) {
+
+        binding.progressBarCircle.setMax((int) timeCountInMilliSeconds / 1000);
+        binding.progressBarCircle.setProgress((int) timeCountInMilliSeconds / 1000);
     }
     private void setNotification(long milis,String uid,String name,String dep,String loc,String sub,String topic,String min,String dateTime){
         long deliveryTimeMillis = System.currentTimeMillis() + milis;
