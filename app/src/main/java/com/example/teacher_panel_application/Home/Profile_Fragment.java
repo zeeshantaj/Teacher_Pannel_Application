@@ -39,9 +39,10 @@ public class Profile_Fragment extends Fragment {
             MaterialRating materialRating = new MaterialRating();
             materialRating.show(fragmentManager,"Rating");
         });
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         ClickShrinkUtils.applyClickShrink(binding.logoutCard);
         binding.logoutCard.setOnClickListener(v -> {
-            FirebaseAuth auth = FirebaseAuth.getInstance();
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Logout")
                     .setMessage("Do you want Logout?")

@@ -35,10 +35,6 @@ public class NotificationHistory_Fragment extends Fragment {
         String uid = auth.getUid();
         LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,uid,getActivity());
         loadDataInBackground.execute();
-
-
-
-
         return binding.getRoot();
     }
 //    private class LoadAnnouncementsTask extends AsyncTask<Void, Void, List<AnnouncementModel>> {
