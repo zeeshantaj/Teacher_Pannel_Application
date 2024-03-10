@@ -1,14 +1,20 @@
 package com.example.teacher_panel_application.Login;
 
+import android.app.Activity;
+import android.app.LauncherActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +33,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.net.URI;
+
 public class SignUp_Fragment extends Fragment {
 
 
@@ -35,11 +43,13 @@ public class SignUp_Fragment extends Fragment {
     }
 
     private FrameLayout parentFrameLayout;
-    private FirebaseAuth  auth;
+    private FirebaseAuth auth;
     private ProgressDialog dialog;
     private static final String EMAIL_PATTERN =
             "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private FragmentSignUpBinding binding;
+    private Uri imageUri;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,37 +66,41 @@ public class SignUp_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         auth = FirebaseAuth.getInstance();
 
+
         binding.loginText.setOnClickListener(view12 ->
                 setFragment(new Login_Fragment()));
 
+        binding.userProfileSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            imageLauncher.launch(intent);
+        });
         binding.singUpBtn.setOnClickListener(view1 -> {
             String name = binding.SignUpName.getText().toString();
             String email = binding.SignUpEmail.getText().toString();
             String pass = binding.SignUpPass.getText().toString();
             String conPass = binding.SignUpConPass.getText().toString();
 
-            if (email.isEmpty() && !email.matches(EMAIL_PATTERN)){
+            if (email.isEmpty() && !email.matches(EMAIL_PATTERN)) {
                 binding.SignUpEmail.setError("Email should be in correct pattern and can not be empty");
             }
-            if (name.isEmpty()){
+            if (name.isEmpty()) {
                 binding.SignUpName.setError("Name is Empty");
 
 
             }
-            if (pass.isEmpty()){
+            if (pass.isEmpty()) {
                 //Pass.setError("password field is empty");
                 Toast.makeText(getActivity(), "password field is empty", Toast.LENGTH_SHORT).show();
             }
-            if (conPass.isEmpty()){
+            if (conPass.isEmpty()) {
                 //ConPass.setError("confirm password field is empty");
                 Toast.makeText(getActivity(), "confirm password field is empty", Toast.LENGTH_SHORT).show();
             }
 
 
-            if (!pass.equals(conPass)){
+            if (!pass.equals(conPass)) {
                 Toast.makeText(getActivity(), "Password should be equal to confirm password", Toast.LENGTH_SHORT).show();
             }
-
 
 
             if (!name.isEmpty() && !email.isEmpty()
@@ -95,7 +109,7 @@ public class SignUp_Fragment extends Fragment {
                 dialog.setMessage("Creating User....");
                 dialog.setCancelable(false);
                 dialog.show();
-                auth.createUserWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         Toast.makeText(getActivity(), "User Created", Toast.LENGTH_SHORT).show();
@@ -107,7 +121,7 @@ public class SignUp_Fragment extends Fragment {
                 }).addOnFailureListener(e -> {
 
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("MyApp",e.getLocalizedMessage());
+                    Log.d("MyApp", e.getLocalizedMessage());
                     dialog.dismiss();
                 });
 
@@ -116,10 +130,19 @@ public class SignUp_Fragment extends Fragment {
         });
     }
 
-    private void setFragment(Fragment fragment){
+    private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    imageUri = result.getData().getData();
+                    binding.userProfileSignUp.setImageURI(imageUri);
+
+                }
+            });
+
+    private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         //fragmentTransaction.setCustomAnimations(R.anim.slide_from_right,R.anim.slideout_from_left);
-        fragmentTransaction.replace(parentFrameLayout.getId(),fragment);
+        fragmentTransaction.replace(parentFrameLayout.getId(), fragment);
         fragmentTransaction.commit();
     }
 }
