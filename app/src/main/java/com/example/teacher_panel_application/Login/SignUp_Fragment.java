@@ -56,70 +56,63 @@ public class SignUp_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         auth = FirebaseAuth.getInstance();
 
-        binding.loginText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new Login_Fragment());
+        binding.loginText.setOnClickListener(view12 ->
+                setFragment(new Login_Fragment()));
+
+        binding.singUpBtn.setOnClickListener(view1 -> {
+            String name = binding.SignUpName.getText().toString();
+            String email = binding.SignUpEmail.getText().toString();
+            String pass = binding.SignUpPass.getText().toString();
+            String conPass = binding.SignUpConPass.getText().toString();
+
+            if (email.isEmpty() && !email.matches(EMAIL_PATTERN)){
+                binding.SignUpEmail.setError("Email should be in correct pattern and can not be empty");
             }
-        });
-
-        binding.singUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = binding.SignUpName.getText().toString();
-                String email = binding.SignUpEmail.getText().toString();
-                String pass = binding.SignUpPass.getText().toString();
-                String conPass = binding.SignUpConPass.getText().toString();
-
-                if (email.isEmpty() && !email.matches(EMAIL_PATTERN)){
-                    binding.SignUpEmail.setError("Email should be in correct pattern and can not be empty");
-                }
-                if (name.isEmpty()){
-                    binding.SignUpName.setError("Name is Empty");
+            if (name.isEmpty()){
+                binding.SignUpName.setError("Name is Empty");
 
 
-                }
-                if (pass.isEmpty()){
-                    //Pass.setError("password field is empty");
-                    Toast.makeText(getActivity(), "password field is empty", Toast.LENGTH_SHORT).show();
-                }
-                if (conPass.isEmpty()){
-                    //ConPass.setError("confirm password field is empty");
-                    Toast.makeText(getActivity(), "confirm password field is empty", Toast.LENGTH_SHORT).show();
-                }
+            }
+            if (pass.isEmpty()){
+                //Pass.setError("password field is empty");
+                Toast.makeText(getActivity(), "password field is empty", Toast.LENGTH_SHORT).show();
+            }
+            if (conPass.isEmpty()){
+                //ConPass.setError("confirm password field is empty");
+                Toast.makeText(getActivity(), "confirm password field is empty", Toast.LENGTH_SHORT).show();
+            }
 
 
-                if (!pass.equals(conPass)){
-                    Toast.makeText(getActivity(), "Password should be equal to confirm password", Toast.LENGTH_SHORT).show();
-                }
+            if (!pass.equals(conPass)){
+                Toast.makeText(getActivity(), "Password should be equal to confirm password", Toast.LENGTH_SHORT).show();
+            }
 
 
 
-                if (!name.isEmpty() && !email.isEmpty()
-                        && !pass.isEmpty() && !conPass.isEmpty()) {
-                    dialog.setTitle("Please Wait");
-                    dialog.setMessage("Creating User....");
-                    dialog.setCancelable(false);
-                    dialog.show();
-                    auth.createUserWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            Toast.makeText(getActivity(), "User Created", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
-                            startActivity(intent);
-                            getActivity().finish();
-                            dialog.dismiss();
-                        }
-                    }).addOnFailureListener(e -> {
-
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("MyApp",e.getLocalizedMessage());
+            if (!name.isEmpty() && !email.isEmpty()
+                    && !pass.isEmpty() && !conPass.isEmpty()) {
+                dialog.setTitle("Please Wait");
+                dialog.setMessage("Creating User....");
+                dialog.setCancelable(false);
+                dialog.show();
+                auth.createUserWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Toast.makeText(getActivity(), "User Created", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
+                        startActivity(intent);
+                        getActivity().finish();
                         dialog.dismiss();
-                    });
+                    }
+                }).addOnFailureListener(e -> {
 
-                }
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("MyApp",e.getLocalizedMessage());
+                    dialog.dismiss();
+                });
 
             }
+
         });
     }
 
