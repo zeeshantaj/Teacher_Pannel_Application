@@ -17,7 +17,7 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_margin="20dp"
+        android:layout_margin="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
         app:boxStrokeColor="@color/white"
         app:counterEnabled="true"
         app:counterTextColor="@color/white"
-        app:counterMaxLength="20"
+        app:counterMaxLength="40"
         app:layout_constraintTop_toBottomOf="@+id/textView11">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -38,6 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
             android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -96,7 +98,7 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="Or Login with"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -109,7 +111,7 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         app:cardBackgroundColor="@color/center"
         app:cardCornerRadius="6dp"
         app:layout_constraintEnd_toEndOf="@+id/loginBtn"
@@ -132,7 +134,7 @@
         android:id="@+id/cardView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/center"
         app:cardCornerRadius="6dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
@@ -155,8 +157,8 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Have no account"
+        android:layout_marginTop="30dp"
+        android:text="@string/have_no_account"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
@@ -173,7 +175,7 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         app:cornerRadius="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintStart_toStartOf="@+id/cardView2"
         app:layout_constraintTop_toBottomOf="@+id/textView16" />

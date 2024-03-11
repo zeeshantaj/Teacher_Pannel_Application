@@ -39,5 +39,8 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forget_password">Forget Password</string>
+    <string name="class_nconnect">Class\nConnect</string>
+    <string name="inspiring_tech_solution_for_a_nbrighten_future">Inspiring Tech Solution for a\nBrighten future</string>
+    <string name="have_no_account">Have no account</string>
 
 </resources>
