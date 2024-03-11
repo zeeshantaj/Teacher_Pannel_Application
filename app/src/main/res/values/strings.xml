@@ -48,5 +48,10 @@
     <string name="or_login_with">Or Login with</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="already_have_an_account">Already Have an account</string>
+    <string name="back_to_log_in">Back to Log in</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="reset">Reset</string>
+    <string name="we_will_send_you_an_email_with_a_link_to_reset_the_password">we will send you an Email with a link to reset the password</string>
+    <string name="if_you_forget_your_password_don_t_worry_nyou_need_to_enter_your_registered_email_here">If you forget your password don\'t worry \nyou need to enter your registered Email here!</string>
 
 </resources>
