@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+
+import com.example.teacher_panel_application.Intro.IntroFragment;
 import com.example.teacher_panel_application.databinding.ActivityLoginBinding;
 
 public class Login_Activity extends AppCompatActivity {
@@ -16,7 +18,7 @@ public class Login_Activity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         getSupportActionBar().hide();
-        setDefaultFragment(new Login_Fragment());
+        setDefaultFragment(new IntroFragment());
     }
 
     private void setDefaultFragment(Fragment fragment){
