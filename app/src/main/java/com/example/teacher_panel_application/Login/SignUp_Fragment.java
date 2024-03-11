@@ -122,7 +122,7 @@ public class SignUp_Fragment extends Fragment {
 
 
             if (!pass.equals(conPass)) {
-                Toast.makeText(getActivity(), "Password should be equal to confirm password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Password and Confirm Password should be same", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -141,33 +141,26 @@ public class SignUp_Fragment extends Fragment {
 
                    }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
                 }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
-                auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        HashMap<String,String> value = new HashMap<>();
-                        value.put("image",downloadedImageUri);
-                        value.put("name",name);
-                        value.put("email",email);
 
-                        databaseReference.child("UsersInfo").child(uid).setValue(value)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Toast.makeText(getActivity(), "User Created", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
-                                                startActivity(intent);
-                                                getActivity().finish();
-                                                dialog.dismiss();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(authResult -> {
+
+                    HashMap<String,String> value = new HashMap<>();
+                    value.put("image",downloadedImageUri);
+                    value.put("name",name);
+                    value.put("email",email);
+
+                    databaseReference.child("UsersInfo").child(uid).setValue(value)
+
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(getActivity(), "User Created", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                        dialog.dismiss();
+                                    }).addOnFailureListener(e ->
+                                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
 
 
-                    }
                 }).addOnFailureListener(e -> {
 
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
