@@ -42,5 +42,11 @@
     <string name="class_nconnect">Class\nConnect</string>
     <string name="inspiring_tech_solution_for_a_nbrighten_future">Inspiring Tech Solution for a\nBrighten future</string>
     <string name="have_no_account">Have no account</string>
+    <string name="log_in">Log in</string>
+    <string name="sig_up">Sig up</string>
+    <string name="login">Login</string>
+    <string name="or_login_with">Or Login with</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_have_an_account">Already Have an account</string>
 
 </resources>
