@@ -1,7 +1,6 @@
 package com.example.teacher_panel_application.Login;
 
 import android.app.Activity;
-import android.app.LauncherActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,9 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.Activities.Upload_Details_Activity;
@@ -29,11 +26,15 @@ import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentSignUpBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.net.URI;
+import java.util.HashMap;
 
 public class SignUp_Fragment extends Fragment {
 
@@ -49,6 +50,12 @@ public class SignUp_Fragment extends Fragment {
             "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private FragmentSignUpBinding binding;
     private Uri imageUri;
+    private UploadTask uploadTask;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference,imageRef;
+    private String downloadedImageUri;
+
+    private DatabaseReference databaseReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +65,12 @@ public class SignUp_Fragment extends Fragment {
 
         dialog = new ProgressDialog(getActivity());
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
+
+
+
+
+
+
         return binding.getRoot();
     }
 
@@ -66,6 +79,16 @@ public class SignUp_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         auth = FirebaseAuth.getInstance();
 
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
+        String uid = auth.getUid();
+        String imageName = "image_"+uid+".jpg";
+
+        imageRef = storageReference.child("UserImages/"+imageName);
 
         binding.loginText.setOnClickListener(view12 ->
                 setFragment(new Login_Fragment()));
@@ -109,14 +132,41 @@ public class SignUp_Fragment extends Fragment {
                 dialog.setMessage("Creating User....");
                 dialog.setCancelable(false);
                 dialog.show();
+                uploadTask.addOnSuccessListener(taskSnapshot -> {
+
+                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                       downloadedImageUri = uri.toString();
+
+
+                   }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
                 auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        Toast.makeText(getActivity(), "User Created", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                        dialog.dismiss();
+                        HashMap<String,String> value = new HashMap<>();
+                        value.put("image",downloadedImageUri);
+                        value.put("name",name);
+                        value.put("email",email);
+
+                        databaseReference.child("UsersInfo").child(uid).setValue(value)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Toast.makeText(getActivity(), "User Created", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
+                                                startActivity(intent);
+                                                getActivity().finish();
+                                                dialog.dismiss();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+
                     }
                 }).addOnFailureListener(e -> {
 
@@ -135,6 +185,7 @@ public class SignUp_Fragment extends Fragment {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     imageUri = result.getData().getData();
                     binding.userProfileSignUp.setImageURI(imageUri);
+                    uploadTask = imageRef.putFile(imageUri);
 
                 }
             });
