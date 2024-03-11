@@ -34,7 +34,7 @@ public class Reset_Pass_Fragment extends Fragment {
         //backLogin = view.findViewById(R.id.backLoginText);
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
 
-        binding.backLoginText.setOnClickListener(new View.OnClickListener() {
+        binding.loginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setFragment(new Login_Fragment());
