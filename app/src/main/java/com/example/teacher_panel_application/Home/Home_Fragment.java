@@ -3,6 +3,8 @@ package com.example.teacher_panel_application.Home;
 import static android.content.Context.ALARM_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
 
+import static com.google.common.reflect.Reflection.getPackageName;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -10,6 +12,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,10 +21,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -38,6 +44,8 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,6 +58,9 @@ import com.google.gson.Gson;
 import com.uzairiqbal.circulartimerview.CircularTimerListener;
 import com.uzairiqbal.circulartimerview.TimeFormatEnum;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -219,11 +230,6 @@ public class Home_Fragment extends Fragment {
             }
         });
     }
-    private void setProgressBarValues(long timeCountInMilliSeconds) {
-
-        binding.progressBarCircle.setMax((int) timeCountInMilliSeconds / 1000);
-        binding.progressBarCircle.setProgress((int) timeCountInMilliSeconds / 1000);
-    }
     private void setNotification(long milis,String uid,String name,String dep,String loc,String sub,String topic,String min,String dateTime){
         long deliveryTimeMillis = System.currentTimeMillis() + milis;
         Intent intent = new Intent(requireContext(), NotificationBroadcastReceiver.class);
@@ -266,22 +272,66 @@ public class Home_Fragment extends Fragment {
     }
 
     private void showEditDataAlertDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Edit Data")
-                .setMessage("Do you want to edit the data?")
-                .setPositiveButton("Edit Data", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        openEditDataFragment();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+        View dialogView = getLayoutInflater().inflate(R.layout.share_and_edit_dialugue, null);
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView buttonCancel = dialogView.findViewById(R.id.cancelBtn);
+        MaterialButton editData = dialogView.findViewById(R.id.editDataBtn);
+        MaterialButton share = dialogView.findViewById(R.id.shareOnWhatsapp);
+        editData.setOnClickListener(v -> {
+            openEditDataFragment();
+
+        });
+        share.setOnClickListener(v -> {
+            Bitmap bitmap = Bitmap.createBitmap(binding.cardNode.getWidth(), binding.cardNode.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            binding.cardNode.draw(canvas);
+            File file = new File(getActivity().getExternalCacheDir(), "cardview_image.jpg");
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("image/jpeg");
+            intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getActivity(), getActivity().getPackageName() + ".provider", file));
+            intent.putExtra(Intent.EXTRA_TEXT, "Your data here");
+            intent.setPackage("com.whatsapp"); // Set WhatsApp package name to share specifically on WhatsApp
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(intent, "Share CardView Image and Data"));
+        });
+        buttonCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+
+
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setTitle("Edit Data")
+//                .setMessage("Do you want to edit the data?")
+//                .setPositiveButton("Share On Whatsapp", (dialog, which) -> {
+//                    Toast.makeText(getActivity(), "share wt clicked", Toast.LENGTH_SHORT).show();
+//                })
+//                .setPositiveButton("Edit Data", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        openEditDataFragment();
+//                    }
+//                })
+//                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .show();
     }
 
     @Override

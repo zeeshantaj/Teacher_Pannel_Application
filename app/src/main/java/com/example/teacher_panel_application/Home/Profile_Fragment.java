@@ -2,7 +2,6 @@ package com.example.teacher_panel_application.Home;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,7 +26,6 @@ import com.example.teacher_panel_application.CreateGroup.CreateGroup_Activity;
 import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentProfileBinding;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -170,7 +168,7 @@ public class Profile_Fragment extends Fragment {
         builder.setView(dialogView);
 
         TextInputEditText editTextFileName = dialogView.findViewById(R.id.editNameEdDialogue);
-        TextView buttonSave = dialogView.findViewById(R.id.textView10);
+        TextView buttonSave = dialogView.findViewById(R.id.edit_name_cancel);
         TextView buttonCancel = dialogView.findViewById(R.id.textView11);
 
         AlertDialog dialog = builder.create();
