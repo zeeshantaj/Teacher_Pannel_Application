@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,20 +24,51 @@ public class Login_Fragment extends Fragment {
     public Login_Fragment() {
         // Required empty public constructor
     }
-   private FrameLayout parentFrameLayout;
+
+    private FrameLayout parentFrameLayout;
     private FirebaseAuth auth;
     private FragmentLoginBinding binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding  = FragmentLoginBinding.inflate(inflater, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
 
+
+        binding.loginPass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                binding.textInputLayout2.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         binding.loginBtn.setOnClickListener(view -> {
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             String email = binding.loginEmail.getText().toString();
             String password = binding.loginPass.getText().toString();
+
+            if (email.isEmpty()) {
+                binding.loginEmail.setError("Email is empty");
+                return;
+            }
+            if (password.isEmpty()) {
+                binding.textInputLayout2.setError("Password is empty");
+                return;
+            }
+
+
 
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
@@ -58,13 +91,12 @@ public class Login_Fragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
-        if (user != null){
+        if (user != null) {
             Intent intent = new Intent(getActivity(), Home_Activity.class);
             startActivity(intent);
             getActivity().finish();
 
         }
-
 
 
         binding.signUpText.setOnClickListener(new View.OnClickListener() {
@@ -83,10 +115,11 @@ public class Login_Fragment extends Fragment {
 
         return binding.getRoot();
     }
-    private void setFragment(Fragment fragment){
+
+    private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         //fragmentTransaction.setCustomAnimations(R.anim.slide_from_left,R.anim.slideout_from_right);
-        fragmentTransaction.replace(parentFrameLayout.getId(),fragment);
+        fragmentTransaction.replace(parentFrameLayout.getId(), fragment);
         fragmentTransaction.commit();
     }
 }

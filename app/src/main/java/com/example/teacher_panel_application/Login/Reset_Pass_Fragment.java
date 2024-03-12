@@ -2,6 +2,7 @@ package com.example.teacher_panel_application.Login;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -10,9 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentResetPassBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Reset_Pass_Fragment extends Fragment {
 
@@ -34,13 +39,29 @@ public class Reset_Pass_Fragment extends Fragment {
         //backLogin = view.findViewById(R.id.backLoginText);
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
 
-        binding.loginText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new Login_Fragment());
-            }
-        });
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        binding.loginText.setOnClickListener(view -> setFragment(new Login_Fragment()));
 
+        binding.resetBtn.setOnClickListener(v -> {
+            String email = binding.resetPassEd.getText().toString();
+            binding.resetBtn.setEnabled(false);
+            if (email.isEmpty()){
+                binding.resetPassEd.setError("Email is empty");
+                binding.resetBtn.setEnabled(true);
+                return;
+            }
+            auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    binding.resetBtn.setEnabled(false);
+                    binding.checkIBTxt.setVisibility(View.VISIBLE);
+                }
+                else {
+                    binding.resetBtn.setEnabled(true);
+                    Toast.makeText(getActivity(), "Error "+task.getException(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        });
         return binding.getRoot();
     }
     private void setFragment(Fragment fragment){

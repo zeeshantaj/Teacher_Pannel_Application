@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.example.teacher_panel_application.Intro.IntroFragment;
+import com.example.teacher_panel_application.Utils.FragmentUtils;
 import com.example.teacher_panel_application.databinding.ActivityLoginBinding;
 
 public class Login_Activity extends AppCompatActivity {
@@ -18,12 +19,6 @@ public class Login_Activity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         getSupportActionBar().hide();
-        setDefaultFragment(new IntroFragment());
-    }
-
-    private void setDefaultFragment(Fragment fragment){
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(binding.loginFrameLayout.getId(),fragment);
-        fragmentTransaction.commit();
+        FragmentUtils.SetFragment(getSupportFragmentManager(),new IntroFragment(),binding.loginFrameLayout.getId());
     }
 }
