@@ -3,6 +3,8 @@ package com.example.teacher_panel_application.History;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,8 +27,10 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
     private String uid;
     private Context context;
     private ProgressDialog progressDialog;
-    public LoadClassData(RecyclerView recyclerView, String uid, Context context) {
+    private TextView textView;
+    public LoadClassData(RecyclerView recyclerView, TextView textView, String uid, Context context) {
         this.recyclerView = recyclerView;
+        this.textView = textView;
         this.uid = uid;
         this.context = context;
         progressDialog = new ProgressDialog(context);
@@ -42,6 +46,8 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
 
     @Override
     protected List<UploadClassModel> doInBackground(Void... voids) {
+
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("PostedData").child(uid);
@@ -67,6 +73,10 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                 Toast.makeText(context, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        if (modelList.isEmpty()){
+            textView.setVisibility(View.VISIBLE);
+        }
+        textView.setVisibility(View.GONE);
         return modelList;
     }
 }

@@ -4,29 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userProfile_pf"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/round_bg"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/user_img_place_holder"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:id="@+id/userProfile_text_pf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Z"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/userName_pf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User Name"
@@ -42,33 +32,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        app:layout_constraintTop_toBottomOf="@+id/userName_pf">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/totalClassLineaLay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/totalClassCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Total Classes 100"
-                    android:textAlignment="center"
-                    android:textSize="14sp" />
-            </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:padding="5dp"
+                app:cardBackgroundColor="@color/center"
                 app:cardCornerRadius="10dp">
 
                 <LinearLayout
@@ -82,6 +57,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Notification"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/white"
                         android:textSize="18sp" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
@@ -96,8 +73,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/center"
                 app:cardCornerRadius="10dp">
 
                 <LinearLayout
@@ -110,6 +87,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Dark Mode"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="20dp"
                         android:textSize="18sp" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
@@ -127,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:padding="10dp"
+                app:cardBackgroundColor="@color/center"
                 app:cardCornerRadius="10dp">
 
                 <TextView
@@ -134,15 +114,18 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
                     android:padding="15dp"
-                    android:text="Create Group"
+                    android:text="@string/create_group"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/baseline_term_24" />
+                    app:drawableStartCompat="@drawable/baseline_term_24"
+                    app:drawableTint="@color/white" />
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:padding="10dp"
+                app:cardBackgroundColor="@color/center"
                 app:cardCornerRadius="10dp">
 
                 <TextView
@@ -151,14 +134,17 @@
                     android:drawablePadding="12dp"
                     android:padding="15dp"
                     android:text="Term &amp; Conditions"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/baseline_term_24" />
+                    app:drawableStartCompat="@drawable/baseline_term_24"
+                    app:drawableTint="@color/white" />
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:padding="10dp"
+                app:cardBackgroundColor="@color/center"
                 app:cardCornerRadius="10dp">
 
                 <TextView
@@ -168,7 +154,9 @@
                     android:padding="15dp"
                     android:text="help &amp; Support"
                     android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/baseline_support_agent_24" />
+                    android:textColor="@color/white"
+                    app:drawableStartCompat="@drawable/baseline_support_agent_24"
+                    app:drawableTint="@color/white" />
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:id="@+id/logoutCard"
@@ -176,6 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:padding="10dp"
+                app:cardBackgroundColor="@color/center"
                 app:cardCornerRadius="10dp">
 
                 <TextView
@@ -184,8 +173,10 @@
                     android:drawablePadding="12dp"
                     android:padding="15dp"
                     android:text="LogOut"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
-                    app:drawableStartCompat="@drawable/baseline_logout_24" />
+                    app:drawableStartCompat="@drawable/baseline_logout_24"
+                    app:drawableTint="@color/white" />
             </androidx.cardview.widget.CardView>
             <TextView
                 android:id="@+id/rateTxt"
@@ -193,10 +184,8 @@
                 android:layout_height="wrap_content"
                 android:text="Rate this App"
                 android:textSize="24sp"
+                android:padding="15dp"
                 android:textAlignment="center"/>
-
-
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

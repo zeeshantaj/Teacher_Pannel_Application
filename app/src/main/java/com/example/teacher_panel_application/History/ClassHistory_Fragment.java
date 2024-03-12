@@ -34,7 +34,7 @@ public class ClassHistory_Fragment extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        LoadClassData loadDataInBackground = new LoadClassData(binding.classHistoryRecycler,uid,getActivity());
+        LoadClassData loadDataInBackground = new LoadClassData(binding.classHistoryRecycler,binding.dataShowTxt,uid,getActivity());
         loadDataInBackground.execute();
 
         return binding.getRoot();
