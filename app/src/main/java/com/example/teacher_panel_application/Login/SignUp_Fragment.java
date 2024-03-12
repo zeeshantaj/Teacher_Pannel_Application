@@ -21,12 +21,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.example.teacher_panel_application.Activities.Upload_Details_Activity;
+import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentSignUpBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,14 +32,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class SignUp_Fragment extends Fragment {
-
 
     public SignUp_Fragment() {
         // Required empty public constructor
     }
-
     private FrameLayout parentFrameLayout;
     private FirebaseAuth auth;
     private ProgressDialog dialog;
@@ -54,7 +50,6 @@ public class SignUp_Fragment extends Fragment {
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference,imageRef;
     private String downloadedImageUri;
-
     private DatabaseReference databaseReference;
 
     @Override
@@ -65,11 +60,6 @@ public class SignUp_Fragment extends Fragment {
 
         dialog = new ProgressDialog(getActivity());
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
-
-
-
-
-
 
         return binding.getRoot();
     }
@@ -85,8 +75,8 @@ public class SignUp_Fragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
-        String uid = auth.getUid();
-        String imageName = "image_"+uid+".jpg";
+
+        String imageName = "image_"+".jpg";
 
         imageRef = storageReference.child("UserImages/"+imageName);
 
@@ -139,8 +129,16 @@ public class SignUp_Fragment extends Fragment {
                        downloadedImageUri = uri.toString();
 
 
-                   }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
-                }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                   }).addOnFailureListener(e -> {
+                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("MyApp", e.getLocalizedMessage());
+
+                   });
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("MyApp", e.getLocalizedMessage());
+
+                });
 
                 auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(authResult -> {
 
@@ -148,23 +146,25 @@ public class SignUp_Fragment extends Fragment {
                     value.put("image",downloadedImageUri);
                     value.put("name",name);
                     value.put("email",email);
-
-                    databaseReference.child("UsersInfo").child(uid).setValue(value)
+                    String uid = auth.getUid();
+                    databaseReference.child("UsersInfo").child(Objects.requireNonNull(uid)).setValue(value)
 
                                     .addOnSuccessListener(unused -> {
-                                        Toast.makeText(getActivity(), "User Created", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getActivity(), Upload_Details_Activity.class);
+                                        Toast.makeText(getActivity(), "Account Created!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getActivity(), Home_Activity.class);
                                         startActivity(intent);
                                         getActivity().finish();
                                         dialog.dismiss();
-                                    }).addOnFailureListener(e ->
-                                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                                    }).addOnFailureListener(e -> {
+                                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                            Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
+                                    });
 
 
                 }).addOnFailureListener(e -> {
 
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("MyApp", e.getLocalizedMessage());
+                    Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
                     dialog.dismiss();
                 });
 
