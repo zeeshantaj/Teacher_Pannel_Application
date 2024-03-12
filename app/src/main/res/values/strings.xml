@@ -54,5 +54,6 @@
     <string name="we_will_send_you_an_email_with_a_link_to_reset_the_password">we will send you an Email with a link to reset the password</string>
     <string name="if_you_forget_your_password_don_t_worry_nyou_need_to_enter_your_registered_email_here">If you forget your password don\'t worry \nyou need to enter your registered Email here!</string>
     <string name="name1">Name</string>
+    <string name="please_check_you_inbox">Please Check you Inbox</string>
 
 </resources>
