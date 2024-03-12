@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.FragmentUtils;
 import com.example.teacher_panel_application.databinding.FragmentSignUpBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -81,7 +82,7 @@ public class SignUp_Fragment extends Fragment {
         imageRef = storageReference.child("UserImages/"+imageName);
 
         binding.loginText.setOnClickListener(view12 ->
-                setFragment(new Login_Fragment()));
+                FragmentUtils.SetFragment(getActivity().getSupportFragmentManager(),new Login_Fragment(),parentFrameLayout.getId()));
 
         binding.userProfileSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -182,11 +183,4 @@ public class SignUp_Fragment extends Fragment {
 
                 }
             });
-
-    private void setFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        //fragmentTransaction.setCustomAnimations(R.anim.slide_from_right,R.anim.slideout_from_left);
-        fragmentTransaction.replace(parentFrameLayout.getId(), fragment);
-        fragmentTransaction.commit();
-    }
 }

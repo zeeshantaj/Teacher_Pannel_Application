@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
@@ -15,7 +16,9 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.Home.Home_Activity;
+import com.example.teacher_panel_application.Intro.IntroFragment;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.FragmentUtils;
 import com.example.teacher_panel_application.databinding.FragmentLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,7 +77,6 @@ public class Login_Fragment extends Fragment {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // Sign-in success, update UI accordingly
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
                             Intent intent = new Intent(getActivity(), Home_Activity.class);
                             startActivity(intent);
                             getActivity().finish();
@@ -102,24 +104,17 @@ public class Login_Fragment extends Fragment {
         binding.signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFragment(new SignUp_Fragment());
+                FragmentUtils.SetFragment(getActivity().getSupportFragmentManager(),new SignUp_Fragment(),parentFrameLayout.getId());
             }
         });
 
         binding.txtForgetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFragment(new Reset_Pass_Fragment());
+                FragmentUtils.SetFragment(getActivity().getSupportFragmentManager(),new Reset_Pass_Fragment(),parentFrameLayout.getId());
             }
         });
 
         return binding.getRoot();
-    }
-
-    private void setFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        //fragmentTransaction.setCustomAnimations(R.anim.slide_from_left,R.anim.slideout_from_right);
-        fragmentTransaction.replace(parentFrameLayout.getId(), fragment);
-        fragmentTransaction.commit();
     }
 }

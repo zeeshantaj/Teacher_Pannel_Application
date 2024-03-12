@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.FragmentUtils;
 import com.example.teacher_panel_application.databinding.FragmentResetPassBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,7 +41,7 @@ public class Reset_Pass_Fragment extends Fragment {
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        binding.loginText.setOnClickListener(view -> setFragment(new Login_Fragment()));
+        binding.loginText.setOnClickListener(view -> FragmentUtils.SetFragment(getActivity().getSupportFragmentManager(),new Login_Fragment(),parentFrameLayout.getId()));
 
         binding.resetBtn.setOnClickListener(v -> {
             String email = binding.resetPassEd.getText().toString();
@@ -63,11 +64,5 @@ public class Reset_Pass_Fragment extends Fragment {
 
         });
         return binding.getRoot();
-    }
-    private void setFragment(Fragment fragment){
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        //fragmentTransaction.setCustomAnimations(R.anim.slide_from_right,R.anim.slideout_from_left);
-        fragmentTransaction.replace(parentFrameLayout.getId(),fragment);
-        fragmentTransaction.commit();
     }
 }
