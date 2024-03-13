@@ -54,10 +54,12 @@ public class Profile_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater,container,false);
 
+        FirebaseAuth auth = FirebaseAuth.getInstance();
 
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
-        String imageName = "image_"+".jpg";
+        String uid = auth.getUid();
+        String imageName = "image_"+uid+".jpg";
         imageRef = storageReference.child("UserImages/"+imageName);
 
         ClickShrinkUtils.applyClickShrink(binding.rateTxt);
@@ -66,7 +68,7 @@ public class Profile_Fragment extends Fragment {
             MaterialRating materialRating = new MaterialRating();
             materialRating.show(fragmentManager,"Rating");
         });
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+
         ClickShrinkUtils.applyClickShrink(binding.logoutCard);
         binding.logoutCard.setOnClickListener(v -> {
 
@@ -97,7 +99,6 @@ public class Profile_Fragment extends Fragment {
             startActivity(intent);
         });
 
-        String uid = auth.getUid();
         reference = FirebaseDatabase.getInstance().getReference().child("UsersInfo").child(uid);
 
         binding.userProfilePf.setOnClickListener(v -> {
@@ -134,6 +135,7 @@ public class Profile_Fragment extends Fragment {
             }
         });
 
+
     }
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -168,12 +170,15 @@ public class Profile_Fragment extends Fragment {
         builder.setView(dialogView);
 
         TextInputEditText editTextFileName = dialogView.findViewById(R.id.editNameEdDialogue);
-        TextView buttonSave = dialogView.findViewById(R.id.edit_name_cancel);
-        TextView buttonCancel = dialogView.findViewById(R.id.textView11);
+        TextView buttonCancel = dialogView.findViewById(R.id.edit_name_cancel);
+        TextView buttonSave  = dialogView.findViewById(R.id.textView11);
 
         AlertDialog dialog = builder.create();
         dialog.show();
+        buttonCancel.setOnClickListener(v -> {
 
+            dialog.dismiss();
+        });
         buttonSave.setOnClickListener(v -> {
             String name = editTextFileName.getText().toString();
             if (name.isEmpty()){
@@ -181,20 +186,17 @@ public class Profile_Fragment extends Fragment {
                 return;
             }
             HashMap<String, Object> value = new HashMap<>();
-            value.put("image",imageUri);
+            value.put("name",name);
             reference.updateChildren(value).addOnSuccessListener(unused -> {
 
                 Toast.makeText(getActivity(), "Name Changes", Toast.LENGTH_SHORT).show();
-
+                getUserInfo();
             }).addOnFailureListener(e -> {
                 Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             });
             dialog.dismiss();
         });
-        buttonCancel.setOnClickListener(v -> {
 
-            dialog.dismiss();
-        });
 
 
     }
@@ -202,6 +204,7 @@ public class Profile_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         getUserInfo();
     }
 }

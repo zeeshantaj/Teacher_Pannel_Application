@@ -76,8 +76,9 @@ public class SignUp_Fragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
+        String imageUid = auth.getUid();
 
-        String imageName = "image_"+".jpg";
+        String imageName = "image_"+imageUid+".jpg";
 
         imageRef = storageReference.child("UserImages/"+imageName);
 
