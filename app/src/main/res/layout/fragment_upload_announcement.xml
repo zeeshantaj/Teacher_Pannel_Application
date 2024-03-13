@@ -122,22 +122,19 @@
                 android:contentDescription="@string/announcementimage"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:src="@drawable/announcement_img" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/announcementUploadBtn"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/btnColor1"
+                android:text="@string/upload"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:cornerRadius="15dp"
+                android:layout_gravity="center"/>
         </LinearLayout>
+
     </ScrollView>
-
-    <Button
-        android:id="@+id/announcementUploadBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="20dp"
-        android:background="@drawable/btn_bg"
-        android:backgroundTint="@color/darkBlue"
-        android:text="@string/upload"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
