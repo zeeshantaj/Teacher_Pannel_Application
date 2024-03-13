@@ -33,7 +33,7 @@ public class NotificationHistory_Fragment extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,uid,getActivity());
+        LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,binding.dataShowTxtNotification,uid,getActivity());
         loadDataInBackground.execute();
         return binding.getRoot();
     }
@@ -101,7 +101,7 @@ public class NotificationHistory_Fragment extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,uid,getActivity());
+        LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,binding.dataShowTxtNotification,uid,getActivity());
         loadDataInBackground.execute();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid);

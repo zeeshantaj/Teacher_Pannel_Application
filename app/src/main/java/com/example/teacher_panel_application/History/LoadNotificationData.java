@@ -3,6 +3,8 @@ package com.example.teacher_panel_application.History;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,9 +27,11 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
     private String uid;
     private Context context;
     private ProgressDialog progressDialog;
+    private TextView textView;
 
-    public LoadNotificationData(RecyclerView recyclerView, String uid, Context context) {
+    public LoadNotificationData(RecyclerView recyclerView,TextView textView, String uid, Context context) {
         this.recyclerView = recyclerView;
+        this.textView = textView;
         this.uid = uid;
         this.context = context;
         progressDialog = new ProgressDialog(context);
@@ -50,11 +54,11 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                         AnnouncementModel model = new AnnouncementModel();
-                        if (dataSnapshot.child("title").exists()){
+                        if (dataSnapshot.child("title").exists()) {
                             String title = dataSnapshot.child("title").getValue(String.class);
                             String date = dataSnapshot.child("current_date").getValue(String.class);
                             String dueDate = dataSnapshot.child("due_date").getValue(String.class);
@@ -65,24 +69,29 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
                             model.setDescription(des);
                             model.setCurrent_date(date);
                         }
-                        if (dataSnapshot.child("imageUrl").exists()){
+                        if (dataSnapshot.child("imageUrl").exists()) {
                             String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
                             String date = dataSnapshot.child("current_date").getValue(String.class);
                             model.setImageUrl(imageUrl);
                             model.setCurrent_date(date);
                         }
+                        textView.setVisibility(View.GONE);
                         modelList.add(model);
                     }
                     AnnounceAdapter adapter = new AnnounceAdapter(modelList);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);
                 }
+                else {
+                    textView.setVisibility(View.VISIBLE);
+                }
                 progressDialog.dismiss(); // Dismiss the progress dialog when data is loaded
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.dismiss();
-                Toast.makeText(context, "Error "+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         return modelList;

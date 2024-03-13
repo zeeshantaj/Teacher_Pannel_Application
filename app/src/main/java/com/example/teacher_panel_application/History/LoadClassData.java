@@ -63,6 +63,11 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                     ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);
+                    textView.setVisibility(View.GONE);
+
+                }
+                else {
+                    textView.setVisibility(View.VISIBLE);
                 }
                 progressDialog.dismiss();
             }
@@ -73,10 +78,6 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                 Toast.makeText(context, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        if (modelList.isEmpty()){
-            textView.setVisibility(View.VISIBLE);
-        }
-        textView.setVisibility(View.GONE);
         return modelList;
     }
 }
