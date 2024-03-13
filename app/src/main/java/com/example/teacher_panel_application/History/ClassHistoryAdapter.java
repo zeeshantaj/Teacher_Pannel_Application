@@ -1,5 +1,6 @@
 package com.example.teacher_panel_application.History;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,9 +58,11 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
             binding.getRoot().setOnClickListener(v -> {
                 if (binding.expandableLayoutClassHistory.getVisibility() == View.VISIBLE) {
                     // If the inner layout is visible, hide it to collapse
+                    binding.downArrowImg.setRotation(0);
                     binding.expandableLayoutClassHistory.setVisibility(View.GONE);
                 } else {
                     // If the inner layout is not visible, show it to expand
+                    binding.downArrowImg.setRotation(180);
                     binding.expandableLayoutClassHistory.setVisibility(View.VISIBLE);
 
                 }
