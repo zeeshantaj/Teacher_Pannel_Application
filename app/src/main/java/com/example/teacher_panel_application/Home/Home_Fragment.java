@@ -36,6 +36,7 @@ import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.Notification.ClassEnded_NotificationService;
 import com.example.teacher_panel_application.Notification.NotificationBroadcastReceiver;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.HomeFragmentBinding;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
@@ -260,25 +261,8 @@ public class Home_Fragment extends Fragment {
 
         });
         share.setOnClickListener(v -> {
-//            Bitmap bitmap = Bitmap.createBitmap(binding.cardNode.getWidth(), binding.cardNode.getHeight(), Bitmap.Config.ARGB_8888);
-//            Canvas canvas = new Canvas(bitmap);
-//            binding.cardNode.draw(canvas);
-//            File file = new File(getActivity().getExternalCacheDir(), "cardview_image.jpg");
-//            try (FileOutputStream fos = new FileOutputStream(file)) {
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//                fos.flush();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.setType("image/jpeg");
-//            intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getActivity(), "com.example.teacher_panel_application.provider", file));
-//            intent.putExtra(Intent.EXTRA_TEXT, "Your data here");
-//            intent.setPackage("com.whatsapp"); // Set WhatsApp package name to share specifically on WhatsApp
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            startActivity(Intent.createChooser(intent, "Share CardView Image and Data"));
-
-            shareOnWhatsapp(name,loc,minute,dep,sub,topi,start);
+            MethodsUtils.shareOnWhatsapp(getActivity(),
+                    name,loc,minute,dep,sub,topi,start);
 
         });
         buttonCancel.setOnClickListener(v -> {
@@ -308,42 +292,6 @@ public class Home_Fragment extends Fragment {
 //                    }
 //                })
 //                .show();
-    }
-
-    private void shareOnWhatsapp(String name,String loc,String dura,String dep,String sub,String top,String start){
-        String teacherName = "Teacher: " + name + "\n";
-        String location = "Location: " + loc + "\n";
-        String duration = "Duration: " + dura + " minutes\n";
-        String depart = "Major: " + dep + "\n";
-        String subject = "Subject: " + sub + "\n";
-        String topic = "Today's Topic: " + top + "\n";
-        String started = "Started At: " + start;
-
-        String message = teacherName + location + duration + depart + subject + topic + started;
-
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, message);
-        shareIntent.setPackage("com.whatsapp");
-        startActivity(shareIntent);
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Log.e("MyApp", "onstart");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.e("MyApp", "onstop");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e("MyApp", "onresume");
     }
 
     private void openEditDataFragment() {
