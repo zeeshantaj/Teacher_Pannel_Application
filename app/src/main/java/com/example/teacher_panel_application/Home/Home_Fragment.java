@@ -255,6 +255,7 @@ public class Home_Fragment extends Fragment {
         MaterialButton editData = dialogView.findViewById(R.id.editDataBtn);
         MaterialButton share = dialogView.findViewById(R.id.shareOnWhatsapp);
         editData.setOnClickListener(v -> {
+            dialog.dismiss();
             openEditDataFragment();
 
         });
