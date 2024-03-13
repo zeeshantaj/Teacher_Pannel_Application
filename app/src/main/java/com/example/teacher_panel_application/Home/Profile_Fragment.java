@@ -93,11 +93,6 @@ public class Profile_Fragment extends Fragment {
                     .show();
         });
 
-        ClickShrinkUtils.applyClickShrink(binding.createGroupCard);
-        binding.createGroupCard.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CreateGroup_Activity.class);
-            startActivity(intent);
-        });
 
         reference = FirebaseDatabase.getInstance().getReference().child("UsersInfo").child(uid);
 
