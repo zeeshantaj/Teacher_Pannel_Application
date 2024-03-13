@@ -88,6 +88,7 @@ public class Home_Fragment extends Fragment {
     private FirebaseAuth auth;
     private CountDownTimer countDownTimer;
     private long timeRemainingInMillis, timeDifferenceMillis;
+    private String name,dep,loc,sub,topi,minute,start,dateTime,endTimeString;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -117,22 +118,21 @@ public class Home_Fragment extends Fragment {
         String uid = auth.getCurrentUser().getUid();
         database = FirebaseDatabase.getInstance();
         reference = FirebaseDatabase.getInstance().getReference("Teacher_Data").child(uid);
-
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     binding.cardNode.setVisibility(View.VISIBLE);
                     binding.noClass.setVisibility(View.GONE);
-                    String name = snapshot.child("name").getValue(String.class);
-                    String dep = snapshot.child("department").getValue(String.class);
-                    String loc = snapshot.child("location").getValue(String.class);
-                    String sub = snapshot.child("subject").getValue(String.class);
-                    String topi = snapshot.child("topic").getValue(String.class);
-                    String minute = snapshot.child("minutes").getValue(String.class);
-                    String start = snapshot.child("currentTime").getValue(String.class);
-                    String dateTime = snapshot.child("dateTime").getValue(String.class);
-                    String endTimeString = snapshot.child("endTime").getValue(String.class);
+                    name = snapshot.child("name").getValue(String.class);
+                     dep = snapshot.child("department").getValue(String.class);
+                     loc = snapshot.child("location").getValue(String.class);
+                     sub = snapshot.child("subject").getValue(String.class);
+                     topi = snapshot.child("topic").getValue(String.class);
+                     minute = snapshot.child("minutes").getValue(String.class);
+                     start = snapshot.child("currentTime").getValue(String.class);
+                     dateTime = snapshot.child("dateTime").getValue(String.class);
+                     endTimeString = snapshot.child("endTime").getValue(String.class);
 
                 setTextView(name,dep,minute,loc,sub,topi,start);
 
@@ -152,35 +152,6 @@ public class Home_Fragment extends Fragment {
                         e.printStackTrace();
                     }
                     if (countDownTimer == null) {
-
-//                        Intent alarmIntent = new Intent(getActivity(), ClassEnded_NotificationService.class);
-//
-//                        alarmIntent.setAction("START_ALARM");
-//                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent,
-//                                PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//                        AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(getActivity().ALARM_SERVICE);
-//
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                            if (alarmManager.canScheduleExactAlarms()) {
-//                                // App has permission to schedule exact alarms
-//                                alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeDifferenceMillis, pendingIntent);
-//                            } else {
-//                                // App does not have permission, handle SecurityException
-//                                try {
-//                                    alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(timeDifferenceMillis, pendingIntent), pendingIntent);
-//                                } catch (SecurityException e) {
-//                                    // Handle the exception
-//                                    Log.e("AlarmManager", "Failed to schedule exact alarm", e);
-//                                }
-//                            }
-//                        }
-
-                        //    alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeDifferenceMillis, pendingIntent);
-
-// To start timer
-
-
 
                         setNotification(timeDifferenceMillis,uid,name,dep,loc,sub,topi,minute,dateTime);
                         countDownTimer = new CountDownTimer(timeDifferenceMillis, 1000) {
@@ -288,23 +259,26 @@ public class Home_Fragment extends Fragment {
 
         });
         share.setOnClickListener(v -> {
-            Bitmap bitmap = Bitmap.createBitmap(binding.cardNode.getWidth(), binding.cardNode.getHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            binding.cardNode.draw(canvas);
-            File file = new File(getActivity().getExternalCacheDir(), "cardview_image.jpg");
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                fos.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getActivity(), getActivity().getPackageName() + ".provider", file));
-            intent.putExtra(Intent.EXTRA_TEXT, "Your data here");
-            intent.setPackage("com.whatsapp"); // Set WhatsApp package name to share specifically on WhatsApp
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(intent, "Share CardView Image and Data"));
+//            Bitmap bitmap = Bitmap.createBitmap(binding.cardNode.getWidth(), binding.cardNode.getHeight(), Bitmap.Config.ARGB_8888);
+//            Canvas canvas = new Canvas(bitmap);
+//            binding.cardNode.draw(canvas);
+//            File file = new File(getActivity().getExternalCacheDir(), "cardview_image.jpg");
+//            try (FileOutputStream fos = new FileOutputStream(file)) {
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+//                fos.flush();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Intent intent = new Intent(Intent.ACTION_SEND);
+//            intent.setType("image/jpeg");
+//            intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getActivity(), "com.example.teacher_panel_application.provider", file));
+//            intent.putExtra(Intent.EXTRA_TEXT, "Your data here");
+//            intent.setPackage("com.whatsapp"); // Set WhatsApp package name to share specifically on WhatsApp
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            startActivity(Intent.createChooser(intent, "Share CardView Image and Data"));
+
+            shareOnWhatsapp(name,loc,minute,dep,sub,topi,start);
+
         });
         buttonCancel.setOnClickListener(v -> {
             dialog.dismiss();
@@ -335,6 +309,23 @@ public class Home_Fragment extends Fragment {
 //                .show();
     }
 
+    private void shareOnWhatsapp(String name,String loc,String dura,String dep,String sub,String top,String start){
+        String teacherName = "Teacher: " + name + "\n";
+        String location = "Location: " + loc + "\n";
+        String duration = "Duration: " + dura + " minutes\n";
+        String depart = "Major: " + dep + "\n";
+        String subject = "Subject: " + sub + "\n";
+        String topic = "Today's Topic: " + top + "\n";
+        String started = "Started At: " + start;
+
+        String message = teacherName + location + duration + depart + subject + topic + started;
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+        shareIntent.setPackage("com.whatsapp");
+        startActivity(shareIntent);
+    }
     @Override
     public void onStart() {
         super.onStart();

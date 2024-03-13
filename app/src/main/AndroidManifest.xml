@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Teacher_Panel_Application"
         tools:targetApi="31">
+
         <activity
             android:name=".CreateGroup.CreateGroup_Activity"
             android:exported="false" />
