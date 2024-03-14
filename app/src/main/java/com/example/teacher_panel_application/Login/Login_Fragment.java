@@ -29,7 +29,6 @@ public class Login_Fragment extends Fragment {
     }
 
     private FrameLayout parentFrameLayout;
-    private FirebaseAuth auth;
     private FragmentLoginBinding binding;
 
     @Override
@@ -89,18 +88,6 @@ public class Login_Fragment extends Fragment {
                     });
 
         });
-
-        auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-
-        if (user != null) {
-            Intent intent = new Intent(getActivity(), Home_Activity.class);
-            startActivity(intent);
-            getActivity().finish();
-
-        }
-
-
         binding.signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
