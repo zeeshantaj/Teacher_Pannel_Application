@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.EditDataFragment"
+    tools:context=".EditDataFragments.EditDataFragment"
     >
 
     <eightbitlab.com.blurview.BlurView
@@ -46,7 +46,6 @@
                                 android:id="@+id/teacherNameEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Teacher Name"
                                 android:inputType="textEmailAddress" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -65,7 +64,6 @@
                                 android:id="@+id/departmentEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Department"
                                 android:inputType="textPersonName" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -87,7 +85,7 @@
                                 android:id="@+id/locationEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Class Location" />
+                                />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,8 +103,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/subjectEditFragment"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Subject" />
+                                android:layout_height="wrap_content" />
 
                         </com.google.android.material.textfield.TextInputLayout>
                         <com.google.android.material.textfield.TextInputLayout
@@ -123,8 +120,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/todayTopicEditFragment"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Today's Topic" />
+                                android:layout_height="wrap_content" />
 
                         </com.google.android.material.textfield.TextInputLayout>
                         <com.google.android.material.textfield.TextInputLayout
@@ -142,7 +138,7 @@
                                 android:id="@+id/edKeyEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Key" />
+                                />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -151,8 +147,8 @@
                             android:id="@+id/edMinutesEditFragment"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:hint="Minutes"
                             android:inputType="number"
+                            android:backgroundTint="@color/center"
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="10dp"/>
 
@@ -160,24 +156,22 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Enter class session time in\n minutes"
+                            android:text="@string/enter_class_session_time_in_n_minutes"
                             android:textStyle="bold"
                             android:textAlignment="center"
                             android:textColor="@color/red"
                             android:layout_marginStart="34dp"/>
-
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/uploadBtnEditFragment"
-                            android:layout_width="wrap_content"
+                            android:layout_width="190dp"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/darkBlue"
-                            android:background="@drawable/btn_bg"
-                            android:text="Upload"
+                            android:layout_margin="8dp"
+                            android:backgroundTint="@color/btnColor1"
+                            android:text="@string/upload"
                             android:textColor="@color/white"
-                            android:textAllCaps="false"
-                            android:layout_marginTop="10dp"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="30dp"/>
+                            android:textSize="18sp"
+                            app:cornerRadius="15dp"
+                            android:layout_gravity="center"/>
                     </LinearLayout>
                 </ScrollView>
             </LinearLayout>
