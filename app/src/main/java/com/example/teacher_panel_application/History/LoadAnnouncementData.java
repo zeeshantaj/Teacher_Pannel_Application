@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.impl.model.WorkProgressDao;
 
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.google.firebase.database.DataSnapshot;
@@ -20,16 +19,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class LoadNotificationData extends AsyncTask<Void,Void, List<AnnouncementModel>> {
+public class LoadAnnouncementData extends AsyncTask<Void,Void, List<AnnouncementModel>> {
     private RecyclerView recyclerView;
     private String uid;
     private Context context;
     private ProgressDialog progressDialog;
     private TextView textView;
 
-    public LoadNotificationData(RecyclerView recyclerView,TextView textView, String uid, Context context) {
+    public LoadAnnouncementData(RecyclerView recyclerView, TextView textView, String uid, Context context) {
         this.recyclerView = recyclerView;
         this.textView = textView;
         this.uid = uid;
@@ -78,6 +78,7 @@ public class LoadNotificationData extends AsyncTask<Void,Void, List<Announcement
                         textView.setVisibility(View.GONE);
                         modelList.add(model);
                     }
+                    Collections.reverse(modelList);
                     AnnounceAdapter adapter = new AnnounceAdapter(modelList);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);

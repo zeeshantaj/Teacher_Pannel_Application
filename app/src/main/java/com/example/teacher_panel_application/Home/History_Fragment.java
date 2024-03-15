@@ -8,12 +8,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdapter;
 import com.example.teacher_panel_application.History.ClassHistory_Fragment;
-import com.example.teacher_panel_application.History.NotificationHistory_Fragment;
-import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.History.AnnouncementHistory_Fragment;
 import com.example.teacher_panel_application.databinding.FragmentHistoryBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -32,7 +30,7 @@ public class History_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Fragment[] pages = {new ClassHistory_Fragment(), new NotificationHistory_Fragment()}; // Replace with your fragment classes
+        Fragment[] pages = {new ClassHistory_Fragment(), new AnnouncementHistory_Fragment()}; // Replace with your fragment classes
         UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
         binding.myViewpagerHistory.setAdapter(myPagerAdapter);
 

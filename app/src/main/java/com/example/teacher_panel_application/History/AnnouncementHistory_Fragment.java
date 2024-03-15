@@ -1,6 +1,5 @@
 package com.example.teacher_panel_application.History;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationHistory_Fragment extends Fragment {
+public class AnnouncementHistory_Fragment extends Fragment {
     private HistoryNotificationBinding binding;
     @Nullable
     @Override
@@ -33,7 +32,7 @@ public class NotificationHistory_Fragment extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,binding.dataShowTxtNotification,uid,getActivity());
+        LoadAnnouncementData loadDataInBackground = new LoadAnnouncementData(binding.announcementRecycler,binding.dataShowTxtNotification,uid,getActivity());
         loadDataInBackground.execute();
         return binding.getRoot();
     }
@@ -101,7 +100,7 @@ public class NotificationHistory_Fragment extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        LoadNotificationData loadDataInBackground = new LoadNotificationData(binding.announcementRecycler,binding.dataShowTxtNotification,uid,getActivity());
+        LoadAnnouncementData loadDataInBackground = new LoadAnnouncementData(binding.announcementRecycler,binding.dataShowTxtNotification,uid,getActivity());
         loadDataInBackground.execute();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid);

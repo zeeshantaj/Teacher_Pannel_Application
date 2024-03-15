@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -42,6 +43,15 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
         holder.binding.classHistoryLocationTxt.setText(model.getLocation());
         holder.binding.classHistoryStartedTxt.setText(model.getDateTime());
         holder.binding.classHistoryDepartText.setText(model.getDepartment());
+        holder.binding.expandableLayoutClassHistory.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(v.getContext(), "CLicked"+modelList.get(position), Toast.LENGTH_SHORT).show();
+                modelList.get(position);
+                removeItem(position);
+                return true;
+            }
+        });
 
     }
     @Override
@@ -54,7 +64,6 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
         public ViewHolder(@NonNull ClasshistoryRecyclerItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
             binding.getRoot().setOnClickListener(v -> {
                 if (binding.expandableLayoutClassHistory.getVisibility() == View.VISIBLE) {
                     // If the inner layout is visible, hide it to collapse
@@ -67,6 +76,11 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
 
                 }
             });
+
         }
+    }
+    public void removeItem(int position){
+        modelList.remove(position);
+        notifyItemRemoved(position);
     }
 }

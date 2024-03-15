@@ -37,15 +37,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="15dp"
-                android:text="@string/online"
-                android:textColor="@color/green"
+                android:layout_marginTop="6dp"
+                android:text="@string/_10003"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:drawableStartCompat="@drawable/baseline_circle_24" />
+                app:drawableStartCompat="@drawable/led_icon" />
 
             <TextView
                 android:id="@+id/textView7"
