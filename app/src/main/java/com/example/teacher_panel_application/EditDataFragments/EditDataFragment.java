@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.FragmentEditDataBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -89,7 +90,15 @@ public class EditDataFragment extends Fragment {
     }
 
     private void getUploadData() {
-        getData();
+        MethodsUtils.getData(getActivity(),
+                binding.teacherNameEditFragment,
+        binding.departmentEditFragment,
+        binding.locationEditFragment,
+        binding.subjectEditFragment,
+        binding.todayTopicEditFragment,
+                binding.edKeyEditFragment,
+                binding.edMinutesEditFragment
+);
         binding.uploadBtnEditFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
