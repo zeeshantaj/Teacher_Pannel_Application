@@ -6,8 +6,10 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,33 +47,17 @@ public class EditDataFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private BlurView blurView;
-    private TextInputEditText tName, depart, location, subject, topic, key;
-    private EditText minutes;
-    private Button uploadBtn;
     private DatabaseReference reference;
     private FirebaseAuth auth;
 
     FragmentEditDataBinding binding;
 
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_edit_data, container, false);
-
         binding = FragmentEditDataBinding.inflate(inflater, container, false);
 
-        blurView = view.findViewById(R.id.blurView);
-        tName = view.findViewById(R.id.teacherNameEditFragment);
-        depart = view.findViewById(R.id.departmentEditFragment);
-        location = view.findViewById(R.id.locationEditFragment);
-        subject = view.findViewById(R.id.subjectEditFragment);
-        topic = view.findViewById(R.id.todayTopicEditFragment);
-        key = view.findViewById(R.id.edKeyEditFragment);
-        minutes = view.findViewById(R.id.edMinutesEditFragment);
-        uploadBtn = view.findViewById(R.id.uploadBtnEditFragment);
 
         auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
@@ -104,7 +90,7 @@ public class EditDataFragment extends Fragment {
 
     private void getUploadData() {
         getData();
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
+        binding.uploadBtnEditFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = binding.teacherNameEditFragment.getText().toString();
@@ -186,24 +172,24 @@ public class EditDataFragment extends Fragment {
     private void getData() {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot1) {
-                if (snapshot1.exists()) {
-                    for (DataSnapshot snapshot : snapshot1.getChildren()) {
-                        String name = snapshot.child("name").getValue(String.class);
-                        String dep = snapshot.child("department").getValue(String.class);
-                        String loc = snapshot.child("location").getValue(String.class);
-                        String sub = snapshot.child("subject").getValue(String.class);
-                        String topi = snapshot.child("topic").getValue(String.class);
-                        String minute = snapshot.child("minutes").getValue(String.class);
-                        String key = snapshot.child("key").getValue(String.class);
-                        binding.teacherNameEditFragment.setText(name);
-                        binding.departmentEditFragment.setText(dep);
-                        binding.locationEditFragment.setText(loc);
-                        binding.subjectEditFragment.setText(sub);
-                        binding.todayTopicEditFragment.setText(topi);
-                        binding.todayTopicEditFragment.setText(minute);
-                        binding.edKeyEditFragment.setText(key);
-                    }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+
+                    String name = snapshot.child("name").getValue(String.class);
+                    String dep = snapshot.child("department").getValue(String.class);
+                    String loc = snapshot.child("location").getValue(String.class);
+                    String sub = snapshot.child("subject").getValue(String.class);
+                    String topi = snapshot.child("topic").getValue(String.class);
+                    String minute = snapshot.child("minutes").getValue(String.class);
+                    String key = snapshot.child("key").getValue(String.class);
+                    binding.teacherNameEditFragment.setText(name);
+                    binding.departmentEditFragment.setText(dep);
+                    binding.locationEditFragment.setText(loc);
+                    binding.subjectEditFragment.setText(sub);
+                    binding.todayTopicEditFragment.setText(topi);
+                    binding.edMinutesEditFragment.setText(minute);
+                    binding.edKeyEditFragment.setText(key);
+
                 }
             }
 
