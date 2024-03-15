@@ -68,6 +68,8 @@ public class Upload_Class_Data_Fragment extends Fragment {
                 String key = binding.edKey.getText().toString();
                 String minute = binding.edMinutes.getText().toString();
 
+
+
                 if (name.isEmpty() ){
                     binding.teacherName.setError("name is empty");
                 }

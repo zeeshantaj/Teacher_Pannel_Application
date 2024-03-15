@@ -112,6 +112,9 @@ public class Home_Fragment extends Fragment {
                     dateTime = snapshot.child("dateTime").getValue(String.class);
                     endTimeString = snapshot.child("endTime").getValue(String.class);
 
+                    Log.e("MyApp","min"+minute);
+                    Log.e("MyApp","endTime"+endTimeString);
+
                     setTextView(name, dep, minute, loc, sub, topi, start);
 
                     try {
@@ -124,6 +127,7 @@ public class Home_Fragment extends Fragment {
                             Date currentTime = inputFormat.parse(formattedTime);
                             Date endTime = inputFormat.parse(endTimeString);
                             timeDifferenceMillis = endTime.getTime() - currentTime.getTime();
+                            //timeDifferenceMillis = currentTime.getTime() - endTime.getTime();
                             Log.d("MyApp", String.valueOf(timeDifferenceMillis));
                         }
                     } catch (Exception e) {

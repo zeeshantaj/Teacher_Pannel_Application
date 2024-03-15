@@ -8,6 +8,10 @@
     <string name="admob_banner_id">ca-app-pub-4144305165966580/3630690721</string>
     <string name="announcementimage">announcementImage</string>
     <string name="upload">Upload</string>
+    <string name="classDetails">Class Details</string>
+    <string name="postDetails">Post Details</string>
+    <string name="uploadedHistory">Upload History</string>
+    <string name="profile">Profile</string>
     <string name="teacher_name">Teacher Name</string>
     <string name="department">Department</string>
     <string name="department1">Department:</string>

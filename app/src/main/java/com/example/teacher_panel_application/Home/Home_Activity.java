@@ -14,11 +14,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Objects;
 
 public class Home_Activity extends AppCompatActivity {
-    private String homeTitle = "Class Details";
-    private String historyTitle = "Uploaded History";
-    private String profileTitle = "Profile";
-    private String postDetails = "Post Details";
-
     public ViewPager2 viewPager2;
     @SuppressLint("ResourceAsColor")
     @Override
@@ -58,16 +53,16 @@ public class Home_Activity extends AppCompatActivity {
     private int getNavigationItem(int position) {
         switch (position) {
             case 0:
-                Objects.requireNonNull(getSupportActionBar()).setTitle(homeTitle);
+                Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.classDetails);
                 return R.id.navHome;
             case 1:
-                Objects.requireNonNull(getSupportActionBar()).setTitle(postDetails);
+                Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.postDetails);
                 return R.id.navUploadDetails;
             case 2:
-                Objects.requireNonNull(getSupportActionBar()).setTitle(historyTitle);
+                Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.uploadedHistory);
                 return R.id.navHistory;
             case 3:
-                Objects.requireNonNull(getSupportActionBar()).setTitle(profileTitle);
+                Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.profile);
                 return R.id.navProfile;
 
             // Add more cases as needed
@@ -88,69 +83,4 @@ public class Home_Activity extends AppCompatActivity {
 
             return -1;
         }
-    public ViewPager2 getActivityViewPager() {
-        return viewPager2;
-    }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.home_menu,menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.announcementData){
-//            FragmentManager manager = getSupportFragmentManager();
-//            FragmentTransaction transaction = manager.beginTransaction();
-//            transaction.replace(android.R.id.content,new Ann_Home_Fragment());
-//            transaction.addToBackStack(null);
-//            transaction.commit();
-//        }
-//        return false;
-//    }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        Home_Fragment homeFragment = new Home_Fragment();
-//
-//        if (adView != null) {
-//            adView.resume();
-//        }
-//
-//        if (countDownTimer == null) {
-//            homeFragment.getValues();
-//            //startCountdown();
-//        }
-//        homeFragment.getValues();
-////        Log.e("countDownResume",countDownTimer.toString());
-//
-//    }
-//    @Override
-//    protected void onPause() {
-//        if (adView != null) {
-//            adView.pause();
-//        }
-////        if (countDownTimer!=null){
-////            countDownTimer.cancel();
-////            Log.e("countDownPause",countDownTimer.toString());
-////        }
-//        if (countDownTimer != null) {
-//            countDownTimer.cancel();
-//            countDownTimer = null; // Set countDownTimer to null to indicate it was canceled
-//        }
-//        super.onPause();
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        if (countDownTimer!=null){
-//            countDownTimer.cancel();
-//        }
-//        if (adView != null) {
-//            adView.destroy();
-//        }
-//    }
 }
