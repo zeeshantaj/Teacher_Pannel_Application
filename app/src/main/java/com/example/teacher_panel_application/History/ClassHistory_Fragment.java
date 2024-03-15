@@ -4,11 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +40,8 @@ public class ClassHistory_Fragment extends Fragment {
         String uid = auth.getUid();
         LoadClassData loadDataInBackground = new LoadClassData(binding.classHistoryRecycler,binding.dataShowTxt,uid,getActivity());
         loadDataInBackground.execute();
+
+
 
         return binding.getRoot();
     }
