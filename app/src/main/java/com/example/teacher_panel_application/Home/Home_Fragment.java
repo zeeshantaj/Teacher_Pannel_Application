@@ -65,7 +65,8 @@ public class Home_Fragment extends Fragment {
     private FirebaseAuth auth;
     private CountDownTimer countDownTimer;
     private long timeRemainingInMillis, timeDifferenceMillis;
-    private String name,dep,loc,sub,topi,minute,start,dateTime,endTimeString;
+    private String name, dep, loc, sub, topi, minute, start, dateTime, endTimeString;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -102,16 +103,16 @@ public class Home_Fragment extends Fragment {
                     binding.cardNode.setVisibility(View.VISIBLE);
                     binding.noClass.setVisibility(View.GONE);
                     name = snapshot.child("name").getValue(String.class);
-                     dep = snapshot.child("department").getValue(String.class);
-                     loc = snapshot.child("location").getValue(String.class);
-                     sub = snapshot.child("subject").getValue(String.class);
-                     topi = snapshot.child("topic").getValue(String.class);
-                     minute = snapshot.child("minutes").getValue(String.class);
-                     start = snapshot.child("currentTime").getValue(String.class);
-                     dateTime = snapshot.child("dateTime").getValue(String.class);
-                     endTimeString = snapshot.child("endTime").getValue(String.class);
+                    dep = snapshot.child("department").getValue(String.class);
+                    loc = snapshot.child("location").getValue(String.class);
+                    sub = snapshot.child("subject").getValue(String.class);
+                    topi = snapshot.child("topic").getValue(String.class);
+                    minute = snapshot.child("minutes").getValue(String.class);
+                    start = snapshot.child("currentTime").getValue(String.class);
+                    dateTime = snapshot.child("dateTime").getValue(String.class);
+                    endTimeString = snapshot.child("endTime").getValue(String.class);
 
-                setTextView(name,dep,minute,loc,sub,topi,start);
+                    setTextView(name, dep, minute, loc, sub, topi, start);
 
                     try {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -130,7 +131,7 @@ public class Home_Fragment extends Fragment {
                     }
                     if (countDownTimer == null) {
 
-                        setNotification(timeDifferenceMillis,uid,name,dep,loc,sub,topi,minute,dateTime);
+                        setNotification(timeDifferenceMillis, uid, name, dep, loc, sub, topi, minute, dateTime);
                         countDownTimer = new CountDownTimer(timeDifferenceMillis, 1000) {
                             @Override
                             public void onTick(long millisUntilFinished) {
@@ -178,22 +179,24 @@ public class Home_Fragment extends Fragment {
             }
         });
     }
-    private void setNotification(long milis,String uid,String name,String dep,String loc,String sub,String topic,String min,String dateTime){
+
+    private void setNotification(long milis, String uid, String name, String dep, String loc, String sub, String topic, String min, String dateTime) {
         long deliveryTimeMillis = System.currentTimeMillis() + milis;
         Intent intent = new Intent(requireContext(), NotificationBroadcastReceiver.class);
-        intent.putExtra("CurrentUID",uid);
-        intent.putExtra("name",name);
-        intent.putExtra("dep",dep);
-        intent.putExtra("loc",loc);
-        intent.putExtra("sub",sub);
-        intent.putExtra("topic",topic);
-        intent.putExtra("min",min);
-        intent.putExtra("dateTime",dateTime);
+        intent.putExtra("CurrentUID", uid);
+        intent.putExtra("name", name);
+        intent.putExtra("dep", dep);
+        intent.putExtra("loc", loc);
+        intent.putExtra("sub", sub);
+        intent.putExtra("topic", topic);
+        intent.putExtra("min", min);
+        intent.putExtra("dateTime", dateTime);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, deliveryTimeMillis, pendingIntent);
-        Log.e("MyApp","NotificationSchedule");
+        Log.e("MyApp", "NotificationSchedule");
     }
+
     private void updateCountdownText() {
         int hours = (int) (timeRemainingInMillis / 1000) / 3600;
         int minutes = (int) ((timeRemainingInMillis / 1000) % 3600) / 60;
@@ -202,7 +205,8 @@ public class Home_Fragment extends Fragment {
         String timeFormatted = String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds);
         binding.countTImer.setText(timeFormatted);
     }
-    private void setTextView(String name,String dep,String minute,String loc,String sub,String topi,String start){
+
+    private void setTextView(String name, String dep, String minute, String loc, String sub, String topi, String start) {
         binding.nametxt.setText(name);
         binding.nametxt.setSelected(true);
         binding.durationTxt.setText(minute);
@@ -238,14 +242,12 @@ public class Home_Fragment extends Fragment {
         });
         share.setOnClickListener(v -> {
             MethodsUtils.shareOnWhatsapp(getActivity(),
-                    name,loc,minute,dep,sub,topi,start);
+                    name, loc, minute, dep, sub, topi, start);
 
         });
         buttonCancel.setOnClickListener(v -> {
             dialog.dismiss();
         });
-
-
 
 
 //

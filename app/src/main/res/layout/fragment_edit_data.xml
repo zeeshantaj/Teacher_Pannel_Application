@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".EditDataFragments.EditDataFragment"
-    >
+    tools:context=".EditDataFragments.EditDataFragment">
 
     <eightbitlab.com.blurview.BlurView
         android:id="@+id/blurView"
@@ -40,7 +39,10 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="50dp"
                             android:layout_marginEnd="30dp"
-                            app:boxStrokeColor="@color/black">
+                            app:expandedHintEnabled="false"
+                            app:hintTextColor="@color/black"
+                            app:boxStrokeColor="@color/black"
+                            app:hintEnabled="true">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/teacherNameEditFragment"
@@ -48,6 +50,7 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="textEmailAddress"
                                 android:textColor="@color/black"
+                                android:hint="@string/name"
                                 />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -60,14 +63,19 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="30dp"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+                            app:expandedHintEnabled="false"
+                            app:hintTextColor="@color/black"
+                            app:boxStrokeColor="@color/black"
+                            app:hintEnabled="true">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/departmentEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textPersonName"
-                                android:textColor="@color/black"/>
+                                android:hint="@string/department"
+                                android:textColor="@color/black"
+                                />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,14 +89,18 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="30dp"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+                            app:expandedHintEnabled="false"
+                            app:hintTextColor="@color/black"
+                            app:boxStrokeColor="@color/black"
+                            app:hintEnabled="true"
                             >
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/locationEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/black"
+                                android:hint="@string/location"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,14 +112,18 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="30dp"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+                            app:expandedHintEnabled="false"
+                            app:hintTextColor="@color/black"
+                            app:boxStrokeColor="@color/black"
+                            app:hintEnabled="true"
                             >
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/subjectEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/black"
+                                android:hint="@string/subject"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
                         <com.google.android.material.textfield.TextInputLayout
@@ -118,14 +134,18 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="30dp"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+                            app:expandedHintEnabled="false"
+                            app:hintTextColor="@color/black"
+                            app:boxStrokeColor="@color/black"
+                            app:hintEnabled="true"
                             >
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/todayTopicEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/black"
+                                android:hint="@string/topic"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
                         <com.google.android.material.textfield.TextInputLayout
@@ -136,14 +156,18 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="30dp"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+                            app:expandedHintEnabled="false"
+                            app:hintTextColor="@color/black"
+                            app:boxStrokeColor="@color/black"
+                            app:hintEnabled="true"
                             >
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edKeyEditFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/black"
+                                android:hint="@string/key"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -185,7 +209,4 @@
 
 
     </eightbitlab.com.blurview.BlurView>
-
-
-
 </FrameLayout>
