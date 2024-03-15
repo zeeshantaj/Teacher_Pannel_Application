@@ -43,7 +43,6 @@ public class History_Fragment extends Fragment {
 
         binding.myViewpagerHistory.setPageTransformer(cardFlipPageTransformer);
 
-
         binding.tabLayoutHistory.setTabGravity(TabLayout.GRAVITY_FILL);
 
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(binding.tabLayoutHistory, binding.myViewpagerHistory,
@@ -51,7 +50,7 @@ public class History_Fragment extends Fragment {
                     // Customize the tab text and titles based on your needs.
                     if (position == 0) {
                         //myViewPager.setCurrentItem(position,true);
-                        tab.setText("Uploaded Classes");
+                        tab.setText("Uploaded Class");
                     } else if (position == 1) {
                         //myViewPager.setCurrentItem(position,true);
                         tab.setText("Announcements");

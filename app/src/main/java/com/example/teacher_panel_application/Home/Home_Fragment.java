@@ -225,6 +225,11 @@ public class Home_Fragment extends Fragment {
         binding.topopicTxt.setSelected(true);
         binding.startedTxt.setText(start);
         binding.startedTxt.setSelected(true);
+
+        binding.textView9.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "Class Details can be seen on LED TV!", Toast.LENGTH_SHORT).show();
+        });
+
     }
 
     private void showEditDataAlertDialog() {
