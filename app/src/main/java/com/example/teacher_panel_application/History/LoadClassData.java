@@ -60,6 +60,7 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                modelList.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                         UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
@@ -70,7 +71,6 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);
                     textView.setVisibility(View.GONE);
-
                 }
                 else {
                     textView.setVisibility(View.VISIBLE);

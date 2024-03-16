@@ -1,5 +1,6 @@
 package com.example.teacher_panel_application.Utils;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.widget.EditText;
@@ -68,6 +69,4 @@ public class MethodsUtils {
             }
         });
     }
-
-
 }

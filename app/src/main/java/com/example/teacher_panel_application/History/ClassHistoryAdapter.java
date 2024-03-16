@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapter.ViewHolder> {
     private List<UploadClassModel> modelList;
-    private final Context context;
+    private Context context;
 
     public ClassHistoryAdapter(List<UploadClassModel> modelList, Context context) {
         this.modelList = modelList;
@@ -38,7 +38,7 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ClassHistoryAdapter.ViewHolder holder, int position) {
-        UploadClassModel model = modelList.get(position);
+        UploadClassModel model = modelList.get(holder.getAdapterPosition());
         holder.binding.classHistoryItemDate.setText(model.getDateTime());
         holder.binding.classHistoryNametxt.setText(model.getName());
         holder.binding.classHistorySubjectTxt.setText(model.getSubject());
@@ -47,13 +47,11 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
         holder.binding.classHistoryLocationTxt.setText(model.getLocation());
         holder.binding.classHistoryStartedTxt.setText(model.getDateTime());
         holder.binding.classHistoryDepartText.setText(model.getDepartment());
-        holder.binding.expandableLayoutClassHistory.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                int pos = holder.getAdapterPosition();
-                removeItem(pos,modelList.get(pos).getDateTime());
-                return true;
-            }
+
+        holder.binding.expandableLayoutClassHistory.setOnLongClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            removeItem(pos,modelList.get(pos).getDateTime());
+            return true;
         });
 
     }
@@ -102,18 +100,15 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
 
 
 
-        noBtn.setOnClickListener(v -> {
-            reference.removeValue().addOnSuccessListener(unused -> {
-                modelList.remove(position);
-                notifyItemRemoved(position);
-                dialog.dismiss();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(context, "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            });
-        });
-        yesBtn.setOnClickListener(v -> {
+        yesBtn.setOnClickListener(v -> reference.removeValue().addOnSuccessListener(unused -> {
+            modelList.remove(position);
+            notifyItemRemoved(position);
             dialog.dismiss();
-        });
+            Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> Toast.makeText(context, "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()));
+        noBtn.setOnClickListener(v -> dialog.dismiss());
 
     }
+
+
 }
