@@ -105,6 +105,10 @@ public class Upload_Class_Data_Fragment extends Fragment {
                     model.setKey(key);
                     model.setMinutes(minute);
 
+                    LocalDateTime startedTime = LocalDateTime.now();
+                    DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
+                    String startedTimeStr = startedTime.format(startTimeFormatter);
+                    model.setStartedTime(startedTimeStr);
 
 // Get current date and time
                     LocalDateTime currentDateTime = LocalDateTime.now();

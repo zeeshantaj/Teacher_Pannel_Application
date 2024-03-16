@@ -3,11 +3,14 @@ package com.example.teacher_panel_application.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
+import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -15,6 +18,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MethodsUtils {
     public static void shareOnWhatsapp(Context context,String name, String loc, String dura, String dep, String sub, String top, String start){
@@ -68,5 +74,33 @@ public class MethodsUtils {
                 Toast.makeText(context, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void uploadTimeIntoDB(String currentDateTimeString,String endDateTimeString,String formattedDateTime,String minute){
+
+        LocalDateTime startedTime = LocalDateTime.now();
+        DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
+        String startedTimeStr = startedTime.format(startTimeFormatter);
+
+// Get current date and time
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+
+// Set current date and time
+        currentDateTimeString = currentDateTime.format(dateTimeFormatter);
+
+
+// Calculate end date and time and set it
+        int minute1 = Integer.parseInt(minute);
+        LocalDateTime updateDateTime = currentDateTime.plusMinutes(minute1);
+        endDateTimeString = updateDateTime.format(dateTimeFormatter);
+
+// Set formatted date and time
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
+        formattedDateTime = currentDateTime.format(formatter1);
+
+
+
     }
 }

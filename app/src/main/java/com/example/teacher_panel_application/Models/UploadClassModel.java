@@ -5,7 +5,7 @@ import android.content.Intent;
 import com.google.firebase.database.DatabaseReference;
 
 public class UploadClassModel {
-    private String Name,department,location,subject,topic,key,minutes,endDateTime,currentDateTime,dateTime;
+    private String Name,department,location,subject,topic,key,minutes,endDateTime,currentDateTime,dateTime,startedTime;
 
     public UploadClassModel() {
     }
@@ -20,7 +20,7 @@ public class UploadClassModel {
         this.dateTime = dateTime;
     }
 
-    public UploadClassModel(String name, String department, String location, String subject, String topic, String key, String minutes, String endDateTime, String currentDateTime) {
+    public UploadClassModel(String name, String department, String location, String subject, String topic, String key, String minutes, String endDateTime, String currentDateTime,String startedTime) {
 
         Name = name;
         this.department = department;
@@ -31,6 +31,15 @@ public class UploadClassModel {
         this.minutes = minutes;
         this.endDateTime = endDateTime;
         this.currentDateTime = currentDateTime;
+        this.startedTime = startedTime;
+    }
+
+    public String getStartedTime() {
+        return startedTime;
+    }
+
+    public void setStartedTime(String startedTime) {
+        this.startedTime = startedTime;
     }
 
     public String getCurrentDateTime() {
@@ -100,23 +109,27 @@ public class UploadClassModel {
     public String getMinutes() {
         return minutes;
     }
-    public String minutesBuilder(String minutes){
-        String[] parts = minutes.split("\\s+");
-        int min = Integer.parseInt(parts[0]); // Assuming the first part is the number
+    public String minutesBuilder(String givenMinutes){
 
-        if (min < 60) {
-            return min + " minute";
+        int totalMinutes = Integer.parseInt(givenMinutes);
+
+// Calculate remaining time in days, hours, and minutes
+        int days = totalMinutes / (24 * 60);
+        int remainingMinutes = totalMinutes % (24 * 60);
+        int hours = remainingMinutes / 60;
+        int minutes = remainingMinutes % 60;
+
+// Format the remaining time based on the conditions
+        String remainingTime;
+        if (days > 0) {
+            remainingTime = days + " days " + hours + " hours " + minutes + " minutes";
+        } else if (hours > 0) {
+            remainingTime = hours + " hours " + minutes + " minutes";
         } else {
-            int hours = min / 60;
-            int day = hours / 24;
-            int remainingMinutes = min % 60;
-            if (day > 0){
-                return day + " day " + hours + " hour " + remainingMinutes + " min";
-            }else {
-                return hours + " hour " + remainingMinutes + " min";
-            }
-
+            remainingTime = minutes + " minutes";
         }
+        return remainingTime;
+
     }
     public void setMinutes(String minutes) {
         this.minutes = minutes;

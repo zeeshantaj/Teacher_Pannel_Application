@@ -110,7 +110,7 @@ public class Home_Fragment extends Fragment {
                     sub = snapshot.child("subject").getValue(String.class);
                     topi = snapshot.child("topic").getValue(String.class);
                     minute = snapshot.child("minutes").getValue(String.class);
-                    start = snapshot.child("currentTime").getValue(String.class);
+                    start = snapshot.child("startedTime").getValue(String.class);
                     dateTime = snapshot.child("dateTime").getValue(String.class);
                     String endDateTime = snapshot.child("endDateTime").getValue(String.class);
                    // String currentDateTime = snapshot.child("currentDateTime").getValue(String.class);
