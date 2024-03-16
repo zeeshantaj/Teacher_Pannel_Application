@@ -1,5 +1,9 @@
 package com.example.teacher_panel_application.History;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +15,25 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.ClasshistoryRecyclerItemBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapter.ViewHolder> {
     private List<UploadClassModel> modelList;
+    private Context context;
 
-    public ClassHistoryAdapter(List<UploadClassModel> modelList) {
+    public ClassHistoryAdapter(List<UploadClassModel> modelList, Context context) {
         this.modelList = modelList;
+        this.context = context;
     }
 
     @NonNull
@@ -46,9 +58,7 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
         holder.binding.expandableLayoutClassHistory.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(v.getContext(), "CLicked"+modelList.get(position), Toast.LENGTH_SHORT).show();
-                modelList.get(position);
-                removeItem(position);
+                removeItem(position,modelList.get(position).getDateTime());
                 return true;
             }
         });
@@ -79,8 +89,36 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
 
         }
     }
-    public void removeItem(int position){
-        modelList.remove(position);
-        notifyItemRemoved(position);
+    public void removeItem(int position,String dateTime){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("PostedData")
+                .child(uid)
+                .child(dateTime);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View dialogView = getLayoutInflater().inflate(R.layout.share_and_edit_dialugue, null);
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView buttonCancel = dialogView.findViewById(R.id.cancelBtn);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete Item")
+                .setMessage("Are you Sure You Want To Delete This?")
+                .setPositiveButton("Yes", (dialog, which) -> reference.removeValue().addOnSuccessListener(unused -> {
+
+                    modelList.remove(position);
+                    notifyItemRemoved(position);
+                    dialog.dismiss();
+                }).addOnFailureListener(e -> Toast.makeText(context, "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()))
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+
+
     }
 }

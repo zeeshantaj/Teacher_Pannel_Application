@@ -257,28 +257,6 @@ public class Home_Fragment extends Fragment {
         buttonCancel.setOnClickListener(v -> {
             dialog.dismiss();
         });
-
-
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setTitle("Edit Data")
-//                .setMessage("Do you want to edit the data?")
-//                .setPositiveButton("Share On Whatsapp", (dialog, which) -> {
-//                    Toast.makeText(getActivity(), "share wt clicked", Toast.LENGTH_SHORT).show();
-//                })
-//                .setPositiveButton("Edit Data", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        openEditDataFragment();
-//                    }
-//                })
-//                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .show();
     }
 
     private void openEditDataFragment() {
