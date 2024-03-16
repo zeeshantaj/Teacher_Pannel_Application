@@ -44,6 +44,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -110,29 +112,43 @@ public class Home_Fragment extends Fragment {
                     minute = snapshot.child("minutes").getValue(String.class);
                     start = snapshot.child("currentTime").getValue(String.class);
                     dateTime = snapshot.child("dateTime").getValue(String.class);
-                    endTimeString = snapshot.child("endTime").getValue(String.class);
+                    String endDateTime = snapshot.child("endDateTime").getValue(String.class);
+                   // String currentDateTime = snapshot.child("currentDateTime").getValue(String.class);
 
                     Log.e("MyApp","min"+minute);
-                    Log.e("MyApp","endTime"+endTimeString);
+                    Log.e("MyApp","endDateTime"+endDateTime);
+                    //Log.e("MyApp","currentDateTime"+currentDateTime);
 
                     setTextView(name, dep, minute, loc, sub, topi, start);
 
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            LocalTime localTime = LocalTime.now();
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
-                            String formattedTime = localTime.format(formatter);
-                            System.out.println(formattedTime);
-                            SimpleDateFormat inputFormat = new SimpleDateFormat("hh:mm:ss:a");
-                            Date currentTime = inputFormat.parse(formattedTime);
-                            Date endTime = inputFormat.parse(endTimeString);
-                            timeDifferenceMillis = endTime.getTime() - currentTime.getTime();
-                            //timeDifferenceMillis = currentTime.getTime() - endTime.getTime();
-                            Log.d("MyApp", String.valueOf(timeDifferenceMillis));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+                        //LocalDateTime startTime = LocalDateTime.parse(currentDateTime, formatter);
+                        LocalDateTime currentDateTime = LocalDateTime.now();
+                        String currentTime = currentDateTime.format(formatter);
+                        LocalDateTime startTime = LocalDateTime.parse(currentTime, formatter);
+                        LocalDateTime endTime = LocalDateTime.parse(endDateTime, formatter);
+                        timeDifferenceMillis = Duration.between(startTime, endTime).toMillis();
+
                     }
+
+
+                    Log.e("MyApp","millis "+timeDifferenceMillis);
+//                    try {
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                            LocalDateTime localDateTime = LocalDateTime.now();
+//                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+//                            String formattedTime = localDateTime.format(formatter);
+//                            System.out.println(formattedTime);
+//                            SimpleDateFormat inputFormat = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault());
+//                            Date currentTime = inputFormat.parse(formattedTime);
+//                            Date endTime = inputFormat.parse(endTimeString);
+//                            timeDifferenceMillis = endTime.getTime() - currentTime.getTime();
+//                            Log.d("MyApp", String.valueOf(timeDifferenceMillis));
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                     if (countDownTimer == null) {
 
                         setNotification(timeDifferenceMillis, uid, name, dep, loc, sub, topi, minute, dateTime);
@@ -144,8 +160,10 @@ public class Home_Fragment extends Fragment {
                                 if (millisUntilFinished < 50000) {
                                     binding.countTImer.setTextColor(getResources().getColor(R.color.red));
                                 }
+
                                 long elapsedTime = timeDifferenceMillis - millisUntilFinished;
                                 int progress = (int) (elapsedTime * 100 / timeDifferenceMillis);
+
                                 binding.progressBarCircle.setProgress(100 - progress);
 
                             }
@@ -160,7 +178,7 @@ public class Home_Fragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            reference.removeValue();
+                                          //  reference.removeValue();
                                             binding.cardNode.setVisibility(View.GONE);
                                             binding.noClass.setVisibility(View.VISIBLE);
                                         }
@@ -213,8 +231,7 @@ public class Home_Fragment extends Fragment {
     private void setTextView(String name, String dep, String minute, String loc, String sub, String topi, String start) {
         binding.nametxt.setText(name);
         binding.nametxt.setSelected(true);
-        binding.durationTxt.setText(minute);
-        binding.durationTxt.setSelected(true);
+
         binding.departText.setText(dep);
         binding.departText.setSelected(true);
         binding.locationTxt.setText(loc);
@@ -225,6 +242,11 @@ public class Home_Fragment extends Fragment {
         binding.topopicTxt.setSelected(true);
         binding.startedTxt.setText(start);
         binding.startedTxt.setSelected(true);
+
+        UploadClassModel model = new UploadClassModel();
+
+        binding.durationTxt.setText(model.minutesBuilder(minute));
+        binding.durationTxt.setSelected(true);
 
         binding.textView9.setOnClickListener(v -> {
             Toast.makeText(getActivity(), "Class Details can be seen on LED TV!", Toast.LENGTH_SHORT).show();

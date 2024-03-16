@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -100,6 +101,7 @@ public class EditDataFragment extends Fragment {
                 binding.edMinutesEditFragment
 );
         binding.uploadBtnEditFragment.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
                 String name = binding.teacherNameEditFragment.getText().toString();
@@ -110,7 +112,6 @@ public class EditDataFragment extends Fragment {
                 String key = binding.edKeyEditFragment.getText().toString();
                 String minute = binding.edMinutesEditFragment.getText().toString();
 
-                String formattedTime;
 
                 UploadClassModel model = new UploadClassModel();
                 model.setName(name);
@@ -120,43 +121,27 @@ public class EditDataFragment extends Fragment {
                 model.setTopic(topic);
                 model.setKey(key);
                 model.setMinutes(minute);
-                model.setEndDateTime(minute);
 
-                LocalTime currentTime = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    currentTime = LocalTime.now();
-                }
-                DateTimeFormatter formatter = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    formatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
-                }
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    formattedTime = currentTime.format(formatter);
-                    model.setCurrentTime(formattedTime);
-                    //hashMap.put("currentTime", formattedTime);
-                }
+
+
+// Get current date and time
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+
+// Set current date and time
+                String currentDateTimeString = currentDateTime.format(dateTimeFormatter);
+                model.setCurrentDateTime(currentDateTimeString);
+
+// Calculate end date and time and set it
                 int minute1 = Integer.parseInt(minute);
+                LocalDateTime updateDateTime = currentDateTime.plusMinutes(minute1);
+                String endDateTimeString = updateDateTime.format(dateTimeFormatter);
+                model.setEndDateTime(endDateTimeString);
 
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    LocalTime updateTime = currentTime.plusMinutes(minute1);
-                    String endTime = updateTime.format(formatter);
-                    model.setEndTime(endTime);
-                    //hashMap.put("endTime", endTime);
-                }
-                LocalDateTime dateTime = null; // Use LocalDateTime instead of LocalTime
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    dateTime = LocalDateTime.now();
-                }
-                DateTimeFormatter dateTimeFormatter = null; // Include date and time pattern
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    LocalDateTime updateTime = dateTime.plusMinutes(minute1);
-                    String dateTimeString = updateTime.format(dateTimeFormatter);
-                    model.setEndDateTime(dateTimeString);
-                    //hashMap.put("endDateTime", dateTimeString);
-                }
+// Set formatted date and time
+                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
+                String formattedDateTime = currentDateTime.format(formatter1);
+                model.setDateTime(formattedDateTime);
 
 
                 reference.setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {

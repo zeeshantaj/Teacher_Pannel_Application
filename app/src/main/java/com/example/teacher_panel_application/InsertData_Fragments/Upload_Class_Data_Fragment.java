@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.teacher_panel_application.Home.Home_Activity;
@@ -57,6 +58,7 @@ public class Upload_Class_Data_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
 
@@ -102,55 +104,77 @@ public class Upload_Class_Data_Fragment extends Fragment {
                     model.setTopic(topic);
                     model.setKey(key);
                     model.setMinutes(minute);
-                    model.setEndDateTime(minute);
-
-                    String formattedTime;
-                    LocalTime currentTime = null;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        currentTime = LocalTime.now();
-                    }
-                    DateTimeFormatter formatter = null;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        formatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        formattedTime = currentTime.format(formatter);
-                        model.setCurrentTime(formattedTime);
-                    }
 
 
+// Get current date and time
+                    LocalDateTime currentDateTime = LocalDateTime.now();
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+
+// Set current date and time
+                    String currentDateTimeString = currentDateTime.format(dateTimeFormatter);
+                    model.setCurrentDateTime(currentDateTimeString);
+
+// Calculate end date and time and set it
                     int minute1 = Integer.parseInt(minute);
-                    //long addMinutes = Long.parseLong(minute);
+                    LocalDateTime updateDateTime = currentDateTime.plusMinutes(minute1);
+                    String endDateTimeString = updateDateTime.format(dateTimeFormatter);
+                    model.setEndDateTime(endDateTimeString);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        LocalTime updateTime = currentTime.plusMinutes(minute1);
-                        String endTime = updateTime.format(formatter);
-                        model.setEndTime(endTime);
-                    }
+// Set formatted date and time
+                    DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
+                    String formattedDateTime = currentDateTime.format(formatter1);
+                    model.setDateTime(formattedDateTime);
 
-                    LocalDateTime dateTime = null; // Use LocalDateTime instead of LocalTime
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        dateTime = LocalDateTime.now();
-                    }
-                    DateTimeFormatter dateTimeFormatter = null; // Include date and time pattern
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
-
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        LocalDateTime updateTime = dateTime.plusMinutes(minute1);
-                        String dateTimeString = updateTime.format(dateTimeFormatter);
-                        model.setEndDateTime(dateTimeString);
-                    }
-
-                    LocalDateTime dateTime1 = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        dateTime1 = LocalDateTime.now();
-
-                        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
-                        String formattedDateTime = dateTime1.format(formatter1);
-                        model.setDateTime(formattedDateTime);
-                    }
+//                    String formattedTime;
+//                    LocalTime currentTime = null;
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        currentTime = LocalTime.now();
+//                    }
+//                    DateTimeFormatter formatter = null;
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        formatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
+//                    }
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        formattedTime = currentTime.format(formatter);
+//                        model.setCurrentTime(formattedTime);
+//                    }
+//
+//
+//                    int minute1 = Integer.parseInt(minute);
+//                    //long addMinutes = Long.parseLong(minute);
+//
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        LocalTime updateTime = currentTime.plusMinutes(minute1);
+//                        String endTime = updateTime.format(formatter);
+//                        model.setEndTime(endTime);
+//                    }
+//
+//                    LocalDateTime dateTime = null; // Use LocalDateTime instead of LocalTime
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        dateTime = LocalDateTime.now();
+//                    }
+//                    DateTimeFormatter dateTimeFormatter = null; // Include date and time pattern
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+//
+//                    }
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        LocalDateTime updateTime = dateTime.plusMinutes(minute1);
+//                        String dateTimeString = updateTime.format(dateTimeFormatter);
+//                        LocalDateTime localDateTime = LocalDateTime.now();
+//                        String currentDateTime =localDateTime.format(dateTimeFormatter);
+//                        model.setCurrentDateTime(currentDateTime);
+//                        model.setEndDateTime(dateTimeString);
+//                    }
+//
+//                    LocalDateTime dateTime1 = null;
+//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                        dateTime1 = LocalDateTime.now();
+//
+//                        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
+//                        String formattedDateTime = dateTime1.format(formatter1);
+//                        model.setDateTime(formattedDateTime);
+//                    }
                     reference.setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

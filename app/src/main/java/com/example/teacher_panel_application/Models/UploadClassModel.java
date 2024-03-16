@@ -2,8 +2,10 @@ package com.example.teacher_panel_application.Models;
 
 import android.content.Intent;
 
+import com.google.firebase.database.DatabaseReference;
+
 public class UploadClassModel {
-    private String Name,department,location,subject,topic,key,minutes,endDateTime,currentTime,endTime,dateTime;
+    private String Name,department,location,subject,topic,key,minutes,endDateTime,currentDateTime,dateTime;
 
     public UploadClassModel() {
     }
@@ -18,7 +20,7 @@ public class UploadClassModel {
         this.dateTime = dateTime;
     }
 
-    public UploadClassModel(String name, String department, String location, String subject, String topic, String key, String minutes, String endDateTime, String currentTime, String endTime) {
+    public UploadClassModel(String name, String department, String location, String subject, String topic, String key, String minutes, String endDateTime, String currentDateTime) {
 
         Name = name;
         this.department = department;
@@ -28,8 +30,15 @@ public class UploadClassModel {
         this.key = key;
         this.minutes = minutes;
         this.endDateTime = endDateTime;
-        this.currentTime = currentTime;
-        this.endTime = endTime;
+        this.currentDateTime = currentDateTime;
+    }
+
+    public String getCurrentDateTime() {
+        return currentDateTime;
+    }
+
+    public void setCurrentDateTime(String currentDateTime) {
+        this.currentDateTime = currentDateTime;
     }
 
     public String getDateTime() {
@@ -99,8 +108,14 @@ public class UploadClassModel {
             return min + " minute";
         } else {
             int hours = min / 60;
+            int day = hours / 24;
             int remainingMinutes = min % 60;
-            return hours + " hour " + remainingMinutes + " min";
+            if (day > 0){
+                return day + " day " + hours + " hour " + remainingMinutes + " min";
+            }else {
+                return hours + " hour " + remainingMinutes + " min";
+            }
+
         }
     }
     public void setMinutes(String minutes) {
@@ -113,21 +128,5 @@ public class UploadClassModel {
 
     public void setEndDateTime(String endDateTime) {
         this.endDateTime = endDateTime;
-    }
-
-    public String getCurrentTime() {
-        return currentTime;
-    }
-
-    public void setCurrentTime(String currentTime) {
-        this.currentTime = currentTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 }
