@@ -9,7 +9,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,6 +78,16 @@ public class MethodsUtils {
                 Toast.makeText(context, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public static void setFragment(FragmentManager fragmentManager, Fragment fragment){
+        // Create an instance of the transparent fragment
+
+        // Add the fragment to the fragment manager
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(android.R.id.content, fragment); // Use android.R.id.content to add the fragment above all views
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -22,8 +22,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.teacher_panel_application.Fragment.TermsAndConditionFragment;
 import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -39,6 +41,7 @@ import com.google.firebase.storage.UploadTask;
 import com.realpacific.clickshrinkeffect.ClickShrinkUtils;
 import com.vimalcvs.materialrating.MaterialRating;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 
@@ -102,6 +105,12 @@ public class Profile_Fragment extends Fragment {
         binding.userNamePf.setOnClickListener(v -> {
             showCustomSaveDialog();
         });
+
+        binding.termsAndCondCard.setOnClickListener(v -> {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            MethodsUtils.setFragment(fragmentManager,new TermsAndConditionFragment());
+        });
+
         getUserInfo();
         return binding.getRoot();
     }

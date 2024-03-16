@@ -19,7 +19,6 @@
         android:id="@+id/userName_pf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User Name"
         android:textAlignment="center"
         android:textSize="24sp"
         android:drawablePadding="5dp"
@@ -56,7 +55,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Notification"
+                        android:text="@string/notification"
                         android:layout_marginStart="20dp"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
@@ -71,6 +70,7 @@
 
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/termsAndCondCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
                     android:padding="15dp"
-                    android:text="Term &amp; Conditions"
+                    android:text="@string/term_amp_conditions"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:drawableStartCompat="@drawable/baseline_term_24"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
                     android:padding="15dp"
-                    android:text="help &amp; Support"
+                    android:text="@string/help_amp_support"
                     android:textSize="18sp"
                     android:textColor="@color/white"
                     app:drawableStartCompat="@drawable/baseline_support_agent_24"
@@ -122,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="12dp"
                     android:padding="15dp"
-                    android:text="LogOut"
+                    android:text="@string/logout"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:drawableStartCompat="@drawable/baseline_logout_24"
@@ -132,7 +132,7 @@
                 android:id="@+id/rateTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rate this App"
+                android:text="@string/rate_this_app"
                 android:textSize="24sp"
                 android:padding="15dp"
                 android:textAlignment="center"/>

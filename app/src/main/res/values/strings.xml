@@ -70,5 +70,31 @@
     <string name="delete">Delete</string>
     <string name="no">NO</string>
     <string name="are_you_sure_you_want_to_delete_this">Are you sure you want to delete this?</string>
+    <string name="notification">Notification</string>
+    <string name="help_amp_support"><![CDATA[help & Support]]></string>
+    <string name="logout">LogOut</string>
+    <string name="rate_this_app">Rate this App</string>
+    <string name="term_amp_conditions"><![CDATA[Term & Conditions]]></string>
+    <string name="term_amp_conditionsTxt">
+       <b>Terms and Conditions\n</b>Welcome to Class Connect! These terms and conditions outline the rules and regulations for the use of our mobile application.
+        By accessing this app, we assume you accept these terms and conditions. Do not continue to use Class Connect if you do not agree to all of the terms and conditions stated on this page.
+        The following terminology applies to these Terms and Conditions, Privacy Statement, and Disclaimer Notice and all Agreements: "Client", "You", and "Your" refer to you, the person accessing this app and accepting the Company\'s terms and conditions. "The Company", "Ourselves", "We", "Our", and "Us", refer to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves, or either the Client or ourselves.
+        <b>\nData Usage and Storage:\n</b>
+        Class Connect requires certain information to function properly. This information is used solely for the purpose of displaying data in the app.
+        The data provided by users is uploaded to Firebase Database for storage and retrieval within the app.
+        Users have the option to delete their data within the app. Please note that deleting the data will result in its permanent removal from our database.
+        <b>\nIntellectual Property:\n</b>
+        All content included in Class Connect, such as text, graphics, logos, images, and digital downloads, is the property of Class Connect or its content suppliers and is protected by international copyright laws.
+        <b>\nLimitation of Liability:\n</b>
+
+        In no event shall Class Connect or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Class Connect's website, even if Class Connect or a Class Connect authorized representative has been notified orally or in writing of the possibility of such damage.
+        <b>\nChanges:\n</b>
+        Class Connect reserves the right, at its sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
+        <b>\nContact Us:\n</b>
+        If you have any questions about these Terms, please contact us at Help and Support Section.
+        By using Class Connect, you signify your acceptance of these terms. If you do not agree to these terms, please do not use our app.
+
+    </string>
+    <string name="dismiss">Dismiss</string>
 
 </resources>
