@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -110,7 +111,7 @@ public class Profile_Fragment extends Fragment {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             MethodsUtils.setFragment(fragmentManager,new TermsAndConditionFragment());
         });
-
+        getVersion();
         getUserInfo();
         return binding.getRoot();
     }
@@ -207,7 +208,20 @@ public class Profile_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         getUserInfo();
+    }
+    private void getVersion(){
+
+        PackageManager packageManager = getActivity().getPackageManager();
+        String packageName = getActivity().getPackageName();
+        String versionName = null;
+        try {
+            versionName = "Version " + packageManager.getPackageInfo(packageName, 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        binding.versionTxt.setText(versionName);
+
     }
 }

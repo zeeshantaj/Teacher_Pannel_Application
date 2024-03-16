@@ -134,8 +134,20 @@
                 android:layout_height="wrap_content"
                 android:text="@string/rate_this_app"
                 android:textSize="24sp"
+                android:layout_marginTop="10dp"
                 android:padding="15dp"
                 android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/versionTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_1_0_0"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"/>
+
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
