@@ -107,17 +107,17 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
         TextView buttonCancel = dialogView.findViewById(R.id.cancelBtn);
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Delete Item")
-                .setMessage("Are you Sure You Want To Delete This?")
-                .setPositiveButton("Yes", (dialog, which) -> reference.removeValue().addOnSuccessListener(unused -> {
-
-                    modelList.remove(position);
-                    notifyItemRemoved(position);
-                    dialog.dismiss();
-                }).addOnFailureListener(e -> Toast.makeText(context, "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()))
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                .show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        builder.setTitle("Delete Item")
+//                .setMessage("Are you Sure You Want To Delete This?")
+//                .setPositiveButton("Yes", (dialog, which) -> reference.removeValue().addOnSuccessListener(unused -> {
+//
+//                    modelList.remove(position);
+//                    notifyItemRemoved(position);
+//                    dialog.dismiss();
+//                }).addOnFailureListener(e -> Toast.makeText(context, "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()))
+//                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+//                .show();
 
 
     }
