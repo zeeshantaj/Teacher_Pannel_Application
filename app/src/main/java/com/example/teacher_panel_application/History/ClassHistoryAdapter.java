@@ -2,25 +2,17 @@ package com.example.teacher_panel_application.History;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.ClasshistoryRecyclerItemBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,7 +21,7 @@ import java.util.List;
 
 public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapter.ViewHolder> {
     private List<UploadClassModel> modelList;
-    private Context context;
+    private final Context context;
 
     public ClassHistoryAdapter(List<UploadClassModel> modelList, Context context) {
         this.modelList = modelList;
@@ -58,7 +50,8 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
         holder.binding.expandableLayoutClassHistory.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                removeItem(position,modelList.get(position).getDateTime());
+                int pos = holder.getAdapterPosition();
+                removeItem(pos,modelList.get(pos).getDateTime());
                 return true;
             }
         });
@@ -98,27 +91,29 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
                 .child(dateTime);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View dialogView = getLayoutInflater().inflate(R.layout.share_and_edit_dialugue, null);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.delete_item_layout,null);
         builder.setView(dialogView);
 
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        TextView buttonCancel = dialogView.findViewById(R.id.cancelBtn);
+        MaterialButton noBtn = dialogView.findViewById(R.id.noBtn);
+        MaterialButton yesBtn = dialogView.findViewById(R.id.deleteBtn);
 
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//        builder.setTitle("Delete Item")
-//                .setMessage("Are you Sure You Want To Delete This?")
-//                .setPositiveButton("Yes", (dialog, which) -> reference.removeValue().addOnSuccessListener(unused -> {
-//
-//                    modelList.remove(position);
-//                    notifyItemRemoved(position);
-//                    dialog.dismiss();
-//                }).addOnFailureListener(e -> Toast.makeText(context, "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()))
-//                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-//                .show();
 
+        noBtn.setOnClickListener(v -> {
+            reference.removeValue().addOnSuccessListener(unused -> {
+                modelList.remove(position);
+                notifyItemRemoved(position);
+                dialog.dismiss();
+            }).addOnFailureListener(e -> {
+                Toast.makeText(context, "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            });
+        });
+        yesBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
 
     }
 }
