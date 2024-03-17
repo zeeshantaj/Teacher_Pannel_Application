@@ -1,6 +1,7 @@
 package com.example.teacher_panel_application.History;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,19 +36,24 @@ public class ClassHistory_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding  =  HistoryClassBinding.inflate(inflater,container,false);
-
+        getData();
+        return binding.getRoot();
+    }
+    private void getData(){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
         LoadClassData loadDataInBackground = new LoadClassData(binding.classHistoryRecycler,binding.dataShowTxt,uid,getActivity());
         loadDataInBackground.execute();
 
-
-
-        return binding.getRoot();
     }
     @Override
     public void onStart() {
         super.onStart();
-        //initRecyclerData();
+        getData();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 }

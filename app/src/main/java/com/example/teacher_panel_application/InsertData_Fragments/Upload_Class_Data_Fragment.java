@@ -1,14 +1,12 @@
 package com.example.teacher_panel_application.InsertData_Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,29 +16,28 @@ import androidx.fragment.app.Fragment;
 
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.UploadClassModel;
-import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentUploadClassDataBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 
 public class Upload_Class_Data_Fragment extends Fragment {
 
-    public Upload_Class_Data_Fragment(){
+    public Upload_Class_Data_Fragment() {
 
     }
+
     private FirebaseAuth auth;
     private DatabaseReference reference;
     private FragmentUploadClassDataBinding binding;
+    private ProgressDialog dialog;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,7 +45,8 @@ public class Upload_Class_Data_Fragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        reference  =  FirebaseDatabase.getInstance().getReference("Teacher_Data").child(uid);
+        reference = FirebaseDatabase.getInstance().getReference("Teacher_Data").child(uid);
+        dialog = new ProgressDialog(getActivity());
 
         return binding.getRoot();
     }
@@ -71,64 +69,99 @@ public class Upload_Class_Data_Fragment extends Fragment {
                 String minute = binding.edMinutes.getText().toString();
 
 
-
-                if (name.isEmpty() ){
+                if (name.isEmpty()) {
                     binding.teacherName.setError("name is empty");
+                    return;
                 }
-                if (department.isEmpty() ){
+                if (department.isEmpty()) {
                     binding.department.setError("department is empty");
+                    return;
                 }
-                if (location.isEmpty() ){
+                if (location.isEmpty()) {
                     binding.location.setError("location is empty");
+                    return;
                 }
-                if (subject.isEmpty() ){
+                if (subject.isEmpty()) {
                     binding.subject.setError("subject is empty");
+                    return;
                 }
-                if (topic.isEmpty() ){
+                if (topic.isEmpty()) {
                     binding.todayTopic.setError("topic is empty");
+                    return;
                 }
-                if (key.isEmpty() ){
+                if (key.isEmpty()) {
                     binding.edKey.setError("key is empty");
+                    return;
                 }
-                if (minute.isEmpty() ){
+                if (minute.isEmpty()) {
                     binding.edMinutes.setError("name is empty");
+                    return;
                 }
 
-                else {
-                    UploadClassModel model = new UploadClassModel();
+                dialog.setTitle("Please Wait");
+                dialog.setMessage("Uploading....");
+                dialog.setCancelable(false);
+                dialog.show();
+                UploadClassModel model = new UploadClassModel();
 
-                    model.setName(name);
-                    model.setDepartment(department);
-                    model.setLocation(location);
-                    model.setSubject(subject);
-                    model.setTopic(topic);
-                    model.setKey(key);
-                    model.setMinutes(minute);
+                model.setName(name);
+                model.setDepartment(department);
+                model.setLocation(location);
+                model.setSubject(subject);
+                model.setTopic(topic);
+                model.setKey(key);
+                model.setMinutes(minute);
 
-                    LocalDateTime startedTime = LocalDateTime.now();
-                    DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
-                    String startedTimeStr = startedTime.format(startTimeFormatter);
-                    model.setStartedTime(startedTimeStr);
+                LocalDateTime startedTime = LocalDateTime.now();
+                DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
+                String startedTimeStr = startedTime.format(startTimeFormatter);
+                model.setStartedTime(startedTimeStr);
 
 // Get current date and time
-                    LocalDateTime currentDateTime = LocalDateTime.now();
-                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
 
 // Set current date and time
-                    String currentDateTimeString = currentDateTime.format(dateTimeFormatter);
-                    model.setCurrentDateTime(currentDateTimeString);
+                String currentDateTimeString = currentDateTime.format(dateTimeFormatter);
+                model.setCurrentDateTime(currentDateTimeString);
 
 // Calculate end date and time and set it
-                    int minute1 = Integer.parseInt(minute);
-                    LocalDateTime updateDateTime = currentDateTime.plusMinutes(minute1);
-                    String endDateTimeString = updateDateTime.format(dateTimeFormatter);
-                    model.setEndDateTime(endDateTimeString);
+                int minute1 = Integer.parseInt(minute);
+                LocalDateTime updateDateTime = currentDateTime.plusMinutes(minute1);
+                String endDateTimeString = updateDateTime.format(dateTimeFormatter);
+                model.setEndDateTime(endDateTimeString);
 
 // Set formatted date and time
-                    DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
-                    String formattedDateTime = currentDateTime.format(formatter1);
-                    model.setDateTime(formattedDateTime);
+                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
+                String formattedDateTime = currentDateTime.format(formatter1);
+                model.setDateTime(formattedDateTime);
+                ;
 
+                reference.setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(getActivity(), Home_Activity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                            Toast.makeText(getActivity(), "Details Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        });
+
+    }
+
+}
 //                    String formattedTime;
 //                    LocalTime currentTime = null;
 //                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -179,27 +212,3 @@ public class Upload_Class_Data_Fragment extends Fragment {
 //                        String formattedDateTime = dateTime1.format(formatter1);
 //                        model.setDateTime(formattedDateTime);
 //                    }
-                    reference.setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Intent intent = new Intent(getActivity(), Home_Activity.class);
-                                startActivity(intent);
-                                getActivity().finish();
-                                Toast.makeText(getActivity(), "Details Uploaded", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                }
-            }
-        });
-
-    }
-
-}
