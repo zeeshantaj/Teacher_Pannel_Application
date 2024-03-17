@@ -128,6 +128,25 @@ public class EditDataFragment extends Fragment {
                 String startedTimeStr = startedTime.format(startTimeFormatter);
                 model.setStartedTime(startedTimeStr);
 
+// Get current date and time
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+
+// Set current date and time
+                String currentDateTimeString = currentDateTime.format(dateTimeFormatter);
+                model.setCurrentDateTime(currentDateTimeString);
+
+// Calculate end date and time and set it
+                int minute1 = Integer.parseInt(minute);
+                LocalDateTime updateDateTime = currentDateTime.plusMinutes(minute1);
+                String endDateTimeString = updateDateTime.format(dateTimeFormatter);
+                model.setEndDateTime(endDateTimeString);
+
+// Set formatted date and time
+                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
+                String formattedDateTime = currentDateTime.format(formatter1);
+                model.setDateTime(formattedDateTime);
+
 
 
                 reference.setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
