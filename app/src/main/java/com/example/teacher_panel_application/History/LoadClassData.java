@@ -69,6 +69,7 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                     Collections.reverse(modelList);
                     ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList,context);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setItemAnimator(null);
                     recyclerView.setAdapter(adapter);
                     textView.setVisibility(View.GONE);
                 }
