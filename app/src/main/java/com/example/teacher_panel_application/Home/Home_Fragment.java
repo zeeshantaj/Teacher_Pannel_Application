@@ -284,12 +284,12 @@ public class Home_Fragment extends Fragment {
     private void openEditDataFragment() {
         // Create an instance of the transparent fragment
         EditDataFragment editDataFragment = new EditDataFragment();
-
+        editDataFragment.show(getActivity().getSupportFragmentManager(),editDataFragment.getTag());
         // Add the fragment to the fragment manager
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(android.R.id.content, editDataFragment); // Use android.R.id.content to add the fragment above all views
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.add(android.R.id.content, editDataFragment); // Use android.R.id.content to add the fragment above all views
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
     }
 }
