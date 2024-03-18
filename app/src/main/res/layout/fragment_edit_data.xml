@@ -1,212 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".EditDataFragments.EditDataFragment">
+    android:layout_gravity="bottom"
+    android:id="@+id/bottomSheetLayout">
 
-    <eightbitlab.com.blurview.BlurView
-        android:id="@+id/blurView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:blurOverlayColor="@color/colorOverlay">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/blurView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="30dp">
-
-            <LinearLayout
+            android:layout_height="wrap_content"
+            app:blurOverlayColor="@color/colorOverlay">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_margin="30dp">
 
-                <ScrollView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <LinearLayout
-                        android:id="@+id/linearLayout"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:id="@+id/linearLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="50dp"
-                            android:layout_marginEnd="30dp"
-                            app:expandedHintEnabled="false"
-                            app:hintTextColor="@color/black"
-                            app:boxStrokeColor="@color/black"
-                            app:hintEnabled="true">
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/teacherNameEditFragment"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textInputLayout"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textEmailAddress"
-                                android:textColor="@color/black"
-                                android:hint="@string/name"
-                                />
+                                android:layout_marginStart="30dp"
+                                android:layout_marginTop="50dp"
+                                android:layout_marginEnd="30dp"
+                                app:expandedHintEnabled="false"
+                                app:hintTextColor="@color/black"
+                                app:boxStrokeColor="@color/black"
+                                app:hintEnabled="true">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/teacherNameEditFragment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textEmailAddress"
+                                    android:textColor="@color/black"
+                                    android:hint="@string/name"
+                                    />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout3"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="30dp"
-                            app:expandedHintEnabled="false"
-                            app:hintTextColor="@color/black"
-                            app:boxStrokeColor="@color/black"
-                            app:hintEnabled="true">
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/departmentEditFragment"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textInputLayout3"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textPersonName"
-                                android:hint="@string/department"
-                                android:textColor="@color/black"
-                                />
+                                android:layout_marginStart="30dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="30dp"
+                                app:expandedHintEnabled="false"
+                                app:hintTextColor="@color/black"
+                                app:boxStrokeColor="@color/black"
+                                app:hintEnabled="true">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/departmentEditFragment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textPersonName"
+                                    android:hint="@string/department"
+                                    android:textColor="@color/black"
+                                    />
+
+                            </com.google.android.material.textfield.TextInputLayout>
 
 
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout6"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="30dp"
-                            app:expandedHintEnabled="false"
-                            app:hintTextColor="@color/black"
-                            app:boxStrokeColor="@color/black"
-                            app:hintEnabled="true"
-                            >
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/locationEditFragment"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textInputLayout6"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:hint="@string/location"/>
+                                android:layout_marginStart="30dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="30dp"
+                                app:expandedHintEnabled="false"
+                                app:hintTextColor="@color/black"
+                                app:boxStrokeColor="@color/black"
+                                app:hintEnabled="true"
+                                >
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/locationEditFragment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/black"
+                                    android:hint="@string/location"/>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout4"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="30dp"
-                            app:expandedHintEnabled="false"
-                            app:hintTextColor="@color/black"
-                            app:boxStrokeColor="@color/black"
-                            app:hintEnabled="true"
-                            >
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/subjectEditFragment"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textInputLayout4"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:hint="@string/subject"/>
+                                android:layout_marginStart="30dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="30dp"
+                                app:expandedHintEnabled="false"
+                                app:hintTextColor="@color/black"
+                                app:boxStrokeColor="@color/black"
+                                app:hintEnabled="true"
+                                >
 
-                        </com.google.android.material.textfield.TextInputLayout>
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout5"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="30dp"
-                            app:expandedHintEnabled="false"
-                            app:hintTextColor="@color/black"
-                            app:boxStrokeColor="@color/black"
-                            app:hintEnabled="true"
-                            >
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/subjectEditFragment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/black"
+                                    android:hint="@string/subject"/>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/todayTopicEditFragment"
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textInputLayout5"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:hint="@string/topic"/>
+                                android:layout_marginStart="30dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="30dp"
+                                app:expandedHintEnabled="false"
+                                app:hintTextColor="@color/black"
+                                app:boxStrokeColor="@color/black"
+                                app:hintEnabled="true"
+                                >
 
-                        </com.google.android.material.textfield.TextInputLayout>
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout7"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="30dp"
-                            app:expandedHintEnabled="false"
-                            app:hintTextColor="@color/black"
-                            app:boxStrokeColor="@color/black"
-                            app:hintEnabled="true"
-                            >
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/todayTopicEditFragment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/black"
+                                    android:hint="@string/topic"/>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/edKeyEditFragment"
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textInputLayout7"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:hint="@string/key"/>
+                                android:layout_marginStart="30dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="30dp"
+                                app:expandedHintEnabled="false"
+                                app:hintTextColor="@color/black"
+                                app:boxStrokeColor="@color/black"
+                                app:hintEnabled="true"
+                                >
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edKeyEditFragment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/black"
+                                    android:hint="@string/key"/>
 
-
-                        <EditText
-                            android:id="@+id/edMinutesEditFragment"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:backgroundTint="@color/center"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="10dp"/>
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/enter_class_session_time_in_n_minutes"
-                            android:textStyle="bold"
-                            android:textAlignment="center"
-                            android:textColor="@color/red"
-                            android:layout_marginStart="34dp"/>
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/uploadBtnEditFragment"
-                            android:layout_width="190dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:backgroundTint="@color/btnColor1"
-                            android:text="@string/upload"
-                            android:textColor="@color/white"
-                            android:textSize="18sp"
-                            app:cornerRadius="15dp"
-                            android:layout_gravity="center"/>
-                    </LinearLayout>
-                </ScrollView>
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
 
-    </eightbitlab.com.blurview.BlurView>
-</FrameLayout>
+                            <EditText
+                                android:id="@+id/edMinutesEditFragment"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:backgroundTint="@color/center"
+                                android:layout_marginStart="30dp"
+                                android:layout_marginTop="10dp"/>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/enter_class_session_time_in_n_minutes"
+                                android:textStyle="bold"
+                                android:textAlignment="center"
+                                android:textColor="@color/red"
+                                android:layout_marginStart="34dp"/>
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/uploadBtnEditFragment"
+                                android:layout_width="190dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:backgroundTint="@color/btnColor1"
+                                android:text="@string/upload"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                app:cornerRadius="15dp"
+                                android:layout_gravity="center"/>
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </eightbitlab.com.blurview.BlurView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

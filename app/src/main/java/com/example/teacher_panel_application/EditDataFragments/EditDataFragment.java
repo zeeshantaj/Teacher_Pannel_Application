@@ -1,6 +1,8 @@
 package com.example.teacher_panel_application.EditDataFragments;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -26,6 +29,9 @@ import com.example.teacher_panel_application.databinding.FragmentEditDataBinding
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +48,7 @@ import java.util.HashMap;
 import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 
-public class EditDataFragment extends Fragment {
+public class EditDataFragment extends BottomSheetDialogFragment {
 
 
     public EditDataFragment() {
@@ -52,7 +58,17 @@ public class EditDataFragment extends Fragment {
     private DatabaseReference reference;
     private FirebaseAuth auth;
 
-    FragmentEditDataBinding binding;
+    private FragmentEditDataBinding binding;
+    private BottomSheetBehavior<View> bottomSheetBehavior;
+    private BottomSheetDialog dialog;
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        return dialog;
+
+    }
 
     @Nullable
     @Override
@@ -70,6 +86,22 @@ public class EditDataFragment extends Fragment {
         setBlurView();
         return binding.getRoot();
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+        CoordinatorLayout coordinatorLayout = dialog.findViewById(R.id.bottomSheetLayout);
+        assert coordinatorLayout != null;
+        coordinatorLayout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        /*ImageView dissmissBtn = dialog.findViewById(R.id.dismissButton);
+        if (dissmissBtn != null) {
+            dissmissBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+        }*/
     }
 
     private void setBlurView() {
@@ -149,21 +181,13 @@ public class EditDataFragment extends Fragment {
 
 
 
-                reference.setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Intent intent = new Intent(getActivity(), Home_Activity.class);
-                            startActivity(intent);
-                            Toast.makeText(getActivity(), "Details Uploaded", Toast.LENGTH_SHORT).show();
-                        }
+                reference.setValue(model).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Intent intent = new Intent(getActivity(), Home_Activity.class);
+                        startActivity(intent);
+                        Toast.makeText(getActivity(), "Details Uploaded", Toast.LENGTH_SHORT).show();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                }).addOnFailureListener(e -> Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
     }
