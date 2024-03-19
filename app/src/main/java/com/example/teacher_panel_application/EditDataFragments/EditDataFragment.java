@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.Home.Home_Activity;
@@ -96,12 +97,12 @@ public class EditDataFragment extends BottomSheetDialogFragment {
         CoordinatorLayout coordinatorLayout = dialog.findViewById(R.id.bottomSheetLayout);
         assert coordinatorLayout != null;
         coordinatorLayout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
-        /*ImageView dissmissBtn = dialog.findViewById(R.id.dismissButton);
+        ImageView dissmissBtn = dialog.findViewById(R.id.editDataDismiss);
         if (dissmissBtn != null) {
             dissmissBtn.setOnClickListener(v -> {
                 dialog.dismiss();
             });
-        }*/
+        }
     }
 
     private void setBlurView() {
