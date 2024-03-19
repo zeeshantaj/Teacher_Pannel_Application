@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -202,6 +203,7 @@ public class Home_Fragment extends Fragment {
         });
     }
 
+
     private void setNotification(long milis, String uid, String name, String dep, String loc, String sub, String topic, String min, String dateTime) {
         long deliveryTimeMillis = System.currentTimeMillis() + milis;
         Intent intent = new Intent(requireContext(), NotificationBroadcastReceiver.class);
@@ -279,6 +281,7 @@ public class Home_Fragment extends Fragment {
         buttonCancel.setOnClickListener(v -> {
             dialog.dismiss();
         });
+
     }
 
     private void openEditDataFragment() {

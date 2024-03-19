@@ -2,8 +2,10 @@ package com.example.teacher_panel_application.Home;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,6 +114,25 @@ public class Profile_Fragment extends Fragment {
         binding.termsAndCondCard.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             MethodsUtils.setFragment(fragmentManager,new TermsAndConditionFragment());
+        });
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("notificationState", Context.MODE_PRIVATE);
+        boolean isChecked = sharedPreferences.getBoolean("isNotification", true);
+        binding.notificationChecked.setChecked(isChecked);
+        binding.notificationChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    Toast.makeText(getActivity(), "Notification UnMute", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Notification Muted", Toast.LENGTH_SHORT).show();
+                }
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("notificationState", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isNotification",isChecked);
+                editor.apply();
+            }
         });
         getVersion();
         getUserInfo();

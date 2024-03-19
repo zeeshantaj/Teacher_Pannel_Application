@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,25 +28,27 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.e("MyApp", "onReceive called in broadcast");
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        createNotificationChannel(notificationManager);
+        if (getNotificationState(context)){
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            createNotificationChannel(notificationManager);
 
-        Intent notificationIntent = new Intent(context, Home_Activity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent notificationIntent = new Intent(context, Home_Activity.class);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel_id")
-                .setSmallIcon(R.drawable.baseline_notifications_24)
-                .setContentTitle("Posted class has ended")
-                //.setContentText("Your posted class has been removed as per\n your given time")
-                .setStyle(new NotificationCompat.BigTextStyle().bigText("Your posted class has been removed as per your given time"))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel_id")
+                    .setSmallIcon(R.drawable.baseline_notifications_24)
+                    .setContentTitle("Posted class has ended")
+                    //.setContentText("Your posted class has been removed as per\n your given time")
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText("Your posted class has been removed as per your given time"))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
+            // Show the notification
+            notificationManager.notify(0, builder.build());
+        }
 
 
-        // Show the notification
-        notificationManager.notify(0, builder.build());
 
         String uid = intent.getStringExtra("CurrentUID");
         String name = intent.getStringExtra("name");
@@ -73,10 +76,16 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void createNotificationChannel(NotificationManager notificationManager) {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("channel_id", "Channel Name", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+
     }
 
+    private boolean getNotificationState(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("notificationState", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("isNotification", true);
+    }
 }
