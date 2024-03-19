@@ -1,6 +1,7 @@
 package com.example.teacher_panel_application.Home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,5 +59,11 @@ public class History_Fragment extends Fragment {
                 }
         );
         tabLayoutMediator.attach();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.e("MyApp","onresume history");
     }
 }
