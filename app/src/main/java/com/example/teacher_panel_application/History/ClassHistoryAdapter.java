@@ -38,7 +38,8 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ClassHistoryAdapter.ViewHolder holder, int position) {
-        UploadClassModel model = modelList.get(holder.getAdapterPosition());
+        int pos = holder.getAdapterPosition();
+        UploadClassModel model = modelList.get(pos);
         holder.binding.classHistoryItemDate.setText(model.getDateTime());
         holder.binding.classHistoryNametxt.setText(model.getName());
         holder.binding.classHistorySubjectTxt.setText(model.getSubject());
@@ -49,7 +50,7 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
         holder.binding.classHistoryDepartText.setText(model.getDepartment());
 
         holder.binding.expandableLayoutClassHistory.setOnLongClickListener(v -> {
-            int pos = holder.getAdapterPosition();
+
             removeItem(pos,modelList.get(pos).getDateTime());
             return true;
         });
@@ -80,7 +81,7 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
 
         }
     }
-    public void removeItem(int position,String dateTime){
+    public void removeItem(int position, String dateTime) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance()
@@ -89,7 +90,7 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
                 .child(dateTime);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.delete_item_layout,null);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.delete_item_layout, null);
         builder.setView(dialogView);
 
         AlertDialog dialog = builder.create();
@@ -98,17 +99,14 @@ public class ClassHistoryAdapter extends RecyclerView.Adapter<ClassHistoryAdapte
         MaterialButton noBtn = dialogView.findViewById(R.id.noBtn);
         MaterialButton yesBtn = dialogView.findViewById(R.id.deleteBtn);
 
-
-
         yesBtn.setOnClickListener(v -> reference.removeValue().addOnSuccessListener(unused -> {
-            modelList.remove(position);
-            notifyItemRemoved(position);
+            if (position >= 0 && position < modelList.size()) {
+                modelList.remove(position);
+                notifyItemRemoved(position);
+            }
             dialog.dismiss();
             Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> Toast.makeText(context, "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()));
+        }).addOnFailureListener(e -> Toast.makeText(context, "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()));
         noBtn.setOnClickListener(v -> dialog.dismiss());
-
     }
-
-
 }

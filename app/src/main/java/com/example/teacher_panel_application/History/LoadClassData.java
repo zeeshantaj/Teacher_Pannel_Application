@@ -54,26 +54,23 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
 
 
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("PostedData").child(uid);
-        List<UploadClassModel> modelList = new ArrayList<>();
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                modelList.clear();
+                List<UploadClassModel> modelList = new ArrayList<>();
                 if (snapshot.exists()) {
-                    for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
                         modelList.add(model);
                     }
                     Collections.reverse(modelList);
-                    ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList,context);
+                    ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, context);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setItemAnimator(null);
                     recyclerView.setAdapter(adapter);
                     textView.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     textView.setVisibility(View.VISIBLE);
                 }
                 progressDialog.dismiss();
@@ -86,6 +83,6 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
             }
         });
 
-        return modelList;
+        return null;
     }
 }
