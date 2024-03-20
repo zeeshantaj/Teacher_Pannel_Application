@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
 
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -131,4 +132,18 @@
 
     </ScrollView>
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/announcementProgressIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:indicatorColor="@color/btnColor1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="30dp"
+        android:visibility="gone"
+        app:trackColor="@android:color/transparent"
+        app:trackCornerRadius="10dp"
+        app:trackThickness="10dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,10 +6,12 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.erkutaras.showcaseview.ShowcaseManager;
 import com.example.teacher_panel_application.Animation.ShakeAnimation;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncementBinding;
@@ -39,6 +42,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -108,7 +112,7 @@ public class Upload_Announcement_Fragment extends Fragment {
             public void onClick(View v) {
                 String titleStr = binding.announceTitle.getText().toString();
                 String desStr = binding.announceDescription.getText().toString();
-                String lastDateStr = binding.dueDate.getText().toString();
+                String dueDateStr = binding.dueDate.getText().toString();
 
                 //todo for image
                 FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -116,15 +120,11 @@ public class Upload_Announcement_Fragment extends Fragment {
                 StorageReference imageRef = storageRef.child("images/myImage.jpg");
 
                 //
-
-                if (binding.announceTitle.getText().toString().isEmpty()){
-                    binding.announceTitle.setError("title is empty");
-                    Toast.makeText(getActivity(), "Title is Empty!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (binding.announceDescription.getText().toString().isEmpty()) {
-                    binding.announceDescription.setError("description is empty");
-                    Toast.makeText(getActivity(), "Description is empty!", Toast.LENGTH_SHORT).show();
+                if (selectedImageUri == null && binding.announceTitle.getText().toString().isEmpty() &&
+                        binding.announceDescription.getText().toString().isEmpty()){
+                    Snackbar snackbar = Snackbar.make(v ,"Image and Text field is empty please fill either of them", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                    snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
+                    snackbar.show();
                     return;
                 }
                 if (binding.dueDate.getText().toString().equals("Due Date")){
@@ -132,10 +132,13 @@ public class Upload_Announcement_Fragment extends Fragment {
                     ShakeAnimation.setAnimation(getActivity(),binding.dueDate);
                     return;
                 }
+
                 Calendar calendar = Calendar.getInstance();
                 long milli = calendar.getTimeInMillis();
                 String child = String.valueOf(milli);
                 reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid).child(child);
+
+                // todo check if text and image both are filled
 
                 HashMap<String, String> hashMap = new HashMap<>();
                 if (selectedImageUri != null && !titleStr.isEmpty() && !desStr.isEmpty()) {
@@ -148,20 +151,44 @@ public class Upload_Announcement_Fragment extends Fragment {
                         }
 
                     });
+
+                    ShowcaseManager.Builder builder = new ShowcaseManager.Builder();
+                    builder.context(getActivity())
+                            .key("KEY")
+                            .developerMode(true)
+                            .view(binding.announcementImage)
+
+                            .descriptionTitle("you can either upload image or text data")
+                            .descriptionText(" touch and hold on the image, to remove image\nor clear text to upload image")
+//                            .descriptionImageRes(R.mipmap.ic_launcher)
+                            .buttonText("Done")
+                            .buttonVisibility(true)
+                            .cancelButtonVisibility(true)
+                            .cancelButtonColor(getResources().getColor(R.color.white))
+                            .add()
+                            .build()
+                            .show();
+
                     snackbar.show();
                     return;
                 }
 
 
+                //todo to upload image
 
                 if (selectedImageUri != null && !binding.dueDate.getText().equals("Due Date")) {
                     UploadTask uploadTask = imageRef.putFile(selectedImageUri);
+                    binding.announcementProgressIndicator.setVisibility(View.VISIBLE);
+                    uploadTask.addOnProgressListener(snapshot -> {
+                        double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                        binding.announcementProgressIndicator.setProgress((int) progress);
+                    });
 
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
-
                         imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            binding.announcementProgressIndicator.setVisibility(View.GONE);
                             String downloadUrl = uri.toString();
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
                                 String formattedDate = LocalDate.now().format(formatter);
                                 hashMap.put("current_date",formattedDate);
@@ -169,17 +196,28 @@ public class Upload_Announcement_Fragment extends Fragment {
                             hashMap.put("imageUrl",downloadUrl);
                             reference.setValue(hashMap).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()){
+                                    Snackbar snackbar = Snackbar.make(v ,"Image Successfully Uploaded", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                                    snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
+                                    snackbar.show();
                                     Toast.makeText(getActivity(), "Image Successfully Uploaded", Toast.LENGTH_SHORT).show();
                                 }
-                            }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Errror "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    binding.announcementProgressIndicator.setVisibility(View.GONE);
+                                }
+                            });
 
 
                         });
                     }).addOnFailureListener(exception -> {
+                        binding.announcementProgressIndicator.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "Error "+exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     });
 
                 }
+                // todo for uploading text data
                 if (!binding.announceTitle.getText().toString().isEmpty()
                         && !binding.announceDescription.getText().toString().isEmpty() && !binding.dueDate.getText().toString().isEmpty()) {
 
@@ -191,16 +229,16 @@ public class Upload_Announcement_Fragment extends Fragment {
                             hashMap.put("current_date",formattedDate);
                         }
 
-
-
-
                         hashMap.put("title",titleStr);
-                        hashMap.put("due_date",lastDateStr);
+                        hashMap.put("due_date",dueDateStr);
                         hashMap.put("description",desStr);
 
 
                         reference.setValue(hashMap).addOnCompleteListener(task -> {
                             if (task.isSuccessful()){
+                                Snackbar snackbar = Snackbar.make(v ,"Uploaded Successfully!", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                                snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
+                                snackbar.show();
                                 Toast.makeText(getActivity(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
