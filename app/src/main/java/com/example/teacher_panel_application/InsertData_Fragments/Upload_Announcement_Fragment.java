@@ -1,22 +1,29 @@
 package com.example.teacher_panel_application.InsertData_Fragments;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.teacher_panel_application.R;
@@ -78,13 +85,28 @@ public class Upload_Announcement_Fragment extends Fragment {
                 return true;
             }
         });
+        binding.dueDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerFragment timePickerFragment = new TimePickerFragment();
+                timePickerFragment.setOnDateSetListener(new OnDateSetListener() {
+                    @Override
+                    public void onDateSet(int year, int month, int day) {
+                        String selectedDate = year + ":" + (month + 1) + ":" + day;
+                        binding.dueDate.setText(selectedDate);
 
+                    }
+                });
+                timePickerFragment.show(getActivity().getSupportFragmentManager(),"date picker");
+
+            }
+        });
         binding.announcementUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String titleStr = binding.announceTitle.getText().toString();
                 String desStr = binding.announceDescription.getText().toString();
-                String lastDateStr = binding.lastDate.getText().toString();
+                String lastDateStr = binding.dueDate.getText().toString();
 
                 //todo for image
                 FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -110,7 +132,9 @@ public class Upload_Announcement_Fragment extends Fragment {
 
                     });
                     snackbar.show();
-                } else if (selectedImageUri != null) {
+
+                }
+                if (selectedImageUri != null) {
                     UploadTask uploadTask = imageRef.putFile(selectedImageUri);
 
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
@@ -135,7 +159,8 @@ public class Upload_Announcement_Fragment extends Fragment {
                         Toast.makeText(getActivity(), "Error "+exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     });
 
-                } else if (!TextUtils.isEmpty(titleStr)) {
+                }
+                if (!TextUtils.isEmpty(titleStr)) {
                     if (!desStr.isEmpty()){
 
 
@@ -145,6 +170,9 @@ public class Upload_Announcement_Fragment extends Fragment {
                             String formattedDate = LocalDate.now().format(formatter);
                             hashMap.put("current_date",formattedDate);
                         }
+
+
+
 
                         hashMap.put("title",titleStr);
                         hashMap.put("due_date",lastDateStr);
@@ -165,8 +193,10 @@ public class Upload_Announcement_Fragment extends Fragment {
                 }
             }
         });
-
     }
+
+
+
 
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {

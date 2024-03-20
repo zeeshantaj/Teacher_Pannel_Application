@@ -284,6 +284,13 @@ public class Home_Fragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("MyApp","onPause");
+    }
+
     private void openEditDataFragment() {
         // Create an instance of the transparent fragment
         EditDataFragment editDataFragment = new EditDataFragment();
