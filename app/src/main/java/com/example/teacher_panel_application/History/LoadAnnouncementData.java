@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.google.firebase.database.DataSnapshot;
@@ -80,7 +81,9 @@ public class LoadAnnouncementData extends AsyncTask<Void,Void, List<Announcement
                     }
                     Collections.reverse(modelList);
                     AnnounceAdapter adapter = new AnnounceAdapter(modelList);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+                    recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                    //recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);
                 }
                 else {
