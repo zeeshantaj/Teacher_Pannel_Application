@@ -54,7 +54,6 @@ import java.util.HashMap;
 public class Upload_Announcement_Fragment extends Fragment {
 
     public Upload_Announcement_Fragment(){
-
     }
     private Uri selectedImageUri;
     private DatabaseReference reference;
@@ -130,6 +129,7 @@ public class Upload_Announcement_Fragment extends Fragment {
                 if (binding.dueDate.getText().toString().equals("Due Date")){
                     Toast.makeText(getActivity(), "Select due date!", Toast.LENGTH_SHORT).show();
                     ShakeAnimation.setAnimation(getActivity(),binding.dueDate);
+
                     return;
                 }
 
@@ -142,6 +142,7 @@ public class Upload_Announcement_Fragment extends Fragment {
 
                 HashMap<String, String> hashMap = new HashMap<>();
                 if (selectedImageUri != null && !titleStr.isEmpty() && !desStr.isEmpty()) {
+
                     Toast.makeText(getActivity(), "you can either upload image or text data", Toast.LENGTH_SHORT).show();
                     Snackbar snackbar = Snackbar.make(v ,"you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
                     snackbar.setAction("DISMISS", new View.OnClickListener() {
@@ -199,6 +200,9 @@ public class Upload_Announcement_Fragment extends Fragment {
                                     Snackbar snackbar = Snackbar.make(v ,"Image Successfully Uploaded", BaseTransientBottomBar.LENGTH_INDEFINITE);
                                     snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
                                     snackbar.show();
+                                    selectedImageUri = null;
+                                    binding.announcementImage.setImageResource(R.drawable.announcement_img);
+                                    binding.dueDate.setText(R.string.due_date);
                                     Toast.makeText(getActivity(), "Image Successfully Uploaded", Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -239,9 +243,14 @@ public class Upload_Announcement_Fragment extends Fragment {
                                 Snackbar snackbar = Snackbar.make(v ,"Uploaded Successfully!", BaseTransientBottomBar.LENGTH_INDEFINITE);
                                 snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
                                 snackbar.show();
+                                binding.announceTitle.setText("");
+                                binding.announceDescription.setText("");
+                                binding.dueDate.setText(R.string.due_date);
                                 Toast.makeText(getActivity(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                             }
-                        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                        }).addOnFailureListener(e ->{
+                            Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        });
                 }
             }
         });
