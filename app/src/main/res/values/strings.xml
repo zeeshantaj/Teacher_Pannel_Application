@@ -23,7 +23,7 @@
     <string name="minutes">Minutes</string>
     <string name="enter_class_session_time_in_n_minutes">Enter class session time in\n minutes</string>
     <string name="announcement_title">Announcement Title</string>
-    <string name="description_optional">Description optional</string>
+    <string name="description_optional">Description</string>
     <string name="due_date">Due Date</string>
     <string name="or">OR</string>
     <string name="select_an_image">Select an Image</string>

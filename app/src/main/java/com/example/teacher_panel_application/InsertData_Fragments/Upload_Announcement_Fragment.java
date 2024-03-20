@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.example.teacher_panel_application.Animation.ShakeAnimation;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncementBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -114,6 +115,19 @@ public class Upload_Announcement_Fragment extends Fragment {
                 StorageReference imageRef = storageRef.child("images/myImage.jpg");
 
                 //
+                if (binding.dueDate.getText().toString().equals("Due Date")){
+                    Toast.makeText(getActivity(), "Select due date!", Toast.LENGTH_SHORT).show();
+                    ShakeAnimation.setAnimation(getActivity(),binding.dueDate);
+                    return;
+                }
+                if (binding.announceTitle.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "Title is Empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (binding.announceDescription.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "Description is empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 Calendar calendar = Calendar.getInstance();
                 long milli = calendar.getTimeInMillis();
@@ -121,7 +135,7 @@ public class Upload_Announcement_Fragment extends Fragment {
                 reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid).child(child);
 
                 HashMap<String, String> hashMap = new HashMap<>();
-                if (selectedImageUri != null && !titleStr.isEmpty()) {
+                if (selectedImageUri != null && !titleStr.isEmpty() && !desStr.isEmpty()) {
                     Toast.makeText(getActivity(), "you can either upload image or text data", Toast.LENGTH_SHORT).show();
                     Snackbar snackbar = Snackbar.make(v ,"you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
                     snackbar.setAction("DISMISS", new View.OnClickListener() {
@@ -132,9 +146,12 @@ public class Upload_Announcement_Fragment extends Fragment {
 
                     });
                     snackbar.show();
-
+                    return;
                 }
-                if (selectedImageUri != null) {
+
+
+
+                if (selectedImageUri != null && !binding.dueDate.getText().equals("Due Date")) {
                     UploadTask uploadTask = imageRef.putFile(selectedImageUri);
 
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
@@ -160,8 +177,10 @@ public class Upload_Announcement_Fragment extends Fragment {
                     });
 
                 }
-                if (!TextUtils.isEmpty(titleStr)) {
-                    if (!desStr.isEmpty()){
+                if (!binding.announceTitle.getText().toString().isEmpty()
+                        && !binding.announceDescription.getText().toString().isEmpty()
+                        && !binding.dueDate.getText().toString().isEmpty()
+                        ) {
 
 
 
@@ -184,20 +203,10 @@ public class Upload_Announcement_Fragment extends Fragment {
                                 Toast.makeText(getActivity(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
-                    }
-                    else {
-                        Snackbar snackbar = Snackbar.make(v,"date is empty", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                        snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
-                        snackbar.show();
-                    }
                 }
             }
         });
     }
-
-
-
-
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){

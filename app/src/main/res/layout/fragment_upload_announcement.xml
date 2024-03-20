@@ -109,7 +109,7 @@
                 android:id="@+id/dueDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Due Date"
+                android:text="@string/due_date"
                 android:textSize="18sp"
                 android:padding="15dp"
                 android:layout_margin="30dp"
