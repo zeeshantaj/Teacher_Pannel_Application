@@ -81,6 +81,7 @@ public class Upload_Announcement_Fragment extends Fragment {
             public boolean onLongClick(View v) {
                 if (selectedImageUri != null){
                     selectedImageUri = null;
+                    binding.announcementImage.setImageResource(R.drawable.announcement_img);
                     Toast.makeText(getActivity(), "Image removed", Toast.LENGTH_SHORT).show();
                 }
                 return true;
@@ -115,20 +116,22 @@ public class Upload_Announcement_Fragment extends Fragment {
                 StorageReference imageRef = storageRef.child("images/myImage.jpg");
 
                 //
+
+                if (binding.announceTitle.getText().toString().isEmpty()){
+                    binding.announceTitle.setError("title is empty");
+                    Toast.makeText(getActivity(), "Title is Empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (binding.announceDescription.getText().toString().isEmpty()) {
+                    binding.announceDescription.setError("description is empty");
+                    Toast.makeText(getActivity(), "Description is empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (binding.dueDate.getText().toString().equals("Due Date")){
                     Toast.makeText(getActivity(), "Select due date!", Toast.LENGTH_SHORT).show();
                     ShakeAnimation.setAnimation(getActivity(),binding.dueDate);
                     return;
                 }
-                if (binding.announceTitle.getText().toString().isEmpty()){
-                    Toast.makeText(getActivity(), "Title is Empty!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (binding.announceDescription.getText().toString().isEmpty()) {
-                    Toast.makeText(getActivity(), "Description is empty!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 Calendar calendar = Calendar.getInstance();
                 long milli = calendar.getTimeInMillis();
                 String child = String.valueOf(milli);
@@ -178,9 +181,7 @@ public class Upload_Announcement_Fragment extends Fragment {
 
                 }
                 if (!binding.announceTitle.getText().toString().isEmpty()
-                        && !binding.announceDescription.getText().toString().isEmpty()
-                        && !binding.dueDate.getText().toString().isEmpty()
-                        ) {
+                        && !binding.announceDescription.getText().toString().isEmpty() && !binding.dueDate.getText().toString().isEmpty()) {
 
 
 
