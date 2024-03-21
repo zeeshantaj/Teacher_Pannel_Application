@@ -1,7 +1,17 @@
 package com.example.teacher_panel_application.Models;
 
+import android.os.Parcelable;
+
 public class AnnouncementModel {
-    private String title,current_date,due_date,description,imageUrl,key;
+    private String title,current_date,due_date,description,imageUrl,key,id;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public String getKey() {
         return key;

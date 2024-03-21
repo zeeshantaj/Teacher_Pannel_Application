@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 
 import com.erkutaras.showcaseview.ShowcaseManager;
 import com.example.teacher_panel_application.Animation.ShakeAnimation;
+import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncementBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -205,6 +206,8 @@ public class Upload_Announcement_Fragment extends Fragment {
                             hashMap.put("key", binding.announceKey.getText().toString());
                             hashMap.put("due_date", dueDateStr);
                             hashMap.put("id", child);
+
+
                             reference.setValue(hashMap).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     Snackbar snackbar = Snackbar.make(v, "Image Successfully Uploaded", BaseTransientBottomBar.LENGTH_INDEFINITE);

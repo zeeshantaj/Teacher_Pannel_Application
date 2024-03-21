@@ -3,6 +3,8 @@ package com.example.teacher_panel_application.History;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -82,7 +85,6 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
 
     private List<AnnouncementModel> announcementModelList;
     private Context context;
-
     public AnnounceAdapter(List<AnnouncementModel> announcementModelList, Context context) {
         this.announcementModelList = announcementModelList;
         this.context = context;
@@ -128,7 +130,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment();
+                openFragment(model);
             }
         });
     }
@@ -149,15 +151,12 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
             super(itemView);
         }
     }
-    private void openFragment() {
-        // Create an instance of the transparent fragment
+    private void openFragment(AnnouncementModel model) {
         Announcement_full_view_Fragment editDataFragment = new Announcement_full_view_Fragment();
-        // Add the fragment to the fragment manager
-        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(android.R.id.content, editDataFragment); // Use android.R.id.content to add the fragment above all views
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        Bundle bundle = new Bundle();
+        bundle.putString("announcement",  new Gson().toJson(model));
+        editDataFragment.setArguments(bundle);
+        editDataFragment.show(((AppCompatActivity) context).getSupportFragmentManager(),editDataFragment.getTag());
     }
 
 }

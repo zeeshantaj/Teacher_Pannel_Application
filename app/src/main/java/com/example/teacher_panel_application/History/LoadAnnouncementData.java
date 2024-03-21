@@ -71,6 +71,7 @@ public class LoadAnnouncementData extends AsyncTask<Void,Void, List<Announcement
                             model.setKey(key);
                             model.setDescription(des);
                             model.setCurrent_date(date);
+
                         }
                         if (dataSnapshot.child("imageUrl").exists()) {
                             String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
