@@ -1,11 +1,14 @@
 package com.example.teacher_panel_application.History;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -22,6 +25,10 @@ import com.example.teacher_panel_application.databinding.AnnounceDataLayoutBindi
 import com.example.teacher_panel_application.databinding.AnnounceImgLaoutBinding;
 import com.example.teacher_panel_application.databinding.ClasshistoryRecyclerItemBinding;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -78,9 +85,11 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
 //    }
 
     private List<AnnouncementModel> announcementModelList;
+    private Context context;
 
-    public AnnounceAdapter(List<AnnouncementModel> announcementModelList) {
+    public AnnounceAdapter(List<AnnouncementModel> announcementModelList, Context context) {
         this.announcementModelList = announcementModelList;
+        this.context = context;
     }
 
     @NonNull
@@ -112,15 +121,21 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
         } else {
             // Set data for image layout
             AnnounceImgLaoutBinding binding = AnnounceImgLaoutBinding.bind(holder.itemView);
-            binding.itemDate.setText(model.getCurrent_date());
+            //binding.itemDate.setText(model.getCurrent_date());
 
 
             Glide.with(holder.itemView.getContext())
-
                     .load(model.getImageUrl())
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(15)))
                     .into(binding.itemImage);
         }
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context, "data "+holder.getAdapterPosition()+model.getCurrent_date(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -139,5 +154,31 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
             super(itemView);
         }
     }
+    public void removeItem(int position, String currentDate) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        DatabaseReference reference = FirebaseDatabase
+                .getInstance()
+                .getReference("Announcement")
+                .child(uid);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.delete_item_layout, null);
+        builder.setView(dialogView);
 
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        MaterialButton noBtn = dialogView.findViewById(R.id.noBtn);
+        MaterialButton yesBtn = dialogView.findViewById(R.id.deleteBtn);
+
+        yesBtn.setOnClickListener(v -> reference.removeValue().addOnSuccessListener(unused -> {
+            if (position >= 0 && position < announcementModelList.size()) {
+                announcementModelList.remove(position);
+                notifyItemRemoved(position);
+            }
+            dialog.dismiss();
+            Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> Toast.makeText(context, "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()));
+        noBtn.setOnClickListener(v -> dialog.dismiss());
+    }
 }

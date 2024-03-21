@@ -91,56 +91,6 @@ public class AnnouncementHistory_Fragment extends Fragment {
 //        }
 //    }
 
-    private void initRecyclerData(){
-        binding.announcementRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        List<AnnouncementModel> modelList = new ArrayList<>();
-        AnnounceAdapter adapter = new AnnounceAdapter(modelList);
-        binding.announcementRecycler.setAdapter(adapter);
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String uid = auth.getUid();
-        LoadAnnouncementData loadDataInBackground = new LoadAnnouncementData(binding.announcementRecycler,binding.dataShowTxtNotification,uid,getActivity());
-        loadDataInBackground.execute();
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid);
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-
-
-                        AnnouncementModel model = new AnnouncementModel();
-                        if (dataSnapshot.child("title").exists()){
-                            String title = dataSnapshot.child("title").getValue(String.class);
-                            String date = dataSnapshot.child("current_date").getValue(String.class);
-                            String dueDate = dataSnapshot.child("due_date").getValue(String.class);
-                            String des = dataSnapshot.child("description").getValue(String.class);
-
-                            model.setDue_date(dueDate);
-                            model.setTitle(title);
-                            model.setDescription(des);
-                            model.setCurrent_date(date);
-                        }
-                        if (dataSnapshot.child("imageUrl").exists()){
-                            String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                            String date = dataSnapshot.child("current_date").getValue(String.class);
-                            model.setImageUrl(imageUrl);
-                            model.setCurrent_date(date);
-                        }
-                        modelList.add(model);
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Error "+ error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
     @Override
     public void onResume() {
         super.onResume();

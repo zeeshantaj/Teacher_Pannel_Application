@@ -80,7 +80,7 @@ public class LoadAnnouncementData extends AsyncTask<Void,Void, List<Announcement
                         modelList.add(model);
                     }
                     Collections.reverse(modelList);
-                    AnnounceAdapter adapter = new AnnounceAdapter(modelList);
+                    AnnounceAdapter adapter = new AnnounceAdapter(modelList,context);
                     StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
                     recyclerView.setLayoutManager(staggeredGridLayoutManager);
                     //recyclerView.setLayoutManager(new LinearLayoutManager(context));

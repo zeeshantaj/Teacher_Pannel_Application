@@ -53,12 +53,14 @@ import java.util.HashMap;
 
 public class Upload_Announcement_Fragment extends Fragment {
 
-    public Upload_Announcement_Fragment(){
+    public Upload_Announcement_Fragment() {
     }
+
     private Uri selectedImageUri;
     private DatabaseReference reference;
     private FirebaseAuth auth;
     private FragmentUploadAnnouncementBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,12 +79,12 @@ public class Upload_Announcement_Fragment extends Fragment {
 
 
         auth = FirebaseAuth.getInstance();
-        String  uid = auth.getUid();
+        String uid = auth.getUid();
 
         binding.announcementImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (selectedImageUri != null){
+                if (selectedImageUri != null) {
                     selectedImageUri = null;
                     binding.announcementImage.setImageResource(R.drawable.announcement_img);
                     Toast.makeText(getActivity(), "Image removed", Toast.LENGTH_SHORT).show();
@@ -102,7 +104,7 @@ public class Upload_Announcement_Fragment extends Fragment {
 
                     }
                 });
-                timePickerFragment.show(getActivity().getSupportFragmentManager(),"date picker");
+                timePickerFragment.show(getActivity().getSupportFragmentManager(), "date picker");
 
             }
         });
@@ -120,16 +122,21 @@ public class Upload_Announcement_Fragment extends Fragment {
 
                 //
                 if (selectedImageUri == null && binding.announceTitle.getText().toString().isEmpty() &&
-                        binding.announceDescription.getText().toString().isEmpty()){
-                    Snackbar snackbar = Snackbar.make(v ,"Image and Text field is empty please fill either of them", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                        binding.announceDescription.getText().toString().isEmpty()) {
+                    Snackbar snackbar = Snackbar.make(v, "Image and Text field is empty please fill either of them", BaseTransientBottomBar.LENGTH_INDEFINITE);
                     snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
                     snackbar.show();
                     return;
                 }
-                if (binding.dueDate.getText().toString().equals("Due Date")){
+                if (binding.dueDate.getText().toString().equals("Due Date")) {
                     Toast.makeText(getActivity(), "Select due date!", Toast.LENGTH_SHORT).show();
-                    ShakeAnimation.setAnimation(getActivity(),binding.dueDate);
+                    ShakeAnimation.setAnimation(getActivity(), binding.dueDate);
 
+                    return;
+                }
+                if (binding.announceKey.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "Key is empty", Toast.LENGTH_SHORT).show();
+                    ShakeAnimation.setAnimation(getActivity(), binding.announceKey);
                     return;
                 }
 
@@ -144,7 +151,7 @@ public class Upload_Announcement_Fragment extends Fragment {
                 if (selectedImageUri != null && !titleStr.isEmpty() && !desStr.isEmpty()) {
 
                     Toast.makeText(getActivity(), "you can either upload image or text data", Toast.LENGTH_SHORT).show();
-                    Snackbar snackbar = Snackbar.make(v ,"you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                    Snackbar snackbar = Snackbar.make(v, "you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
                     snackbar.setAction("DISMISS", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -177,7 +184,7 @@ public class Upload_Announcement_Fragment extends Fragment {
 
                 //todo to upload image
 
-                if (selectedImageUri != null && !binding.dueDate.getText().equals("Due Date")) {
+                if (selectedImageUri != null && !binding.dueDate.getText().equals("Due Date") && !binding.announceKey.getText().toString().isEmpty()) {
                     UploadTask uploadTask = imageRef.putFile(selectedImageUri);
                     binding.announcementProgressIndicator.setVisibility(View.VISIBLE);
                     uploadTask.addOnProgressListener(snapshot -> {
@@ -192,12 +199,13 @@ public class Upload_Announcement_Fragment extends Fragment {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
                                 String formattedDate = LocalDate.now().format(formatter);
-                                hashMap.put("current_date",formattedDate);
+                                hashMap.put("current_date", formattedDate);
                             }
-                            hashMap.put("imageUrl",downloadUrl);
+                            hashMap.put("imageUrl", downloadUrl);
+                            hashMap.put("key", binding.announceKey.getText().toString());
                             reference.setValue(hashMap).addOnCompleteListener(task -> {
-                                if (task.isSuccessful()){
-                                    Snackbar snackbar = Snackbar.make(v ,"Image Successfully Uploaded", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                                if (task.isSuccessful()) {
+                                    Snackbar snackbar = Snackbar.make(v, "Image Successfully Uploaded", BaseTransientBottomBar.LENGTH_INDEFINITE);
                                     snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
                                     snackbar.show();
                                     selectedImageUri = null;
@@ -208,7 +216,7 @@ public class Upload_Announcement_Fragment extends Fragment {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                     binding.announcementProgressIndicator.setVisibility(View.GONE);
                                 }
                             });
@@ -217,47 +225,48 @@ public class Upload_Announcement_Fragment extends Fragment {
                         });
                     }).addOnFailureListener(exception -> {
                         binding.announcementProgressIndicator.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "Error "+exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Error " + exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     });
 
                 }
                 // todo for uploading text data
                 if (!binding.announceTitle.getText().toString().isEmpty()
-                        && !binding.announceDescription.getText().toString().isEmpty() && !binding.dueDate.getText().toString().isEmpty()) {
+                        && !binding.announceDescription.getText().toString().isEmpty() && !binding.dueDate.getText().toString().isEmpty()
+                        && !binding.announceKey.getText().toString().isEmpty()) {
 
 
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
+                        String formattedDate = LocalDate.now().format(formatter);
+                        hashMap.put("current_date", formattedDate);
+                    }
 
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
-                            String formattedDate = LocalDate.now().format(formatter);
-                            hashMap.put("current_date",formattedDate);
+                    hashMap.put("title", titleStr);
+                    hashMap.put("due_date", dueDateStr);
+                    hashMap.put("description", desStr);
+                    hashMap.put("key", binding.announceKey.getText().toString());
+
+                    reference.setValue(hashMap).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Snackbar snackbar = Snackbar.make(v, "Uploaded Successfully!", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                            snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
+                            snackbar.show();
+                            binding.announceTitle.setText("");
+                            binding.announceDescription.setText("");
+                            binding.dueDate.setText(R.string.due_date);
+                            Toast.makeText(getActivity(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                         }
-
-                        hashMap.put("title",titleStr);
-                        hashMap.put("due_date",dueDateStr);
-                        hashMap.put("description",desStr);
-
-
-                        reference.setValue(hashMap).addOnCompleteListener(task -> {
-                            if (task.isSuccessful()){
-                                Snackbar snackbar = Snackbar.make(v ,"Uploaded Successfully!", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                                snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
-                                snackbar.show();
-                                binding.announceTitle.setText("");
-                                binding.announceDescription.setText("");
-                                binding.dueDate.setText(R.string.due_date);
-                                Toast.makeText(getActivity(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(e ->{
-                            Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                        });
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(getActivity(), "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    });
                 }
             }
         });
     }
+
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     selectedImageUri = result.getData().getData();
                     binding.announcementImage.setImageURI(selectedImageUri);
                     //uploadTask = imageRef.putFile(selectedImageUri);
