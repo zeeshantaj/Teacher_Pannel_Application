@@ -3,28 +3,24 @@ package com.example.teacher_panel_application.History;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.AnnounceDataLayoutBinding;
 import com.example.teacher_panel_application.databinding.AnnounceImgLaoutBinding;
-import com.example.teacher_panel_application.databinding.ClasshistoryRecyclerItemBinding;
-import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -129,11 +125,10 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(15)))
                     .into(binding.itemImage);
         }
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(context, "data "+holder.getAdapterPosition()+model.getCurrent_date(), Toast.LENGTH_SHORT).show();
-                return true;
+            public void onClick(View v) {
+                openFragment();
             }
         });
     }
@@ -154,31 +149,15 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.ViewHo
             super(itemView);
         }
     }
-    public void removeItem(int position, String currentDate) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String uid = auth.getUid();
-        DatabaseReference reference = FirebaseDatabase
-                .getInstance()
-                .getReference("Announcement")
-                .child(uid);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.delete_item_layout, null);
-        builder.setView(dialogView);
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        MaterialButton noBtn = dialogView.findViewById(R.id.noBtn);
-        MaterialButton yesBtn = dialogView.findViewById(R.id.deleteBtn);
-
-        yesBtn.setOnClickListener(v -> reference.removeValue().addOnSuccessListener(unused -> {
-            if (position >= 0 && position < announcementModelList.size()) {
-                announcementModelList.remove(position);
-                notifyItemRemoved(position);
-            }
-            dialog.dismiss();
-            Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> Toast.makeText(context, "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()));
-        noBtn.setOnClickListener(v -> dialog.dismiss());
+    private void openFragment() {
+        // Create an instance of the transparent fragment
+        Announcement_full_view_Fragment editDataFragment = new Announcement_full_view_Fragment();
+        // Add the fragment to the fragment manager
+        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(android.R.id.content, editDataFragment); // Use android.R.id.content to add the fragment above all views
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
+
 }
