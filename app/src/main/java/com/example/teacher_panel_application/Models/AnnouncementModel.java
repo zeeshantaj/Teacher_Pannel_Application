@@ -1,8 +1,15 @@
 package com.example.teacher_panel_application.Models;
 
 public class AnnouncementModel {
-    private String title,current_date,due_date,description,imageUrl;
+    private String title,current_date,due_date,description,imageUrl,key;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public String getCurrent_date() {
         return current_date;

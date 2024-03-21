@@ -203,6 +203,8 @@ public class Upload_Announcement_Fragment extends Fragment {
                             }
                             hashMap.put("imageUrl", downloadUrl);
                             hashMap.put("key", binding.announceKey.getText().toString());
+                            hashMap.put("due_date", dueDateStr);
+                            hashMap.put("id", child);
                             reference.setValue(hashMap).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     Snackbar snackbar = Snackbar.make(v, "Image Successfully Uploaded", BaseTransientBottomBar.LENGTH_INDEFINITE);
@@ -245,6 +247,7 @@ public class Upload_Announcement_Fragment extends Fragment {
                     hashMap.put("due_date", dueDateStr);
                     hashMap.put("description", desStr);
                     hashMap.put("key", binding.announceKey.getText().toString());
+                    hashMap.put("id", child);
 
                     reference.setValue(hashMap).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {

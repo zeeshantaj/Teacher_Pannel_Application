@@ -63,18 +63,24 @@ public class LoadAnnouncementData extends AsyncTask<Void,Void, List<Announcement
                             String title = dataSnapshot.child("title").getValue(String.class);
                             String date = dataSnapshot.child("current_date").getValue(String.class);
                             String dueDate = dataSnapshot.child("due_date").getValue(String.class);
+                            String key = dataSnapshot.child("key").getValue(String.class);
                             String des = dataSnapshot.child("description").getValue(String.class);
 
                             model.setDue_date(dueDate);
                             model.setTitle(title);
+                            model.setKey(key);
                             model.setDescription(des);
                             model.setCurrent_date(date);
                         }
                         if (dataSnapshot.child("imageUrl").exists()) {
                             String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
                             String date = dataSnapshot.child("current_date").getValue(String.class);
+                            String dueDate = dataSnapshot.child("due_date").getValue(String.class);
+                            String key = dataSnapshot.child("key").getValue(String.class);
                             model.setImageUrl(imageUrl);
                             model.setCurrent_date(date);
+                            model.setKey(key);
+                            model.setDue_date(dueDate);
                         }
                         textView.setVisibility(View.GONE);
                         modelList.add(model);
