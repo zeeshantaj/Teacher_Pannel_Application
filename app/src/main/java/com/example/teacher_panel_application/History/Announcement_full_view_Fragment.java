@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +41,7 @@ public class Announcement_full_view_Fragment extends DialogFragment {
         TextView description = view.findViewById(R.id.AFVDescription);
         TextView postedDate = view.findViewById(R.id.AFVPostedDate);
         TextView dueDate = view.findViewById(R.id.AFVDueDate);
-        ImageView imageView = view.findViewById(R.id.AFVImageView);
+        PhotoView imageView = view.findViewById(R.id.AFVImageView);
         MaterialButton deleteBtn = view.findViewById(R.id.AFVDeletBtn);
         MaterialButton dismissBtn = view.findViewById(R.id.AFVDismissBtn);
         ConstraintLayout constraintLayout = view.findViewById(R.id.AFVTitleDesView);
@@ -57,6 +58,7 @@ public class Announcement_full_view_Fragment extends DialogFragment {
                     Glide.with(getActivity())
                             .load(model.getImageUrl())
                             .into(imageView);
+
                 }
 
                 if (model.getImageUrl() == null || model.getImageUrl().isEmpty()) {
@@ -67,10 +69,11 @@ public class Announcement_full_view_Fragment extends DialogFragment {
                 }
 
                 deleteBtn.setOnClickListener(v -> {
-                    String key = model.getKey();
+                    String key = model.getId();
+                    Toast.makeText(getActivity(), "key"+key, Toast.LENGTH_SHORT).show();
                 });
                 dismissBtn.setOnClickListener(v -> {
-
+                    dismiss();
                 });
 
             }
