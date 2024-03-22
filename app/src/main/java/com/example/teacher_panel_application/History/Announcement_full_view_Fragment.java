@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
@@ -28,7 +29,7 @@ public class Announcement_full_view_Fragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL,R.style.FullScreenDialogTheme);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenDialogTheme);
     }
 
     @Override
@@ -64,39 +65,43 @@ public class Announcement_full_view_Fragment extends DialogFragment {
                     title.setText(model.getTitle());
                     description.setText(model.getDescription());
                 }
+
+                deleteBtn.setOnClickListener(v -> {
+                    String key = model.getKey();
+                });
+                dismissBtn.setOnClickListener(v -> {
+
+                });
+
             }
         }
 
 
         return view;
     }
+    public void removeItem(String key) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        DatabaseReference reference = FirebaseDatabase
+                .getInstance()
+                .getReference("Announcement")
+                .child(uid)
+                .child(key);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.delete_item_layout, null);
+        builder.setView(dialogView);
 
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        MaterialButton noBtn = dialogView.findViewById(R.id.noBtn);
+        MaterialButton yesBtn = dialogView.findViewById(R.id.deleteBtn);
+
+        yesBtn.setOnClickListener(v -> reference.removeValue().addOnSuccessListener(unused -> {
+            dialog.dismiss();
+
+        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()));
+        noBtn.setOnClickListener(v -> dialog.dismiss());
+    }
 }
-//    public void removeItem(int position, String currentDate) {
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//        String uid = auth.getUid();
-//        DatabaseReference reference = FirebaseDatabase
-//                .getInstance()
-//                .getReference("Announcement")
-//                .child(uid);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//        View dialogView = LayoutInflater.from(context).inflate(R.layout.delete_item_layout, null);
-//        builder.setView(dialogView);
-//
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//
-//        MaterialButton noBtn = dialogView.findViewById(R.id.noBtn);
-//        MaterialButton yesBtn = dialogView.findViewById(R.id.deleteBtn);
-//
-//        yesBtn.setOnClickListener(v -> reference.removeValue().addOnSuccessListener(unused -> {
-//            if (position >= 0 && position < announcementModelList.size()) {
-//                announcementModelList.remove(position);
-//                notifyItemRemoved(position);
-//            }
-//            dialog.dismiss();
-//            Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show();
-//        }).addOnFailureListener(e -> Toast.makeText(context, "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()));
-//        noBtn.setOnClickListener(v -> dialog.dismiss());
-//    }

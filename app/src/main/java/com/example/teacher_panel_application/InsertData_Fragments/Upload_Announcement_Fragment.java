@@ -115,11 +115,13 @@ public class Upload_Announcement_Fragment extends Fragment {
                 String titleStr = binding.announceTitle.getText().toString();
                 String desStr = binding.announceDescription.getText().toString();
                 String dueDateStr = binding.dueDate.getText().toString();
-
+                Calendar calendar = Calendar.getInstance();
+                long milli = calendar.getTimeInMillis();
+                String milliSecondChild = String.valueOf(milli);
                 //todo for image
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReference();
-                StorageReference imageRef = storageRef.child("images/myImage.jpg");
+                StorageReference imageRef = storageRef.child("AnnouncementImages/announcement"+milliSecondChild+".jpg");
 
                 //
                 if (selectedImageUri == null && binding.announceTitle.getText().toString().isEmpty() &&
@@ -141,10 +143,8 @@ public class Upload_Announcement_Fragment extends Fragment {
                     return;
                 }
 
-                Calendar calendar = Calendar.getInstance();
-                long milli = calendar.getTimeInMillis();
-                String child = String.valueOf(milli);
-                reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid).child(child);
+
+                reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid).child(milliSecondChild);
 
                 // todo check if text and image both are filled
 
@@ -205,7 +205,7 @@ public class Upload_Announcement_Fragment extends Fragment {
                             hashMap.put("imageUrl", downloadUrl);
                             hashMap.put("key", binding.announceKey.getText().toString());
                             hashMap.put("due_date", dueDateStr);
-                            hashMap.put("id", child);
+                            hashMap.put("id", milliSecondChild);
 
 
                             reference.setValue(hashMap).addOnCompleteListener(task -> {
@@ -250,7 +250,7 @@ public class Upload_Announcement_Fragment extends Fragment {
                     hashMap.put("due_date", dueDateStr);
                     hashMap.put("description", desStr);
                     hashMap.put("key", binding.announceKey.getText().toString());
-                    hashMap.put("id", child);
+                    hashMap.put("id", milliSecondChild);
 
                     reference.setValue(hashMap).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
