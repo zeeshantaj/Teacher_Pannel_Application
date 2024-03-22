@@ -5,6 +5,9 @@ import android.os.Parcelable;
 public class AnnouncementModel {
     private String title,current_date,due_date,description,imageUrl,key,id;
 
+    public AnnouncementModel() {
+    }
+
     public void setId(String id) {
         this.id = id;
     }

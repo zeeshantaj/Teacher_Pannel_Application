@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedDispatcher;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
@@ -20,10 +21,14 @@ import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 public class Announcement_full_view_Fragment extends DialogFragment {
@@ -69,8 +74,9 @@ public class Announcement_full_view_Fragment extends DialogFragment {
                 }
 
                 deleteBtn.setOnClickListener(v -> {
-                    String key = model.getId();
-                    Toast.makeText(getActivity(), "key"+key, Toast.LENGTH_SHORT).show();
+                    String id = model.getId();
+                    String url = model.getImageUrl();
+                    removeItem(id,url);
                 });
                 dismissBtn.setOnClickListener(v -> {
                     dismiss();
@@ -82,14 +88,11 @@ public class Announcement_full_view_Fragment extends DialogFragment {
 
         return view;
     }
-    public void removeItem(String key) {
+
+    public void removeItem(String id, String imageUrl) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        DatabaseReference reference = FirebaseDatabase
-                .getInstance()
-                .getReference("Announcement")
-                .child(uid)
-                .child(key);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid).child(id);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.delete_item_layout, null);
@@ -101,10 +104,34 @@ public class Announcement_full_view_Fragment extends DialogFragment {
         MaterialButton noBtn = dialogView.findViewById(R.id.noBtn);
         MaterialButton yesBtn = dialogView.findViewById(R.id.deleteBtn);
 
-        yesBtn.setOnClickListener(v -> reference.removeValue().addOnSuccessListener(unused -> {
-            dialog.dismiss();
+        yesBtn.setOnClickListener(v -> {
 
-        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show()));
-        noBtn.setOnClickListener(v -> dialog.dismiss());
+
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
+                storageReference.delete().addOnSuccessListener(aVoid -> {
+                    databaseReference.removeValue().addOnSuccessListener(unused -> {
+                        Toast.makeText(getActivity(), "Announcement deleted successfully", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        dismiss();
+                    }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Error deleting Announcement: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error deleting image: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }else {
+                databaseReference.removeValue().addOnSuccessListener(unused -> {
+                    Toast.makeText(getActivity(), "Announcement deleted successfully", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    dismiss();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error deleting Announcement: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+
+        noBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+            dismiss();
+        });
     }
 }

@@ -55,6 +55,7 @@ public class LoadAnnouncementData extends AsyncTask<Void,Void, List<Announcement
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                modelList.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
@@ -89,13 +90,15 @@ public class LoadAnnouncementData extends AsyncTask<Void,Void, List<Announcement
                         }
                         textView.setVisibility(View.GONE);
                         modelList.add(model);
+
                     }
                     Collections.reverse(modelList);
                     AnnounceAdapter adapter = new AnnounceAdapter(modelList,context);
                     StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
                     recyclerView.setLayoutManager(staggeredGridLayoutManager);
-                    //recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
                 }
                 else {
                     textView.setVisibility(View.VISIBLE);
