@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.teacher_panel_application.Models.AnnouncementModel;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,23 +28,21 @@ public class LoadAnnouncementData extends AsyncTask<Void,Void, List<Announcement
     private RecyclerView recyclerView;
     private String uid;
     private Context context;
-    private ProgressDialog progressDialog;
     private TextView textView;
-
-    public LoadAnnouncementData(RecyclerView recyclerView, TextView textView, String uid, Context context) {
+    private ShimmerFrameLayout shimmerFrameLayout;
+    public LoadAnnouncementData(RecyclerView recyclerView, TextView textView, ShimmerFrameLayout shimmerFrameLayout,String uid, Context context) {
         this.recyclerView = recyclerView;
         this.textView = textView;
         this.uid = uid;
+        this.shimmerFrameLayout = shimmerFrameLayout;
         this.context = context;
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog.show();
+        // show shimmer here
+        shimmerFrameLayout.startShimmerAnimation();
     }
 
     @Override
@@ -98,17 +97,22 @@ public class LoadAnnouncementData extends AsyncTask<Void,Void, List<Announcement
                     recyclerView.setLayoutManager(staggeredGridLayoutManager);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    shimmerFrameLayout.stopShimmerAnimation();
+                    shimmerFrameLayout.setVisibility(View.GONE);
 
                 }
                 else {
+                    shimmerFrameLayout.stopShimmerAnimation();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                     textView.setVisibility(View.VISIBLE);
                 }
-                progressDialog.dismiss(); // Dismiss the progress dialog when data is loaded
+                // dismiss shimmer here
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                progressDialog.dismiss();
+                shimmerFrameLayout.stopShimmerAnimation();
+                shimmerFrameLayout.setVisibility(View.GONE);
                 Toast.makeText(context, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

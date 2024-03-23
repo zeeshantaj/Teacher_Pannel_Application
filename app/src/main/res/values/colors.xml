@@ -15,6 +15,7 @@
     <color name="yellow">#FFEB3B</color>
     <color name="start">#6D528E</color>
     <color name="center">#543975</color>
+    <color name="shimmerBg">#dddddd</color>
     <color name="txt1">#9981f3</color>
     <color name="txt2">#6246c0</color>
     <color name="end">#442d6b</color>
