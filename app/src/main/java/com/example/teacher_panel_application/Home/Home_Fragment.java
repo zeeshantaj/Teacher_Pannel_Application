@@ -95,6 +95,7 @@ public class Home_Fragment extends Fragment {
     }
 
     public void getValues() {
+        binding.homeShimmer.startShimmerAnimation();
         auth = FirebaseAuth.getInstance();
         String uid = auth.getCurrentUser().getUid();
         database = FirebaseDatabase.getInstance();
@@ -103,6 +104,8 @@ public class Home_Fragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    binding.homeShimmer.stopShimmerAnimation();
+                    binding.homeShimmer.setVisibility(View.GONE);
                     binding.cardNode.setVisibility(View.VISIBLE);
                     binding.noClass.setVisibility(View.GONE);
                     name = snapshot.child("name").getValue(String.class);
@@ -135,21 +138,6 @@ public class Home_Fragment extends Fragment {
 
 
                     Log.e("MyApp","millis "+timeDifferenceMillis);
-//                    try {
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                            LocalDateTime localDateTime = LocalDateTime.now();
-//                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
-//                            String formattedTime = localDateTime.format(formatter);
-//                            System.out.println(formattedTime);
-//                            SimpleDateFormat inputFormat = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault());
-//                            Date currentTime = inputFormat.parse(formattedTime);
-//                            Date endTime = inputFormat.parse(endTimeString);
-//                            timeDifferenceMillis = endTime.getTime() - currentTime.getTime();
-//                            Log.d("MyApp", String.valueOf(timeDifferenceMillis));
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
                     if (countDownTimer == null) {
 
                         setNotification(timeDifferenceMillis, uid, name, dep, loc, sub, topi, minute, dateTime);
@@ -191,6 +179,8 @@ public class Home_Fragment extends Fragment {
                         Log.e("countDownStarted place", countDownTimer.toString());
                     }
                 } else {
+                    binding.homeShimmer.stopShimmerAnimation();
+                    binding.homeShimmer.setVisibility(View.GONE);
                     binding.cardNode.setVisibility(View.GONE);
                     binding.noClass.setVisibility(View.VISIBLE);
                 }
@@ -198,7 +188,9 @@ public class Home_Fragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
                 Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }

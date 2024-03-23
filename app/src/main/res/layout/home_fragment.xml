@@ -4,12 +4,30 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/homeShimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/shimmerBg"
+            app:cardCornerRadius="20dp" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <TextView
         android:id="@+id/noClass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/class_not_posted_yet"
         android:textSize="24sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

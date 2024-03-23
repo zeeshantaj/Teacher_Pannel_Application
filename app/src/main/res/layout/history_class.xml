@@ -58,6 +58,7 @@
         android:text="@string/no_data_to_show"
         android:textStyle="bold"
         android:textSize="18sp"
+        android:visibility="gone"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
