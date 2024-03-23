@@ -30,10 +30,20 @@ public class AnnouncementHistory_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = HistoryNotificationBinding.inflate(inflater,container,false);
 
+        return binding.getRoot();
+    }
+    private void getData(){
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
         LoadAnnouncementData loadDataInBackground = new LoadAnnouncementData(binding.announcementRecycler,binding.dataShowTxtNotification,binding.historyShimmer,uid,getActivity());
         loadDataInBackground.execute();
-        return binding.getRoot();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getData();
+    }
+
 }

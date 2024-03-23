@@ -14,13 +14,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/announce_place_holder" />
-
-            <include layout="@layout/announce_place_holder" />
-
-            <include layout="@layout/announce_place_holder" />
-
-            <include layout="@layout/announce_place_holder" />
+            <include layout="@layout/place_holder_announce" />
+            <include layout="@layout/place_holder_announce" />
+            <include layout="@layout/place_holder_announce" />
+            <include layout="@layout/place_holder_announce" />
 
 
         </LinearLayout>
