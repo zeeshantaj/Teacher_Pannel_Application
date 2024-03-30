@@ -6,4 +6,4 @@
     android:padding="10dp"
     android:scaleType="fitXY"
     android:id="@+id/itemImage"
-    android:src="@drawable/announcement_img"/>
+    android:src="@drawable/announcement"/>

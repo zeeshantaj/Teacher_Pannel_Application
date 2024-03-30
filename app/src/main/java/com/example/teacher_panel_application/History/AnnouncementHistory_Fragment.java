@@ -34,6 +34,7 @@ public class AnnouncementHistory_Fragment extends Fragment {
     }
     private void getData(){
 
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
         LoadAnnouncementData loadDataInBackground = new LoadAnnouncementData(binding.announcementRecycler,binding.dataShowTxtNotification,binding.historyShimmer,uid,getActivity());
