@@ -114,7 +114,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
 
         // Set up the BottomSheetBehavior
         BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(parentView);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
 
         // Set the callback to customize behavior
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -127,7 +127,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 // Restrict upward movement
                 if (slideOffset < 0) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
                 }
             }
         });
@@ -135,12 +135,6 @@ public class ProfileFragment extends BottomSheetDialogFragment {
         // Set minimum height to full screen
         CoordinatorLayout coordinatorLayout = view.findViewById(R.id.bottomSheetLayoutProfile);
         coordinatorLayout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
-
-        // Set click listener for dismiss button
-        ImageView dismissBtn = view.findViewById(R.id.editDataDismiss);
-        if (dismissBtn != null) {
-            dismissBtn.setOnClickListener(v -> dialog.dismiss());
-        }
     }
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
