@@ -108,16 +108,38 @@ public class ProfileFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
-        CoordinatorLayout coordinatorLayout = dialog.findViewById(R.id.bottomSheetLayout);
-        assert coordinatorLayout != null;
+
+        // Get the parent view of the fragment
+        View parentView = (View) view.getParent();
+
+        // Set up the BottomSheetBehavior
+        BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(parentView);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        // Set the callback to customize behavior
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                // Handle state changes if needed
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // Restrict upward movement
+                if (slideOffset < 0) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        });
+
+        // Set minimum height to full screen
+        CoordinatorLayout coordinatorLayout = view.findViewById(R.id.bottomSheetLayoutProfile);
         coordinatorLayout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
-        ImageView dissmissBtn = dialog.findViewById(R.id.editDataDismiss);
-        if (dissmissBtn != null) {
-            dissmissBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
+
+        // Set click listener for dismiss button
+        ImageView dismissBtn = view.findViewById(R.id.editDataDismiss);
+        if (dismissBtn != null) {
+            dismissBtn.setOnClickListener(v -> dialog.dismiss());
         }
     }
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
