@@ -3,6 +3,7 @@ package com.example.teacher_panel_application.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -88,40 +89,12 @@ public class MethodsUtils {
         fragmentTransaction.add(android.R.id.content, fragment); // Use android.R.id.content to add the fragment above all views
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
     }
 
-    public static DatabaseReference getCurrentUserRef(){
+    public static DatabaseReference getCurrentUserRef(String path){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        return FirebaseDatabase.getInstance().getReference().child("UsersInfo").child(uid);
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void uploadTimeIntoDB(String currentDateTimeString,String endDateTimeString,String formattedDateTime,String minute){
-
-        LocalDateTime startedTime = LocalDateTime.now();
-        DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
-        String startedTimeStr = startedTime.format(startTimeFormatter);
-
-// Get current date and time
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
-
-// Set current date and time
-        currentDateTimeString = currentDateTime.format(dateTimeFormatter);
-
-
-// Calculate end date and time and set it
-        int minute1 = Integer.parseInt(minute);
-        LocalDateTime updateDateTime = currentDateTime.plusMinutes(minute1);
-        endDateTimeString = updateDateTime.format(dateTimeFormatter);
-
-// Set formatted date and time
-        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
-        formattedDateTime = currentDateTime.format(formatter1);
-
-
-
+        return FirebaseDatabase.getInstance().getReference().child(path).child(uid);
     }
 }

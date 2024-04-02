@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
 import com.example.teacher_panel_application.Fragment.TermsAndConditionFragment;
 import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
@@ -91,8 +92,7 @@ public class Settings_Fragment extends Fragment {
         });
 
         binding.profileCard.setOnClickListener(v -> {
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            MethodsUtils.setFragment(fragmentManager,new ProfileFragment());
+            openFragment();
         });
 
         binding.termsAndCondCard.setOnClickListener(v -> {
@@ -121,7 +121,11 @@ public class Settings_Fragment extends Fragment {
         getVersion();
         return binding.getRoot();
     }
+    public void openFragment() {
+        ProfileFragment editDataFragment = new ProfileFragment();
+        editDataFragment.show(getActivity().getSupportFragmentManager(),editDataFragment.getTag());
 
+    }
     private void getVersion(){
 
         PackageManager packageManager = getActivity().getPackageManager();

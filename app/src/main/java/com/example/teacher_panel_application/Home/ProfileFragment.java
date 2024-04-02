@@ -2,8 +2,10 @@ package com.example.teacher_panel_application.Home;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,13 +21,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
+import com.example.teacher_panel_application.databinding.FragmentEditDataBinding;
 import com.example.teacher_panel_application.databinding.ProfileFragmentBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +51,17 @@ public class ProfileFragment extends BottomSheetDialogFragment {
     private UploadTask uploadTask;
     private Uri imageUri;
     private StorageReference imageRef;
+    private BottomSheetDialog dialog;
+
+    private BottomSheetBehavior<View> bottomSheetBehavior;
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        return dialog;
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,6 +105,21 @@ public class ProfileFragment extends BottomSheetDialogFragment {
         getUserInfo();
         return binding.getRoot();
     }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+        CoordinatorLayout coordinatorLayout = dialog.findViewById(R.id.bottomSheetLayout);
+        assert coordinatorLayout != null;
+        coordinatorLayout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        ImageView dissmissBtn = dialog.findViewById(R.id.editDataDismiss);
+        if (dissmissBtn != null) {
+            dissmissBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+        }
+    }
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
@@ -101,7 +134,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
                                 String imageUri = uri.toString();
                                 HashMap<String, Object> value = new HashMap<>();
                                 value.put("image",imageUri);
-                                MethodsUtils.getCurrentUserRef().updateChildren(value).addOnSuccessListener(unused -> {
+                                MethodsUtils.getCurrentUserRef("UsersInfo").updateChildren(value).addOnSuccessListener(unused -> {
 
                                     Toast.makeText(getActivity(), "Profile Image Changed", Toast.LENGTH_SHORT).show();
 
@@ -114,27 +147,19 @@ public class ProfileFragment extends BottomSheetDialogFragment {
                 }
             });
     private void getUserInfo(){
-        MethodsUtils.getCurrentUserRef().addListenerForSingleValueEvent(new ValueEventListener() {
+        MethodsUtils.getCurrentUserRef("UsersInfo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     String name = snapshot.child("name").getValue(String.class);
                     String imageUrl = snapshot.child("image").getValue(String.class);
                     String email = snapshot.child("email").getValue(String.class);
-                    String classCount = snapshot.child("classCount").getValue(String.class);
-                    String announceCount = snapshot.child("announceCount").getValue(String.class);
 
                     Glide.with(getActivity())
                             .load(imageUrl)
                             .into(binding.userProfilePf);
                     binding.userNamePf.setText(name);
                     binding.emailTxt.setText(email);
-
-                    String CC = String.format("Total Class Taken %s",classCount);
-                    String AC = String.format("Total Announcement %s",announceCount);
-
-                    binding.classCountTxt.setText(CC);
-                    binding.announceCountTxt.setText(AC);
                 }
 
             }
@@ -145,9 +170,42 @@ public class ProfileFragment extends BottomSheetDialogFragment {
 
             }
         });
+        MethodsUtils.getCurrentUserRef("PostedData").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    int count  = (int) snapshot.getChildrenCount();
+                    String CC = String.valueOf(count);
+                    String CCstr = String.format("Total Class Taken %s",CC);
+                    binding.classCountTxt.setText(CCstr);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        MethodsUtils.getCurrentUserRef("Announcement").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    int count  = (int) snapshot.getChildrenCount();
+                    String CC = String.valueOf(count);
+                    String CCstr = String.format("Total Announcement %s",CC);
+                    binding.announceCountTxt.setText(CCstr);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
-
-
 
     private void showCustomSaveDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -172,7 +230,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
             }
             HashMap<String, Object> value = new HashMap<>();
             value.put("name",name);
-            MethodsUtils.getCurrentUserRef().updateChildren(value).addOnSuccessListener(unused -> {
+            MethodsUtils.getCurrentUserRef("UsersInfo").updateChildren(value).addOnSuccessListener(unused -> {
 
                 Toast.makeText(getActivity(), "Name Changes", Toast.LENGTH_SHORT).show();
                 getUserInfo();

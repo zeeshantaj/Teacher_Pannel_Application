@@ -7,8 +7,6 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -21,8 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
 import com.example.teacher_panel_application.Models.UploadClassModel;
@@ -44,12 +40,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 
 public class Home_Fragment extends Fragment {
@@ -262,7 +255,7 @@ public class Home_Fragment extends Fragment {
         MaterialButton share = dialogView.findViewById(R.id.shareOnWhatsapp);
         editData.setOnClickListener(v -> {
             dialog.dismiss();
-            openEditDataFragment();
+            openFragment();
 
         });
         share.setOnClickListener(v -> {
@@ -283,15 +276,10 @@ public class Home_Fragment extends Fragment {
         Log.e("MyApp","onPause");
     }
 
-    private void openEditDataFragment() {
-        // Create an instance of the transparent fragment
+    private void openFragment() {
+
         EditDataFragment editDataFragment = new EditDataFragment();
         editDataFragment.show(getActivity().getSupportFragmentManager(),editDataFragment.getTag());
-        // Add the fragment to the fragment manager
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(android.R.id.content, editDataFragment); // Use android.R.id.content to add the fragment above all views
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
+
     }
 }
