@@ -14,18 +14,24 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.UploadClassModel;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.FragmentUploadClassDataBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 public class Upload_Class_Data_Fragment extends Fragment {
 
@@ -37,6 +43,7 @@ public class Upload_Class_Data_Fragment extends Fragment {
     private DatabaseReference reference;
     private FragmentUploadClassDataBinding binding;
     private ProgressDialog dialog;
+    private int count = 0;
 
     @Nullable
     @Override
@@ -141,6 +148,7 @@ public class Upload_Class_Data_Fragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+
                             dialog.dismiss();
                             Intent intent = new Intent(getActivity(), Home_Activity.class);
                             startActivity(intent);

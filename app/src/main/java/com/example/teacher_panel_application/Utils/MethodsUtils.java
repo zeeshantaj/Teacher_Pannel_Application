@@ -90,6 +90,13 @@ public class MethodsUtils {
         fragmentTransaction.commit();
     }
 
+    public static DatabaseReference getCurrentUserRef(){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        return FirebaseDatabase.getInstance().getReference().child("UsersInfo").child(uid);
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void uploadTimeIntoDB(String currentDateTimeString,String endDateTimeString,String formattedDateTime,String minute){
 

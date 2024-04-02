@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.ProfileFragmentBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -40,7 +41,6 @@ import java.util.HashMap;
 
 public class ProfileFragment extends BottomSheetDialogFragment {
     private ProfileFragmentBinding binding;
-    private DatabaseReference reference;
     private UploadTask uploadTask;
     private Uri imageUri;
     private StorageReference imageRef;
@@ -57,7 +57,6 @@ public class ProfileFragment extends BottomSheetDialogFragment {
         String uid = auth.getUid();
         String imageName = "image_"+uid+".jpg";
         imageRef = storageReference.child("UserImages/"+imageName);
-        reference = FirebaseDatabase.getInstance().getReference().child("UsersInfo").child(uid);
 
         binding.userProfilePf.setOnClickListener(v -> {
 
@@ -102,7 +101,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
                                 String imageUri = uri.toString();
                                 HashMap<String, Object> value = new HashMap<>();
                                 value.put("image",imageUri);
-                                reference.updateChildren(value).addOnSuccessListener(unused -> {
+                                MethodsUtils.getCurrentUserRef().updateChildren(value).addOnSuccessListener(unused -> {
 
                                     Toast.makeText(getActivity(), "Profile Image Changed", Toast.LENGTH_SHORT).show();
 
@@ -115,20 +114,27 @@ public class ProfileFragment extends BottomSheetDialogFragment {
                 }
             });
     private void getUserInfo(){
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        MethodsUtils.getCurrentUserRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     String name = snapshot.child("name").getValue(String.class);
                     String imageUrl = snapshot.child("image").getValue(String.class);
                     String email = snapshot.child("email").getValue(String.class);
-                    Log.e("MyApp","imageUrl "+imageUrl);
-                    Log.e("MyApp","name "+name);
+                    String classCount = snapshot.child("classCount").getValue(String.class);
+                    String announceCount = snapshot.child("announceCount").getValue(String.class);
+
                     Glide.with(getActivity())
                             .load(imageUrl)
                             .into(binding.userProfilePf);
                     binding.userNamePf.setText(name);
                     binding.emailTxt.setText(email);
+
+                    String CC = String.format("Total Class Taken %s",classCount);
+                    String AC = String.format("Total Announcement %s",announceCount);
+
+                    binding.classCountTxt.setText(CC);
+                    binding.announceCountTxt.setText(AC);
                 }
 
             }
@@ -139,9 +145,9 @@ public class ProfileFragment extends BottomSheetDialogFragment {
 
             }
         });
-
-
     }
+
+
 
     private void showCustomSaveDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -166,7 +172,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
             }
             HashMap<String, Object> value = new HashMap<>();
             value.put("name",name);
-            reference.updateChildren(value).addOnSuccessListener(unused -> {
+            MethodsUtils.getCurrentUserRef().updateChildren(value).addOnSuccessListener(unused -> {
 
                 Toast.makeText(getActivity(), "Name Changes", Toast.LENGTH_SHORT).show();
                 getUserInfo();
