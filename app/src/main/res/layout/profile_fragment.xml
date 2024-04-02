@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="280dp"
         android:background="@color/btnColor1"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,6 +35,7 @@
         android:drawablePadding="5dp"
         android:textAlignment="center"
         android:textSize="24sp"
+        android:textColor="@color/black"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@+id/userProfile_pf"
         app:layout_constraintStart_toStartOf="@+id/userProfile_pf"
@@ -45,12 +46,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        app:cardElevation="0dp"
         app:cardBackgroundColor="@color/btnColor1"
         app:cardCornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userName_pf">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -64,7 +65,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:drawablePadding="10dp"
-                android:text="zeeshan@gmail.com"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:drawableStartCompat="@drawable/baseline_email_24" />
@@ -74,10 +74,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="10dp"
                 android:drawablePadding="10dp"
-                android:text="Total Class Taken"
+
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:drawableStartCompat="@drawable/class_icon" />
@@ -90,7 +90,6 @@
                 android:drawablePadding="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="@color/black"
-                android:text="Total Announcement Taken"
                 android:textSize="18sp"
                 app:drawableStartCompat="@drawable/announcement_icon" />
 

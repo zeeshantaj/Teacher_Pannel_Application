@@ -2,6 +2,7 @@ package com.example.teacher_panel_application.Home;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.databinding.ProfileFragmentBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,8 +60,26 @@ public class ProfileFragment extends BottomSheetDialogFragment {
         reference = FirebaseDatabase.getInstance().getReference().child("UsersInfo").child(uid);
 
         binding.userProfilePf.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            imageLauncher.launch(intent);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Profile Picture")
+                    .setMessage("Do you want to change profile picture?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            imageLauncher.launch(intent);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+
+
         });
         binding.userNamePf.setOnClickListener(v -> {
             showCustomSaveDialog();
@@ -101,12 +121,14 @@ public class ProfileFragment extends BottomSheetDialogFragment {
                 if (snapshot.exists()){
                     String name = snapshot.child("name").getValue(String.class);
                     String imageUrl = snapshot.child("image").getValue(String.class);
+                    String email = snapshot.child("email").getValue(String.class);
                     Log.e("MyApp","imageUrl "+imageUrl);
                     Log.e("MyApp","name "+name);
                     Glide.with(getActivity())
                             .load(imageUrl)
                             .into(binding.userProfilePf);
                     binding.userNamePf.setText(name);
+                    binding.emailTxt.setText(email);
                 }
 
             }
@@ -156,5 +178,11 @@ public class ProfileFragment extends BottomSheetDialogFragment {
 
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
     }
 }
