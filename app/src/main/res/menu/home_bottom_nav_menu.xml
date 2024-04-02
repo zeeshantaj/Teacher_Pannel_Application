@@ -20,7 +20,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navProfile"
-        android:icon="@drawable/profile_icon"
+        android:icon="@drawable/baseline_settings_24"
         android:title="Profile"
         app:showAsAction="ifRoom" />
 

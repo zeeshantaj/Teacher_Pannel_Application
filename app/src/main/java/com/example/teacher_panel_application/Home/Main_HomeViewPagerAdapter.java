@@ -23,7 +23,7 @@ public class Main_HomeViewPagerAdapter extends FragmentStateAdapter {
             case 2:
                 return new History_Fragment();
             case 3:
-                return new Profile_Fragment();
+                return new Settings_Fragment();
             default:
                 return new Home_Fragment();
         }
