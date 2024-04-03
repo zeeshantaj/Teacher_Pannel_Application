@@ -57,19 +57,10 @@ public class ProfileFragment extends BottomSheetDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-//        dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-//
-//        return dialog;
-        BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialogTheme);
-        return dialog;
-    }
+        dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getDialog() != null) {
-            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
+        return dialog;
+
     }
 
     @Nullable
