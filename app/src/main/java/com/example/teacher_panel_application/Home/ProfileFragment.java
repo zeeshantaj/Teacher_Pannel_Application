@@ -58,7 +58,6 @@ public class ProfileFragment extends BottomSheetDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-
         return dialog;
 
     }
@@ -256,11 +255,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
             });
             dialog.dismiss();
         });
-
-
-
     }
-
     @Override
     public void onResume() {
         super.onResume();
