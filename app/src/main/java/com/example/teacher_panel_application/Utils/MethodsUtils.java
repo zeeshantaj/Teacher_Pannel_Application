@@ -1,11 +1,14 @@
 package com.example.teacher_panel_application.Utils;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.widget.EditText;
@@ -20,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.UploadClassModel;
+import com.example.teacher_panel_application.Network.NetworkUtils;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -105,6 +111,41 @@ public class MethodsUtils {
         AlertDialog alert = builder.create();
         alert.show();
     }
+    public static void checkInternet(Context context){
+        Activity activity = (Activity) context.getApplicationContext();
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+                // Device's internet is turned on
+                Toast.makeText(context, "Device's internet is turned on", Toast.LENGTH_SHORT).show();
+                NetworkUtils.hasInternetAccess(hasInternetAccess -> {
+                    if (hasInternetAccess){
+                        Toast.makeText(context, "Internet has service", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Snackbar.make(activity.findViewById(android.R.id.content), "Internet don't have service", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Check Again", view -> {
+                                    // Retry checking internet connectivity
+                                    checkInternet(context);
+                                }).show();
+
+                    }
+                });
+
+            } else {
+                // Device's internet is turned off
+                Toast.makeText(context, "Device's internet is turned off", Toast.LENGTH_SHORT).show();
+                // Show dialog to prompt user to turn on internet
+                MethodsUtils.showAlertDialogue(context);
+
+            }
+        } else {
+            // Error checking internet connection
+            Toast.makeText(context, "Error checking internet connection", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     public static DatabaseReference getCurrentUserRef(String path){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
