@@ -76,19 +76,16 @@ public class Home_Activity extends AppCompatActivity {
             if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
                 // Device's internet is turned on
                 Toast.makeText(Home_Activity.this, "Device's internet is turned on", Toast.LENGTH_SHORT).show();
-                NetworkUtils.hasInternetAccess(new InternetAccessCallBack() {
-                    @Override
-                    public void onInternetAccessResult(boolean hasInternetAccess) {
-                        if (hasInternetAccess){
-                            Toast.makeText(Home_Activity.this, "Internet has service", Toast.LENGTH_SHORT).show();
+                NetworkUtils.hasInternetAccess(hasInternetAccess -> {
+                    if (hasInternetAccess){
+                        Toast.makeText(Home_Activity.this, "Internet has service", Toast.LENGTH_SHORT).show();
 
-                        }else {
-                            Snackbar.make(findViewById(android.R.id.content), "Internet don't have service", Snackbar.LENGTH_INDEFINITE)
-                                    .setAction("Check Again", view -> {
-                                        // Retry checking internet connectivity
-                                        checkInternet();
-                                    }).show();
-                        }
+                    }else {
+                        Snackbar.make(findViewById(android.R.id.content), "Internet don't have service", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Check Again", view -> {
+                                    // Retry checking internet connectivity
+                                    checkInternet();
+                                }).show();
                     }
                 });
 
