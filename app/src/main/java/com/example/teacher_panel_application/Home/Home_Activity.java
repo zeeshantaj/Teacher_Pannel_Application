@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.Network.InternetAccessCallBack;
@@ -22,6 +23,7 @@ import com.example.teacher_panel_application.Network.NetworkUtils;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -79,8 +81,13 @@ public class Home_Activity extends AppCompatActivity {
                     public void onInternetAccessResult(boolean hasInternetAccess) {
                         if (hasInternetAccess){
                             Toast.makeText(Home_Activity.this, "Internet has service", Toast.LENGTH_SHORT).show();
+
                         }else {
-                            Toast.makeText(Home_Activity.this, "Internet dont have service", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(android.R.id.content), "Internet don't have service", Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("Check Again", view -> {
+                                        // Retry checking internet connectivity
+                                        checkInternet();
+                                    }).show();
                         }
                     }
                 });
@@ -88,7 +95,6 @@ public class Home_Activity extends AppCompatActivity {
             } else {
                 // Device's internet is turned off
                 Toast.makeText(Home_Activity.this, "Device's internet is turned off", Toast.LENGTH_SHORT).show();
-
                 // Show dialog to prompt user to turn on internet
                 MethodsUtils.showAlertDialogue(this);
             }
