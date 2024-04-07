@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -111,24 +112,25 @@ public class MethodsUtils {
         AlertDialog alert = builder.create();
         alert.show();
     }
-    public static void checkInternet(Context context){
-        Activity activity = (Activity) context.getApplicationContext();
+    public static void checkInternet(Context context, View rootView){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
             if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
                 // Device's internet is turned on
-                Toast.makeText(context, "Device's internet is turned on", Toast.LENGTH_SHORT).show();
+
                 NetworkUtils.hasInternetAccess(hasInternetAccess -> {
                     if (hasInternetAccess){
                         Toast.makeText(context, "Internet has service", Toast.LENGTH_SHORT).show();
+
                     }else {
-                        Snackbar.make(activity.findViewById(android.R.id.content), "Internet don't have service", Snackbar.LENGTH_INDEFINITE)
+                        Snackbar.make(rootView.findViewById(android.R.id.content), "You Don't have internet connection", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("Check Again", view -> {
                                     // Retry checking internet connectivity
-                                    checkInternet(context);
+                                    checkInternet(context,rootView);
                                 }).show();
 
+                        Toast.makeText(context, "Internet don't have service", Toast.LENGTH_SHORT).show();
                     }
                 });
 

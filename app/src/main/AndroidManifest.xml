@@ -37,6 +37,7 @@
             </intent-filter>
         </activity>
         <receiver android:name=".Notification.NotificationBroadcastReceiver"/>
+        <receiver android:name=".Network.NetworkCheckReceiver"/>
 
     </application>
 
