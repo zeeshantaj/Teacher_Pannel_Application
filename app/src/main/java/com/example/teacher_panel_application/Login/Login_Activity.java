@@ -41,7 +41,7 @@ public class Login_Activity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                Thread.sleep(2000);
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
@@ -56,6 +56,6 @@ public class Login_Activity extends AppCompatActivity {
                     FragmentUtils.SetFragment(getSupportFragmentManager(), new IntroFragment(), binding.loginFrameLayout.getId());
                 }
             }
-        }, 2000); // Delay for 2 seconds before loading the actual layout
+        }, 1000); // Delay for 2 seconds before loading the actual layout
     }
 }

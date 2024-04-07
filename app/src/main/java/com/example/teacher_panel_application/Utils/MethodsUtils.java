@@ -1,10 +1,13 @@
 package com.example.teacher_panel_application.Utils;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.provider.Settings;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
+import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -91,7 +95,15 @@ public class MethodsUtils {
         fragmentTransaction.commit();
 
     }
-
+    public static void showAlertDialogue(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Internet is turned off. Do you want to turn it on?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialog, id) -> context.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)))
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
     public static DatabaseReference getCurrentUserRef(String path){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
