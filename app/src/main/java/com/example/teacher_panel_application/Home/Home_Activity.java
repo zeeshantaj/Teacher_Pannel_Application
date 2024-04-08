@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.teacher_panel_application.Network.NetworkCheckReceiver;
 import com.example.teacher_panel_application.R;
@@ -51,7 +52,8 @@ public class Home_Activity extends AppCompatActivity {
         });
         Main_HomeViewPagerAdapter viewPagerAdapter = new Main_HomeViewPagerAdapter(this);
         viewPager2.setAdapter(viewPagerAdapter);
-       // checkInternet();
+
+
         networkChangeReceiver = new NetworkCheckReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeReceiver, intentFilter);
@@ -60,6 +62,7 @@ public class Home_Activity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         unregisterReceiver(networkChangeReceiver);
     }
 

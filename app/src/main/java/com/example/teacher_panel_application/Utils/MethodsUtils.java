@@ -124,19 +124,17 @@ public class MethodsUtils {
                         Toast.makeText(context, "Internet has service", Toast.LENGTH_SHORT).show();
 
                     }else {
-                        Snackbar.make(rootView.findViewById(android.R.id.content), "You Don't have internet connection", Snackbar.LENGTH_INDEFINITE)
+                        Snackbar.make(rootView.findViewById(android.R.id.content), "You Lost Internet Connection!", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("Check Again", view -> {
                                     // Retry checking internet connectivity
                                     checkInternet(context,rootView);
                                 }).show();
 
-                        Toast.makeText(context, "Internet don't have service", Toast.LENGTH_SHORT).show();
                     }
                 });
 
             } else {
                 // Device's internet is turned off
-                Toast.makeText(context, "Device's internet is turned off", Toast.LENGTH_SHORT).show();
                 // Show dialog to prompt user to turn on internet
                 MethodsUtils.showAlertDialogue(context);
 
