@@ -78,7 +78,7 @@ public class Home_Fragment extends Fragment {
         AdRequest adRequest = new AdRequest.Builder().build();
 
         binding.adView.loadAd(adRequest);
-        binding.cardNode.setOnLongClickListener(view1 -> {
+        binding.optionMenuTxt.setOnLongClickListener(view1 -> {
             showEditDataAlertDialog();
             return true;
         });
@@ -273,7 +273,7 @@ public class Home_Fragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("MyApp","onPause");
+
     }
 
     private void openFragment() {
