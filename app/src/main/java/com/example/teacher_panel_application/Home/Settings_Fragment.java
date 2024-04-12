@@ -57,7 +57,12 @@ public class Settings_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater,container,false);
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         ClickShrinkUtils.applyClickShrink(binding.rateTxt);
@@ -102,25 +107,22 @@ public class Settings_Fragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("notificationState", Context.MODE_PRIVATE);
         boolean isChecked = sharedPreferences.getBoolean("isNotification", true);
         binding.notificationChecked.setChecked(isChecked);
-        binding.notificationChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    Toast.makeText(getActivity(), "Notification UnMute", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getActivity(), "Notification Muted", Toast.LENGTH_SHORT).show();
-                }
-
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("notificationState", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("isNotification",isChecked);
-                editor.apply();
+        binding.notificationChecked.setOnCheckedChangeListener((buttonView, isChecked1) -> {
+            if (isChecked1){
+                Toast.makeText(getActivity(), "Notification UnMute", Toast.LENGTH_SHORT).show();
             }
+            else {
+                Toast.makeText(getActivity(), "Notification Muted", Toast.LENGTH_SHORT).show();
+            }
+
+            SharedPreferences sharedPreferences1 = getActivity().getSharedPreferences("notificationState", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences1.edit();
+            editor.putBoolean("isNotification", isChecked1);
+            editor.apply();
         });
         getVersion();
-        return binding.getRoot();
     }
+
     public void openFragment() {
         ProfileFragment editDataFragment = new ProfileFragment();
         editDataFragment.show(getActivity().getSupportFragmentManager(),editDataFragment.getTag());

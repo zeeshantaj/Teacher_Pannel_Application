@@ -73,6 +73,12 @@ public class Upload_Announcement_Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         binding.announcementImage.setOnClickListener((v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imageLauncher.launch(intent);
@@ -82,190 +88,178 @@ public class Upload_Announcement_Fragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
 
-        binding.announcementImage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (selectedImageUri != null) {
-                    selectedImageUri = null;
-                    binding.announcementImage.setImageResource(R.drawable.announcement_img);
-                    Toast.makeText(getActivity(), "Image removed", Toast.LENGTH_SHORT).show();
-                }
-                return true;
+        binding.announcementImage.setOnLongClickListener(v -> {
+            if (selectedImageUri != null) {
+                selectedImageUri = null;
+                binding.announcementImage.setImageResource(R.drawable.announcement_img);
+                Toast.makeText(getActivity(), "Image removed", Toast.LENGTH_SHORT).show();
             }
+            return true;
         });
-        binding.dueDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerFragment timePickerFragment = new TimePickerFragment();
-                timePickerFragment.setOnDateSetListener(new OnDateSetListener() {
+        binding.dueDate.setOnClickListener(v -> {
+            TimePickerFragment timePickerFragment = new TimePickerFragment();
+            timePickerFragment.setOnDateSetListener((year, month, day) -> {
+                String selectedDate = year + ":" + (month + 1) + ":" + day;
+                binding.dueDate.setText(selectedDate);
+
+            });
+            timePickerFragment.show(getActivity().getSupportFragmentManager(), "date picker");
+
+        });
+        binding.announcementUploadBtn.setOnClickListener(v -> {
+            String titleStr = binding.announceTitle.getText().toString();
+            String desStr = binding.announceDescription.getText().toString();
+            String dueDateStr = binding.dueDate.getText().toString();
+            Calendar calendar = Calendar.getInstance();
+            long milli = calendar.getTimeInMillis();
+            String milliSecondChild = String.valueOf(milli);
+            //todo for image
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference imageRef = storageRef.child("AnnouncementImages/announcement"+milliSecondChild+".jpg");
+
+            //
+            if (selectedImageUri == null && binding.announceTitle.getText().toString().isEmpty() &&
+                    binding.announceDescription.getText().toString().isEmpty()) {
+                Snackbar snackbar = Snackbar.make(v, "Image and Text field is empty please fill either of them", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
+                snackbar.show();
+                return;
+            }
+            if (binding.dueDate.getText().toString().equals("Due Date")) {
+                Toast.makeText(getActivity(), "Select due date!", Toast.LENGTH_SHORT).show();
+                ShakeAnimation.setAnimation(getActivity(), binding.dueDate);
+
+                return;
+            }
+            if (binding.announceKey.getText().toString().isEmpty()) {
+                Toast.makeText(getActivity(), "Key is empty", Toast.LENGTH_SHORT).show();
+                ShakeAnimation.setAnimation(getActivity(), binding.announceKey);
+                return;
+            }
+
+
+            reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid).child(milliSecondChild);
+
+            // todo check if text and image both are filled
+
+            HashMap<String, String> hashMap = new HashMap<>();
+            if (selectedImageUri != null && !titleStr.isEmpty() && !desStr.isEmpty()) {
+
+                Toast.makeText(getActivity(), "you can either upload image or text data", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(v, "you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                snackbar.setAction("DISMISS", new View.OnClickListener() {
                     @Override
-                    public void onDateSet(int year, int month, int day) {
-                        String selectedDate = year + ":" + (month + 1) + ":" + day;
-                        binding.dueDate.setText(selectedDate);
-
+                    public void onClick(View v) {
+                        snackbar.dismiss();
                     }
+
                 });
-                timePickerFragment.show(getActivity().getSupportFragmentManager(), "date picker");
+
+                ShowcaseManager.Builder builder = new ShowcaseManager.Builder();
+                builder.context(getActivity())
+                        .key("KEY")
+                        .developerMode(true)
+                        .view(binding.announcementImage)
+
+                        .descriptionTitle("you can either upload image or text data")
+                        .descriptionText(" touch and hold on the image, to remove image\nor clear text to upload image")
+//                            .descriptionImageRes(R.mipmap.ic_launcher)
+                        .buttonText("Done")
+                        .buttonVisibility(true)
+                        .cancelButtonVisibility(true)
+                        .cancelButtonColor(getResources().getColor(R.color.white))
+                        .add()
+                        .build()
+                        .show();
+
+                snackbar.show();
+                return;
+            }
+
+
+            //todo to upload image
+
+            if (selectedImageUri != null && !binding.dueDate.getText().equals("Due Date") && !binding.announceKey.getText().toString().isEmpty()) {
+                UploadTask uploadTask = imageRef.putFile(selectedImageUri);
+                binding.announcementProgressIndicator.setVisibility(View.VISIBLE);
+                uploadTask.addOnProgressListener(snapshot -> {
+                    double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                    binding.announcementProgressIndicator.setProgress((int) progress);
+                });
+
+                uploadTask.addOnSuccessListener(taskSnapshot -> {
+                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        binding.announcementProgressIndicator.setVisibility(View.GONE);
+                        String downloadUrl = uri.toString();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
+                            String formattedDate = LocalDate.now().format(formatter);
+                            hashMap.put("current_date", formattedDate);
+                        }
+                        hashMap.put("imageUrl", downloadUrl);
+                        hashMap.put("key", binding.announceKey.getText().toString());
+                        hashMap.put("due_date", dueDateStr);
+                        hashMap.put("id", milliSecondChild);
+
+
+                        reference.setValue(hashMap).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Snackbar snackbar = Snackbar.make(v, "Image Successfully Uploaded", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                                snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
+                                snackbar.show();
+                                selectedImageUri = null;
+                                binding.announcementImage.setImageResource(R.drawable.announcement_img);
+                                binding.dueDate.setText(R.string.due_date);
+                                Toast.makeText(getActivity(), "Image Successfully Uploaded", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getActivity(), "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                binding.announcementProgressIndicator.setVisibility(View.GONE);
+                            }
+                        });
+
+
+                    });
+                }).addOnFailureListener(exception -> {
+                    binding.announcementProgressIndicator.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Error " + exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                });
 
             }
-        });
-        binding.announcementUploadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String titleStr = binding.announceTitle.getText().toString();
-                String desStr = binding.announceDescription.getText().toString();
-                String dueDateStr = binding.dueDate.getText().toString();
-                Calendar calendar = Calendar.getInstance();
-                long milli = calendar.getTimeInMillis();
-                String milliSecondChild = String.valueOf(milli);
-                //todo for image
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReference();
-                StorageReference imageRef = storageRef.child("AnnouncementImages/announcement"+milliSecondChild+".jpg");
+            // todo for uploading text data
+            if (!binding.announceTitle.getText().toString().isEmpty()
+                    && !binding.announceDescription.getText().toString().isEmpty() && !binding.dueDate.getText().toString().isEmpty()
+                    && !binding.announceKey.getText().toString().isEmpty()) {
 
-                //
-                if (selectedImageUri == null && binding.announceTitle.getText().toString().isEmpty() &&
-                        binding.announceDescription.getText().toString().isEmpty()) {
-                    Snackbar snackbar = Snackbar.make(v, "Image and Text field is empty please fill either of them", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                    snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
-                    snackbar.show();
-                    return;
-                }
-                if (binding.dueDate.getText().toString().equals("Due Date")) {
-                    Toast.makeText(getActivity(), "Select due date!", Toast.LENGTH_SHORT).show();
-                    ShakeAnimation.setAnimation(getActivity(), binding.dueDate);
 
-                    return;
-                }
-                if (binding.announceKey.getText().toString().isEmpty()) {
-                    Toast.makeText(getActivity(), "Key is empty", Toast.LENGTH_SHORT).show();
-                    ShakeAnimation.setAnimation(getActivity(), binding.announceKey);
-                    return;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
+                    String formattedDate = LocalDate.now().format(formatter);
+                    hashMap.put("current_date", formattedDate);
                 }
 
+                hashMap.put("title", titleStr);
+                hashMap.put("due_date", dueDateStr);
+                hashMap.put("description", desStr);
+                hashMap.put("key", binding.announceKey.getText().toString());
+                hashMap.put("id", milliSecondChild);
 
-                reference = FirebaseDatabase.getInstance().getReference("Announcement").child(uid).child(milliSecondChild);
-
-                // todo check if text and image both are filled
-
-                HashMap<String, String> hashMap = new HashMap<>();
-                if (selectedImageUri != null && !titleStr.isEmpty() && !desStr.isEmpty()) {
-
-                    Toast.makeText(getActivity(), "you can either upload image or text data", Toast.LENGTH_SHORT).show();
-                    Snackbar snackbar = Snackbar.make(v, "you can either upload image or text data! touch and hold to remove image", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                    snackbar.setAction("DISMISS", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            snackbar.dismiss();
-                        }
-
-                    });
-
-                    ShowcaseManager.Builder builder = new ShowcaseManager.Builder();
-                    builder.context(getActivity())
-                            .key("KEY")
-                            .developerMode(true)
-                            .view(binding.announcementImage)
-
-                            .descriptionTitle("you can either upload image or text data")
-                            .descriptionText(" touch and hold on the image, to remove image\nor clear text to upload image")
-//                            .descriptionImageRes(R.mipmap.ic_launcher)
-                            .buttonText("Done")
-                            .buttonVisibility(true)
-                            .cancelButtonVisibility(true)
-                            .cancelButtonColor(getResources().getColor(R.color.white))
-                            .add()
-                            .build()
-                            .show();
-
-                    snackbar.show();
-                    return;
-                }
-
-
-                //todo to upload image
-
-                if (selectedImageUri != null && !binding.dueDate.getText().equals("Due Date") && !binding.announceKey.getText().toString().isEmpty()) {
-                    UploadTask uploadTask = imageRef.putFile(selectedImageUri);
-                    binding.announcementProgressIndicator.setVisibility(View.VISIBLE);
-                    uploadTask.addOnProgressListener(snapshot -> {
-                        double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                        binding.announcementProgressIndicator.setProgress((int) progress);
-                    });
-
-                    uploadTask.addOnSuccessListener(taskSnapshot -> {
-                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                            binding.announcementProgressIndicator.setVisibility(View.GONE);
-                            String downloadUrl = uri.toString();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
-                                String formattedDate = LocalDate.now().format(formatter);
-                                hashMap.put("current_date", formattedDate);
-                            }
-                            hashMap.put("imageUrl", downloadUrl);
-                            hashMap.put("key", binding.announceKey.getText().toString());
-                            hashMap.put("due_date", dueDateStr);
-                            hashMap.put("id", milliSecondChild);
-
-
-                            reference.setValue(hashMap).addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Snackbar snackbar = Snackbar.make(v, "Image Successfully Uploaded", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                                    snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
-                                    snackbar.show();
-                                    selectedImageUri = null;
-                                    binding.announcementImage.setImageResource(R.drawable.announcement_img);
-                                    binding.dueDate.setText(R.string.due_date);
-                                    Toast.makeText(getActivity(), "Image Successfully Uploaded", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                    binding.announcementProgressIndicator.setVisibility(View.GONE);
-                                }
-                            });
-
-
-                        });
-                    }).addOnFailureListener(exception -> {
-                        binding.announcementProgressIndicator.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "Error " + exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    });
-
-                }
-                // todo for uploading text data
-                if (!binding.announceTitle.getText().toString().isEmpty()
-                        && !binding.announceDescription.getText().toString().isEmpty() && !binding.dueDate.getText().toString().isEmpty()
-                        && !binding.announceKey.getText().toString().isEmpty()) {
-
-
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy");
-                        String formattedDate = LocalDate.now().format(formatter);
-                        hashMap.put("current_date", formattedDate);
+                reference.setValue(hashMap).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Snackbar snackbar = Snackbar.make(v, "Uploaded Successfully!", BaseTransientBottomBar.LENGTH_INDEFINITE);
+                        snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
+                        snackbar.show();
+                        binding.announceTitle.setText("");
+                        binding.announceDescription.setText("");
+                        binding.dueDate.setText(R.string.due_date);
+                        Toast.makeText(getActivity(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                     }
-
-                    hashMap.put("title", titleStr);
-                    hashMap.put("due_date", dueDateStr);
-                    hashMap.put("description", desStr);
-                    hashMap.put("key", binding.announceKey.getText().toString());
-                    hashMap.put("id", milliSecondChild);
-
-                    reference.setValue(hashMap).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Snackbar snackbar = Snackbar.make(v, "Uploaded Successfully!", BaseTransientBottomBar.LENGTH_INDEFINITE);
-                            snackbar.setAction("DISMISS", v1 -> snackbar.dismiss());
-                            snackbar.show();
-                            binding.announceTitle.setText("");
-                            binding.announceDescription.setText("");
-                            binding.dueDate.setText(R.string.due_date);
-                            Toast.makeText(getActivity(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(e -> {
-                        Toast.makeText(getActivity(), "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    });
-                }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                });
             }
         });
     }

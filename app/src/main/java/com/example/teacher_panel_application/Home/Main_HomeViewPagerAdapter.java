@@ -16,14 +16,13 @@ public class Main_HomeViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position){
-            case 0:
-                return new Home_Fragment();
             case 1:
                 return new UploadDetails_Fragment();
             case 2:
                 return new History_Fragment();
             case 3:
                 return new Settings_Fragment();
+            case 0:
             default:
                 return new Home_Fragment();
         }

@@ -62,6 +62,12 @@ public class Upload_Class_Data_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         binding.uploadBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -144,79 +150,22 @@ public class Upload_Class_Data_Fragment extends Fragment {
                 model.setDateTime(formattedDateTime);
                 ;
 
-                reference.setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
+                reference.setValue(model).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
 
-                            dialog.dismiss();
-                            Intent intent = new Intent(getActivity(), Home_Activity.class);
-                            startActivity(intent);
-                            getActivity().finish();
-                            Toast.makeText(getActivity(), "Details Uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        Intent intent = new Intent(getActivity(), Home_Activity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                        Toast.makeText(getActivity(), "Details Uploaded", Toast.LENGTH_SHORT).show();
                     }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 });
 
             }
         });
 
     }
-
 }
-//                    String formattedTime;
-//                    LocalTime currentTime = null;
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        currentTime = LocalTime.now();
-//                    }
-//                    DateTimeFormatter formatter = null;
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        formatter = DateTimeFormatter.ofPattern("hh:mm:ss:a");
-//                    }
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        formattedTime = currentTime.format(formatter);
-//                        model.setCurrentTime(formattedTime);
-//                    }
-//
-//
-//                    int minute1 = Integer.parseInt(minute);
-//                    //long addMinutes = Long.parseLong(minute);
-//
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        LocalTime updateTime = currentTime.plusMinutes(minute1);
-//                        String endTime = updateTime.format(formatter);
-//                        model.setEndTime(endTime);
-//                    }
-//
-//                    LocalDateTime dateTime = null; // Use LocalDateTime instead of LocalTime
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        dateTime = LocalDateTime.now();
-//                    }
-//                    DateTimeFormatter dateTimeFormatter = null; // Include date and time pattern
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
-//
-//                    }
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        LocalDateTime updateTime = dateTime.plusMinutes(minute1);
-//                        String dateTimeString = updateTime.format(dateTimeFormatter);
-//                        LocalDateTime localDateTime = LocalDateTime.now();
-//                        String currentDateTime =localDateTime.format(dateTimeFormatter);
-//                        model.setCurrentDateTime(currentDateTime);
-//                        model.setEndDateTime(dateTimeString);
-//                    }
-//
-//                    LocalDateTime dateTime1 = null;
-//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                        dateTime1 = LocalDateTime.now();
-//
-//                        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d:MMMM:yyyy hh:mm:a");
-//                        String formattedDateTime = dateTime1.format(formatter1);
-//                        model.setDateTime(formattedDateTime);
-//                    }
