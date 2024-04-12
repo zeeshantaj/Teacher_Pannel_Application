@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="15dp"
         app:cardCornerRadius="20dp"
-        android:visibility=""
+        android:visibility="gone"
         android:backgroundTint="@color/darkBlueshade">
 
         <androidx.constraintlayout.widget.ConstraintLayout

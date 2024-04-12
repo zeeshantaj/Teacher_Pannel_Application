@@ -53,7 +53,6 @@ public class ProfileFragment extends BottomSheetDialogFragment {
     private StorageReference imageRef;
     private BottomSheetDialog dialog;
 
-    private BottomSheetBehavior<View> bottomSheetBehavior;
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -66,45 +65,10 @@ public class ProfileFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = ProfileFragmentBinding.inflate(inflater,container,false);
-
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference storageReference = firebaseStorage.getReference();
-        String uid = auth.getUid();
-        String imageName = "image_"+uid+".jpg";
-        imageRef = storageReference.child("UserImages/"+imageName);
-
-        binding.userProfilePf.setOnClickListener(v -> {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Profile Picture")
-                    .setMessage("Do you want to change profile picture?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            imageLauncher.launch(intent);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
-
-
-        });
-        binding.userNamePf.setOnClickListener(v -> {
-            showCustomSaveDialog();
-        });
-
-        getUserInfo();
         return binding.getRoot();
     }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -135,6 +99,39 @@ public class ProfileFragment extends BottomSheetDialogFragment {
         // Set minimum height to full screen
         CoordinatorLayout coordinatorLayout = view.findViewById(R.id.bottomSheetLayoutProfile);
         coordinatorLayout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        String uid = auth.getUid();
+        String imageName = "image_"+uid+".jpg";
+        imageRef = storageReference.child("UserImages/"+imageName);
+
+        binding.userProfilePf.setOnClickListener(v -> {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Profile Picture")
+                    .setMessage("Do you want to change profile picture?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        imageLauncher.launch(intent);
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .show();
+
+
+        });
+        binding.userNamePf.setOnClickListener(v -> {
+            showCustomSaveDialog();
+        });
+
+        getUserInfo();
+
     }
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
