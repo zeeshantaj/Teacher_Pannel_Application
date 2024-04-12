@@ -78,10 +78,8 @@ public class Home_Fragment extends Fragment {
         AdRequest adRequest = new AdRequest.Builder().build();
 
         binding.adView.loadAd(adRequest);
-        binding.optionMenuTxt.setOnLongClickListener(view1 -> {
-            showEditDataAlertDialog();
-            return true;
-        });
+        binding.optionMenuTxt.setOnClickListener(view1 ->
+                showEditDataAlertDialog());
 
 // To Initialize Timer
         getValues();
