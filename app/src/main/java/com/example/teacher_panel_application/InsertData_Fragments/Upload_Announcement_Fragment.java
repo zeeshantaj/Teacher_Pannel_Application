@@ -153,7 +153,6 @@ public class Upload_Announcement_Fragment extends Fragment {
                     public void onClick(View v) {
                         snackbar.dismiss();
                     }
-
                 });
 
                 ShowcaseManager.Builder builder = new ShowcaseManager.Builder();
@@ -163,7 +162,7 @@ public class Upload_Announcement_Fragment extends Fragment {
                         .view(binding.announcementImage)
 
                         .descriptionTitle("you can either upload image or text data")
-                        .descriptionText(" touch and hold on the image, to remove image\nor clear text to upload image")
+                        .descriptionText("touch and hold on the image, to remove image\nor clear text to upload image")
 //                            .descriptionImageRes(R.mipmap.ic_launcher)
                         .buttonText("Done")
                         .buttonVisibility(true)
