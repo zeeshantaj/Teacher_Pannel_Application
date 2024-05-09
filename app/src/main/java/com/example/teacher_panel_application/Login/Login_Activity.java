@@ -55,7 +55,7 @@ public class Login_Activity extends AppCompatActivity {
                 //show intro when user first install app
                 FragmentUtils.SetFragment(getSupportFragmentManager(), new IntroFragment(), binding.loginFrameLayout.getId());
             }
-        }, 1000); // Delay for 2 seconds before loading the actual layout
+        }, 1000); // Delay for 1 seconds before loading the actual layout
 
         networkChangeReceiver = new NetworkCheckReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
