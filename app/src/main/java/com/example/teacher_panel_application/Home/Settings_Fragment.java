@@ -33,6 +33,7 @@ import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.FragmentSettingsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -109,10 +110,10 @@ public class Settings_Fragment extends Fragment {
         binding.notificationChecked.setChecked(isChecked);
         binding.notificationChecked.setOnCheckedChangeListener((buttonView, isChecked1) -> {
             if (isChecked1){
-                Toast.makeText(getActivity(), "Notification UnMute", Toast.LENGTH_SHORT).show();
+                setSnackBar(buttonView,"You'll receive notification when class ended!");
             }
             else {
-                Toast.makeText(getActivity(), "Notification Muted", Toast.LENGTH_SHORT).show();
+                setSnackBar(buttonView,"You'll no longer receive notification when class ended!");
             }
 
             SharedPreferences sharedPreferences1 = getActivity().getSharedPreferences("notificationState", Context.MODE_PRIVATE);
@@ -127,6 +128,13 @@ public class Settings_Fragment extends Fragment {
         ProfileFragment editDataFragment = new ProfileFragment();
         editDataFragment.show(getActivity().getSupportFragmentManager(),editDataFragment.getTag());
 
+    }
+    private void setSnackBar(View buttonView,String message){
+        Snackbar snackbar = Snackbar.make(buttonView, message, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Dismiss", view -> {
+            snackbar.dismiss();
+        });
+        snackbar.show();
     }
     private void getVersion(){
 
