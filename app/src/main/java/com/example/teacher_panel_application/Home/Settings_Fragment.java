@@ -131,9 +131,7 @@ public class Settings_Fragment extends Fragment {
     }
     private void setSnackBar(View buttonView,String message){
         Snackbar snackbar = Snackbar.make(buttonView, message, Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction("Dismiss", view -> {
-            snackbar.dismiss();
-        });
+        snackbar.setAction("Dismiss", view -> snackbar.dismiss());
         snackbar.show();
     }
     private void getVersion(){
