@@ -127,7 +127,6 @@ public class Settings_Fragment extends Fragment {
     public void openFragment() {
         ProfileFragment editDataFragment = new ProfileFragment();
         editDataFragment.show(getActivity().getSupportFragmentManager(),editDataFragment.getTag());
-
     }
     private void setSnackBar(View buttonView,String message){
         Snackbar snackbar = Snackbar.make(buttonView, message, Snackbar.LENGTH_INDEFINITE);
