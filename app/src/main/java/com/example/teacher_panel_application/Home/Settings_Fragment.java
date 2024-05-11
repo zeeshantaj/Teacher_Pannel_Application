@@ -110,6 +110,7 @@ public class Settings_Fragment extends Fragment {
         binding.notificationChecked.setChecked(isChecked);
         binding.notificationChecked.setOnCheckedChangeListener((buttonView, isChecked1) -> {
             if (isChecked1){
+
                 setSnackBar(buttonView,"You'll receive notification when class ended!");
             }
             else {
