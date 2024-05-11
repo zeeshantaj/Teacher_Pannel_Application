@@ -17,6 +17,7 @@ public class NetworkUtils {
 
 
     public interface InternetAccessCallback {
+
         void onInternetAccessResult(boolean hasInternetAccess);
     }
 
