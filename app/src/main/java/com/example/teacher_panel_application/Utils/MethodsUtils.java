@@ -121,6 +121,7 @@ public class MethodsUtils {
 
                 NetworkUtils.hasInternetAccess(hasInternetAccess -> {
                     if (hasInternetAccess){
+
                         Toast.makeText(context, "Internet has service", Toast.LENGTH_SHORT).show();
 
                     }else {
