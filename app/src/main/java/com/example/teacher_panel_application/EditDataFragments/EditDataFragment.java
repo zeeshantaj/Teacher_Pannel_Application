@@ -191,6 +191,7 @@ public class EditDataFragment extends BottomSheetDialogFragment {
                 }).addOnFailureListener(e -> Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
+
     }
 
     private void getData() {
