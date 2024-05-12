@@ -118,12 +118,9 @@ public class MethodsUtils {
             NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
             if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
                 // Device's internet is turned on
-
                 NetworkUtils.hasInternetAccess(hasInternetAccess -> {
                     if (hasInternetAccess){
-
                         Toast.makeText(context, "Internet has service", Toast.LENGTH_SHORT).show();
-
                     }else {
                         Snackbar.make(rootView.findViewById(android.R.id.content), "You Lost Internet Connection!", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("Check Again", view -> {
