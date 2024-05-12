@@ -110,13 +110,11 @@ public class Settings_Fragment extends Fragment {
         binding.notificationChecked.setChecked(isChecked);
         binding.notificationChecked.setOnCheckedChangeListener((buttonView, isChecked1) -> {
             if (isChecked1){
-
                 setSnackBar(buttonView,"You'll receive notification when class ended!");
             }
             else {
                 setSnackBar(buttonView,"You'll no longer receive notification when class ended!");
             }
-
             SharedPreferences sharedPreferences1 = getActivity().getSharedPreferences("notificationState", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences1.edit();
             editor.putBoolean("isNotification", isChecked1);
@@ -124,7 +122,6 @@ public class Settings_Fragment extends Fragment {
         });
         getVersion();
     }
-
     public void openFragment() {
         ProfileFragment editDataFragment = new ProfileFragment();
         editDataFragment.show(getActivity().getSupportFragmentManager(),editDataFragment.getTag());
@@ -135,7 +132,6 @@ public class Settings_Fragment extends Fragment {
         snackbar.show();
     }
     private void getVersion(){
-
         PackageManager packageManager = getActivity().getPackageManager();
         String packageName = getActivity().getPackageName();
         String versionName = null;
