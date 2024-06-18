@@ -91,96 +91,211 @@ public class SignUp_Fragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imageLauncher.launch(intent);
         });
-        binding.singUpBtn.setOnClickListener(view1 -> {
-            String name = binding.SignUpName.getText().toString();
-            String email = binding.SignUpEmail.getText().toString();
-            String pass = binding.SignUpPass.getText().toString();
-            String conPass = binding.SignUpConPass.getText().toString();
-
-            if (email.isEmpty() && !email.matches(EMAIL_PATTERN)) {
-                binding.SignUpEmail.setError("Email should be in correct pattern and can not be empty");
-            }
-            if (name.isEmpty()) {
-                binding.SignUpName.setError("Name is Empty");
-
-
-            }
-            if (pass.isEmpty()) {
-                //Pass.setError("password field is empty");
-                Toast.makeText(getActivity(), "password field is empty", Toast.LENGTH_SHORT).show();
-            }
-            if (conPass.isEmpty()) {
-                //ConPass.setError("confirm password field is empty");
-                Toast.makeText(getActivity(), "confirm password field is empty", Toast.LENGTH_SHORT).show();
-            }
-
-
-            if (!pass.equals(conPass)) {
-                Toast.makeText(getActivity(), "Password and Confirm Password should be same", Toast.LENGTH_SHORT).show();
-            }
-
-
-            if (!name.isEmpty() && !email.isEmpty()
-                    && !pass.isEmpty() && !conPass.isEmpty()) {
-                dialog.setTitle("Please Wait");
-                dialog.setMessage("Creating User....");
-                dialog.setCancelable(false);
-                dialog.show();
-                uploadTask.addOnSuccessListener(taskSnapshot -> {
-
-                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-
-                       downloadedImageUri = uri.toString();
-
-
-                   }).addOnFailureListener(e -> {
-                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("MyApp", e.getLocalizedMessage());
-
-                   });
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("MyApp", e.getLocalizedMessage());
-
-                });
-
-                auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(authResult -> {
-
-                    HashMap<String,String> value = new HashMap<>();
-                    value.put("image",downloadedImageUri);
-                    value.put("name",name);
-                    value.put("email",email);
-                    String uid = auth.getUid();
-                    databaseReference.child("UsersInfo").child(Objects.requireNonNull(uid)).setValue(value)
-
-                                    .addOnSuccessListener(unused -> {
-                                        Toast.makeText(getActivity(), "Account Created!", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getActivity(), Home_Activity.class);
-                                        startActivity(intent);
-                                        getActivity().finish();
-                                        dialog.dismiss();
-                                    }).addOnFailureListener(e -> {
-                                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                            Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
-                                    });
-
-
-                }).addOnFailureListener(e -> {
-
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
-                    dialog.dismiss();
-                });
-
-            }
-
-        });
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginType", Context.MODE_PRIVATE);
         boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
         if (isTrue){
+            binding.signUpContainer.setVisibility(View.VISIBLE);
+            binding.studentId.setVisibility(View.VISIBLE);
+            binding.studentCurrentYear.setVisibility(View.VISIBLE);
+            binding.studentCurrentSemester.setVisibility(View.VISIBLE);
+            binding.studentCurrentMajor.setVisibility(View.VISIBLE);
 
-        }else {
+            binding.singUpBtn.setOnClickListener(view1 -> {
+                String name = binding.SignUpName.getText().toString();
+                String email = binding.SignUpEmail.getText().toString();
+                String pass = binding.SignUpPass.getText().toString();
+                String conPass = binding.SignUpConPass.getText().toString();
+                String id = binding.studentId.getText().toString();
+                String year = binding.studentCurrentYear.getText().toString();
+                String semester = binding.studentCurrentSemester.getText().toString();
+                String major = binding.studentCurrentMajor.getText().toString();
+
+                if (email.isEmpty() && !email.matches(EMAIL_PATTERN)) {
+                    binding.SignUpEmail.setError("Email should be in correct pattern and can not be empty");
+                }
+                if (name.isEmpty()) {
+                    binding.SignUpName.setError("Name is Empty");
+                }
+                if (pass.isEmpty()) {
+                    //Pass.setError("password field is empty");
+                    Toast.makeText(getActivity(), "password field is empty", Toast.LENGTH_SHORT).show();
+                }
+                if (conPass.isEmpty()) {
+                    //ConPass.setError("confirm password field is empty");
+                    Toast.makeText(getActivity(), "confirm password field is empty", Toast.LENGTH_SHORT).show();
+                }
+                if (!pass.equals(conPass)) {
+                    Toast.makeText(getActivity(), "Password and Confirm Password should be same", Toast.LENGTH_SHORT).show();
+                }
+                if (id.isEmpty()) {
+                    //ConPass.setError("confirm password field is empty");
+                    Toast.makeText(getActivity(), "student id field is empty", Toast.LENGTH_SHORT).show();
+                }if (year.isEmpty()) {
+                    //ConPass.setError("confirm password field is empty");
+                    Toast.makeText(getActivity(), "student current year field is empty", Toast.LENGTH_SHORT).show();
+                }if (semester.isEmpty()) {
+                    //ConPass.setError("confirm password field is empty");
+                    Toast.makeText(getActivity(), "student current semester field is empty", Toast.LENGTH_SHORT).show();
+                }if (major.isEmpty()) {
+                    //ConPass.setError("confirm password field is empty");
+                    Toast.makeText(getActivity(), "student major field is empty", Toast.LENGTH_SHORT).show();
+                }
+
+
+                if (!name.isEmpty() && !email.isEmpty()
+                        && !pass.isEmpty() && !conPass.isEmpty() && !id.isEmpty() && !year.isEmpty() && !semester.isEmpty() && !major.isEmpty()) {
+                    dialog.setTitle("Please Wait");
+                    dialog.setMessage("Creating User....");
+                    dialog.setCancelable(false);
+                    dialog.show();
+                    uploadTask.addOnSuccessListener(taskSnapshot -> {
+
+                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                            downloadedImageUri = uri.toString();
+
+
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("MyApp", e.getLocalizedMessage());
+
+                        });
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("MyApp", e.getLocalizedMessage());
+
+                    });
+
+                    auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(authResult -> {
+
+                        HashMap<String,String> value = new HashMap<>();
+                        value.put("image",downloadedImageUri);
+                        value.put("name",name);
+                        value.put("email",email);
+                        value.put("studentId",id);
+                        value.put("studentYear",year);
+                        value.put("studentSemester",semester);
+                        value.put("studentMajor",major);
+                        String uid = auth.getUid();
+                        databaseReference.child("StudentsInfo").child(Objects.requireNonNull(uid)).setValue(value)
+
+                                .addOnSuccessListener(unused -> {
+                                    Toast.makeText(getActivity(), "Account Created!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), Home_Activity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                    dialog.dismiss();
+                                }).addOnFailureListener(e -> {
+                                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
+                                });
+
+
+                    }).addOnFailureListener(e -> {
+
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
+                        dialog.dismiss();
+                    });
+
+                }
+
+            });
+
+
+        }
+        else {
+            binding.signUpContainer.setVisibility(View.VISIBLE);
+            binding.studentId.setVisibility(View.GONE);
+            binding.studentCurrentYear.setVisibility(View.GONE);
+            binding.studentCurrentSemester.setVisibility(View.GONE);
+            binding.studentCurrentMajor.setVisibility(View.GONE);
+
+            binding.singUpBtn.setOnClickListener(view1 -> {
+                String name = binding.SignUpName.getText().toString();
+                String email = binding.SignUpEmail.getText().toString();
+                String pass = binding.SignUpPass.getText().toString();
+                String conPass = binding.SignUpConPass.getText().toString();
+
+                if (email.isEmpty() && !email.matches(EMAIL_PATTERN)) {
+                    binding.SignUpEmail.setError("Email should be in correct pattern and can not be empty");
+                }
+                if (name.isEmpty()) {
+                    binding.SignUpName.setError("Name is Empty");
+
+
+                }
+                if (pass.isEmpty()) {
+                    //Pass.setError("password field is empty");
+                    Toast.makeText(getActivity(), "password field is empty", Toast.LENGTH_SHORT).show();
+                }
+                if (conPass.isEmpty()) {
+                    //ConPass.setError("confirm password field is empty");
+                    Toast.makeText(getActivity(), "confirm password field is empty", Toast.LENGTH_SHORT).show();
+                }
+
+
+                if (!pass.equals(conPass)) {
+                    Toast.makeText(getActivity(), "Password and Confirm Password should be same", Toast.LENGTH_SHORT).show();
+                }
+
+
+                if (!name.isEmpty() && !email.isEmpty()
+                        && !pass.isEmpty() && !conPass.isEmpty()) {
+                    dialog.setTitle("Please Wait");
+                    dialog.setMessage("Creating User....");
+                    dialog.setCancelable(false);
+                    dialog.show();
+                    uploadTask.addOnSuccessListener(taskSnapshot -> {
+
+                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                            downloadedImageUri = uri.toString();
+
+
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("MyApp", e.getLocalizedMessage());
+
+                        });
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("MyApp", e.getLocalizedMessage());
+
+                    });
+
+                    auth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(authResult -> {
+
+                        HashMap<String,String> value = new HashMap<>();
+                        value.put("image",downloadedImageUri);
+                        value.put("name",name);
+                        value.put("email",email);
+                        String uid = auth.getUid();
+                        databaseReference.child("TeacherInfo").child(Objects.requireNonNull(uid)).setValue(value)
+
+                                .addOnSuccessListener(unused -> {
+                                    Toast.makeText(getActivity(), "Account Created!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), Home_Activity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                    dialog.dismiss();
+                                }).addOnFailureListener(e -> {
+                                    Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
+                                });
+
+
+                    }).addOnFailureListener(e -> {
+
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
+                        dialog.dismiss();
+                    });
+
+                }
+
+            });
 
         }
     }
