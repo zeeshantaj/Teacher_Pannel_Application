@@ -1,5 +1,7 @@
 package com.example.teacher_panel_application.Intro;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -45,15 +47,26 @@ public class IntroFragment extends Fragment {
                 }, null, Shader.TileMode.CLAMP);
         binding.classConnectTxt.getPaint().setShader(textShader);
 
+
         binding.getStartedBtnAsTeacher.setOnClickListener(v -> {
             setFragment(new Login_Fragment());
+            setSharedBool(false);
         });
         binding.getStartedBtnAsStudent.setOnClickListener(v -> {
             setFragment(new Login_Fragment());
+            setSharedBool(true);
         });
 
         return binding.getRoot();
     }
+
+    private void setSharedBool(Boolean bool){
+        SharedPreferences sharedPreference = getActivity().getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreference.edit();
+        editor.putBoolean("typeBool",bool);
+        editor.apply();
+    }
+
     private void setFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         //fragmentTransaction.setCustomAnimations(R.anim.slide_from_left,R.anim.slideout_from_right);

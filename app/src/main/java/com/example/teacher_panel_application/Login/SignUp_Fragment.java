@@ -2,7 +2,9 @@ package com.example.teacher_panel_application.Login;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -173,6 +175,14 @@ public class SignUp_Fragment extends Fragment {
             }
 
         });
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+        if (isTrue){
+
+        }else {
+
+        }
     }
 
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
