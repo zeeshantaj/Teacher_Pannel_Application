@@ -37,7 +37,8 @@
     <string name="announcement_data">Announcement data</string>
     <string name="home">Home</string>
     <string name="class_not_posted_yet">Class not posted yet</string>
-    <string name="get_started">Get Started</string>
+    <string name="get_started">Get Started as Teacher</string>
+    <string name="get_started1">Get Started as Student</string>
     <string name="log_in_with_google">Log in with Google</string>
     <string name="log_in_with_facebook">Log in with Facebook</string>
     <string name="email">Email</string>

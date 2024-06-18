@@ -45,7 +45,10 @@ public class IntroFragment extends Fragment {
                 }, null, Shader.TileMode.CLAMP);
         binding.classConnectTxt.getPaint().setShader(textShader);
 
-        binding.getStartedBtn.setOnClickListener(v -> {
+        binding.getStartedBtnAsTeacher.setOnClickListener(v -> {
+            setFragment(new Login_Fragment());
+        });
+        binding.getStartedBtnAsStudent.setOnClickListener(v -> {
             setFragment(new Login_Fragment());
         });
 
