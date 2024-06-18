@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Student.StudentActivity;
 import com.example.teacher_panel_application.Utils.FragmentUtils;
 import com.example.teacher_panel_application.databinding.FragmentSignUpBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,7 +64,6 @@ public class SignUp_Fragment extends Fragment {
 
         dialog = new ProgressDialog(getActivity());
         parentFrameLayout = getActivity().findViewById(R.id.loginFrameLayout);
-
         return binding.getRoot();
     }
 
@@ -182,11 +182,12 @@ public class SignUp_Fragment extends Fragment {
 
                                 .addOnSuccessListener(unused -> {
                                     Toast.makeText(getActivity(), "Account Created!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getActivity(), Home_Activity.class);
+                                    Intent intent = new Intent(getActivity(), StudentActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
                                     dialog.dismiss();
                                 }).addOnFailureListener(e -> {
+                                    dialog.dismiss();
                                     Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                     Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
                                 });
@@ -281,6 +282,7 @@ public class SignUp_Fragment extends Fragment {
                                     getActivity().finish();
                                     dialog.dismiss();
                                 }).addOnFailureListener(e -> {
+                                    dialog.dismiss();
                                     Toast.makeText(getActivity(), "Error "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                                     Log.d("MyApp", Objects.requireNonNull(e.getLocalizedMessage()));
                                 });
