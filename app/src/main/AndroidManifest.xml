@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -18,15 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Teacher_Panel_Application"
         tools:targetApi="31">
+        <activity
+            android:name=".Student.StudentActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4144305165966580~6299934712" />
 
         <activity
             android:name=".Home.Home_Activity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Login.Login_Activity"
             android:exported="true">
@@ -36,9 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".Notification.NotificationBroadcastReceiver"/>
-        <receiver android:name=".Network.NetworkCheckReceiver"/>
 
+        <receiver android:name=".Notification.NotificationBroadcastReceiver" />
+        <receiver android:name=".Network.NetworkCheckReceiver" />
     </application>
 
 </manifest>
