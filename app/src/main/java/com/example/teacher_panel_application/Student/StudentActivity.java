@@ -54,7 +54,7 @@ public class StudentActivity extends AppCompatActivity {
             }
             return false;
         });
-        Main_HomeViewPagerAdapter viewPagerAdapter = new Main_HomeViewPagerAdapter(this);
+        StudentViewPagerAdapter viewPagerAdapter = new StudentViewPagerAdapter(this);
         viewPager2.setAdapter(viewPagerAdapter);
 
 
