@@ -39,8 +39,8 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
     private ShimmerFrameLayout shimmerFrameLayout;
     private TeacherDB databaseHelper;
 
-    public LoadClassData(RecyclerView recyclerView, TextView textView, ShimmerFrameLayout shimmerFrameLayout, String uid, Context context) {
-        this.recyclerView = recyclerView;
+    public LoadClassData( TextView textView, ShimmerFrameLayout shimmerFrameLayout, String uid, Context context) {
+
         this.textView = textView;
         this.shimmerFrameLayout = shimmerFrameLayout;
         this.uid = uid;
@@ -61,34 +61,26 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<UploadClassModel> modelList = new ArrayList<>();
-
-
-                long currentTime = System.currentTimeMillis();
-                long sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000;
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.DAY_OF_YEAR, -7);
-                long sevenDaysAgo = calendar.getTimeInMillis();
-
-                Log.d("MyApp","seven day"+sevenDaysAgo);
-
 
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
-                        modelList.add(model);
+                        //modelList.add(model);
                         databaseHelper.insertClassData(model);
+                        textView.setVisibility(View.GONE);
+                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                     }
-                    Collections.reverse(modelList);
-                    ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, context);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                    recyclerView.setItemAnimator(null);
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    textView.setVisibility(View.GONE);
-                    shimmerFrameLayout.stopShimmerAnimation();
-                    shimmerFrameLayout.setVisibility(View.GONE);
+
+                    //List<UploadClassModel> modelList = databaseHelper.getAllClassData();
+//
+//                    Collections.reverse(modelList);
+//                    ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, context);
+//                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//                    recyclerView.setItemAnimator(null);
+//                    recyclerView.setAdapter(adapter);
+//                    adapter.notifyDataSetChanged();
+
                 } else {
                     textView.setVisibility(View.VISIBLE);
                 }

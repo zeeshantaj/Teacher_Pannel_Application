@@ -103,4 +103,9 @@ public class TeacherDB extends SQLiteOpenHelper {
         db.close();
         return classDataList;
     }
+    public void clearAllClassData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+        db.close();
+    }
 }
