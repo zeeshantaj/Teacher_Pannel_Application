@@ -52,10 +52,10 @@ public class IntroFragment extends Fragment {
             setFragment(new Login_Fragment());
             setSharedBool(false);
         });
-        binding.getStartedBtnAsStudent.setOnClickListener(v -> {
-            setFragment(new Login_Fragment());
-            setSharedBool(true);
-        });
+//        binding.getStartedBtnAsStudent.setOnClickListener(v -> {
+//            setFragment(new Login_Fragment());
+//            setSharedBool(true);
+//        });
 
         return binding.getRoot();
     }

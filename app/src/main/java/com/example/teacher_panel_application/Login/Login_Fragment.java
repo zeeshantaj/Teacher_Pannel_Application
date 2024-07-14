@@ -1,5 +1,6 @@
 package com.example.teacher_panel_application.Login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Intro.IntroFragment;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.FragmentUtils;
+import com.example.teacher_panel_application.Utils.ProgressHelper;
 import com.example.teacher_panel_application.databinding.FragmentLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -70,8 +72,8 @@ public class Login_Fragment extends Fragment {
                 return;
             }
 
-
-
+            //ProgressHelper.showDialog(getActivity(),"Login...");
+            ProgressHelper.showDialog(getActivity(),"Login","Please Wait...");
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -79,11 +81,14 @@ public class Login_Fragment extends Fragment {
                             Intent intent = new Intent(getActivity(), Home_Activity.class);
                             startActivity(intent);
                             getActivity().finish();
+                            ProgressHelper.dismissDialog();
+
                             // You can now access the signed-in user information
                         } else {
                             // Sign-in failed, display an error message
-                            Toast.makeText(getActivity(), "Authentication failed.",
+                            Toast.makeText(getActivity(), "Authentication failed.\n"+task.getException(),
                                     Toast.LENGTH_SHORT).show();
+                            ProgressHelper.dismissDialog();
                         }
                     });
 

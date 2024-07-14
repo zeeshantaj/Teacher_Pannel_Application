@@ -31,6 +31,7 @@ import com.example.teacher_panel_application.Fragment.TermsAndConditionFragment;
 import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
+import com.example.teacher_panel_application.Utils.ProgressHelper;
 import com.example.teacher_panel_application.databinding.FragmentSettingsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -82,16 +83,19 @@ public class Settings_Fragment extends Fragment {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            ProgressHelper.showDialog(getActivity(),"Logout","Please Wait...");
                             Intent intent = new Intent(getActivity(), Login_Activity.class);
                             startActivity(intent);
                             getActivity().finish();
                             auth.signOut();
+                            //ProgressHelper.dismissDialog();
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            //ProgressHelper.dismissDialog();
                         }
                     })
                     .show();

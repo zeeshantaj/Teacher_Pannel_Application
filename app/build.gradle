@@ -69,6 +69,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.github.erkutaras:ShowcaseView:1.5.0'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:3.0-alpha-1'
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:3.0-alpha-1'
 
 }
