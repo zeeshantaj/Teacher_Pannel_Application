@@ -3,6 +3,7 @@ package com.example.teacher_panel_application.History;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.TeacherHistoryDB.TeacherDB;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -34,12 +37,15 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
     private Context context;
     private TextView textView;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private TeacherDB databaseHelper;
+
     public LoadClassData(RecyclerView recyclerView, TextView textView, ShimmerFrameLayout shimmerFrameLayout, String uid, Context context) {
         this.recyclerView = recyclerView;
         this.textView = textView;
         this.shimmerFrameLayout = shimmerFrameLayout;
         this.uid = uid;
         this.context = context;
+        this.databaseHelper = new TeacherDB(context);
     }
 
     @Override
@@ -56,10 +62,23 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<UploadClassModel> modelList = new ArrayList<>();
+
+
+                long currentTime = System.currentTimeMillis();
+                long sevenDaysInMillis = 7 * 24 * 60 * 60 * 1000;
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_YEAR, -7);
+                long sevenDaysAgo = calendar.getTimeInMillis();
+
+                Log.d("MyApp","seven day"+sevenDaysAgo);
+
+
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
                         modelList.add(model);
+                        databaseHelper.insertClassData(model);
                     }
                     Collections.reverse(modelList);
                     ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, context);
