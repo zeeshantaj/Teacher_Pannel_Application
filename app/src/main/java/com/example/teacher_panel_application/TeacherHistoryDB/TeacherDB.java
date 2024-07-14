@@ -83,6 +83,7 @@ public class TeacherDB extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
+
                 UploadClassModel model = new UploadClassModel();
                 model.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)));
                 model.setDepartment(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DEPARTMENT)));
