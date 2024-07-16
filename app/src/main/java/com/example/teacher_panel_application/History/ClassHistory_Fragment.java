@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,11 @@ import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.TeacherHistoryDB.TeacherDB;
 import com.example.teacher_panel_application.databinding.HistoryClassBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +43,7 @@ public class ClassHistory_Fragment extends Fragment {
         LoadClassData loadDataInBackground = new LoadClassData(binding.dataShowTxt, binding.historyShimmer, uid, getActivity());
         loadDataInBackground.execute();
         TeacherDB databaseHelper = new TeacherDB(getActivity());
+        //databaseHelper.clearAllClassData();
         List<UploadClassModel> modelList = databaseHelper.getAllClassData();
         Log.d("MyApp","model count"+modelList.size());
         Collections.reverse(modelList);
@@ -45,6 +52,36 @@ public class ClassHistory_Fragment extends Fragment {
         binding.classHistoryRecycler.setItemAnimator(null);
         binding.classHistoryRecycler.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
+
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("PostedData").child(uid);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++){
+                            Log.d("MyApp","dataSnapShot count "+dataSnapshot.getChildrenCount());
+                            UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
+                            //modelList.add(model);
+                            databaseHelper.insertClassData(model);
+                        }
+                    }
+
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
     }
 

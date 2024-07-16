@@ -64,9 +64,12 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
 
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
-                        //modelList.add(model);
-                        databaseHelper.insertClassData(model);
+                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++){
+                            Log.d("MyApp","dataSnapShot count "+dataSnapshot.getChildrenCount());
+                            UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
+                            //modelList.add(model);
+                            databaseHelper.insertClassData(model);
+                        }
                         textView.setVisibility(View.GONE);
                         shimmerFrameLayout.stopShimmerAnimation();
                         shimmerFrameLayout.setVisibility(View.GONE);
