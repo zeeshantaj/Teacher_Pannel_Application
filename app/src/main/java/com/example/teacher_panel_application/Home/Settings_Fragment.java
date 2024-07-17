@@ -124,6 +124,12 @@ public class Settings_Fragment extends Fragment {
             editor.putBoolean("isNotification", isChecked1);
             editor.apply();
         });
+
+        ClickShrinkUtils.applyClickShrink(binding.updateBtn);
+        binding.updateBtn.setOnClickListener(v -> {
+
+        });
+
         getVersion();
     }
     public void openFragment() {
