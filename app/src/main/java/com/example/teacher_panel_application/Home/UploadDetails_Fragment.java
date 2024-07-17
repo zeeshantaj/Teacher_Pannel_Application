@@ -32,7 +32,7 @@ public class UploadDetails_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Upload_Announcement_Fragment()}; // Replace with your fragment classes
+        Fragment[] pages = {new Upload_Class_Data_Fragment(), new Upload_Announcement_Fragment(),new Upload_Study_Material_Fragment()}; // Replace with your fragment classes
         UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
         binding.myViewpager.setAdapter(myPagerAdapter);
 
@@ -57,6 +57,9 @@ public class UploadDetails_Fragment extends Fragment {
                     } else if (position == 1) {
                         //myViewPager.setCurrentItem(position,true);
                         tab.setText("Announcements");
+                    } else if (position == 2) {
+                        //myViewPager.setCurrentItem(position,true);
+                        tab.setText("Study Material");
                     }
                 }
         );
