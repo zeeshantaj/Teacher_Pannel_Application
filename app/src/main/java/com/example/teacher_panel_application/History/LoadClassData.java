@@ -69,8 +69,10 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                         UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
                         modelList.add(model);
                         Log.d("MyApp","models inserted "+modelList.size());
-                        databaseHelper.clearAllClassData();
-                        databaseHelper.insertClassData(model);
+                        for (UploadClassModel model1:modelList){
+                            databaseHelper.insertClassData(model1);
+                        }
+                       // databaseHelper.clearAllClassData();
                         textView.setVisibility(View.GONE);
                         shimmerFrameLayout.stopShimmerAnimation();
                         shimmerFrameLayout.setVisibility(View.GONE);
