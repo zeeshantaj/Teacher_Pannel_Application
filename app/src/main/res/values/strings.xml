@@ -3,6 +3,30 @@
     <string name="app_name">Class Connect</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="programming_languages">
+        <item>Select Semester</item>
+        <item>one</item>
+        <item>two</item>
+        <item>three</item>
+        <item>four</item>
+        <item>five</item>
+        <item>six</item>
+        <item>seven</item>
+        <item>eight</item>
+    </string-array>
+    <string-array name="classYearArray">
+        <item>Select Year</item>
+        <item>1st</item>
+        <item>2nd</item>
+        <item>3rd</item>
+        <item>4th</item>
+    </string-array>
+    <string-array name="pdf_purpose_array">
+        <item>Select PDF Purpose</item>
+        <item>Assignment</item>
+        <item>Quiz</item>
+        <item>Study Material</item>
+    </string-array>
 
     <string name="admob_app_id">ca-app-pub-4144305165966580~6299934712</string>
     <string name="admob_banner_id">ca-app-pub-4144305165966580/3630690721</string>
