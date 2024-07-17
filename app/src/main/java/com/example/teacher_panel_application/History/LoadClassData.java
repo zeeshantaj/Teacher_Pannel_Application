@@ -39,10 +39,11 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
     private ShimmerFrameLayout shimmerFrameLayout;
     private TeacherDB databaseHelper;
 
-    public LoadClassData( TextView textView, ShimmerFrameLayout shimmerFrameLayout, String uid, Context context) {
+    public LoadClassData( TextView textView, RecyclerView recyclerView,ShimmerFrameLayout shimmerFrameLayout, String uid, Context context) {
 
         this.textView = textView;
         this.shimmerFrameLayout = shimmerFrameLayout;
+        this.recyclerView = recyclerView;
         this.uid = uid;
         this.context = context;
         this.databaseHelper = new TeacherDB(context);
@@ -61,28 +62,29 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                databaseHelper.clearAllClassData();
+                List<UploadClassModel> modelList = new ArrayList<>();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++){
-                            Log.d("MyApp","dataSnapShot count "+dataSnapshot.getChildrenCount());
-                            UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
-                            //modelList.add(model);
-                            databaseHelper.insertClassData(model);
-                        }
+                        UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
+                        modelList.add(model);
+                        Log.d("MyApp","models inserted "+modelList.size());
+                        databaseHelper.clearAllClassData();
+                        databaseHelper.insertClassData(model);
                         textView.setVisibility(View.GONE);
                         shimmerFrameLayout.stopShimmerAnimation();
                         shimmerFrameLayout.setVisibility(View.GONE);
                     }
 
+
                     //List<UploadClassModel> modelList = databaseHelper.getAllClassData();
-//
-//                    Collections.reverse(modelList);
-//                    ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, context);
-//                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//                    recyclerView.setItemAnimator(null);
-//                    recyclerView.setAdapter(adapter);
-//                    adapter.notifyDataSetChanged();
+
+                    Collections.reverse(modelList);
+                    ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, context);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setItemAnimator(null);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
 
                 } else {
                     textView.setVisibility(View.VISIBLE);

@@ -40,47 +40,20 @@ public class ClassHistory_Fragment extends Fragment {
     public void getData() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        LoadClassData loadDataInBackground = new LoadClassData(binding.dataShowTxt, binding.historyShimmer, uid, getActivity());
+        LoadClassData loadDataInBackground = new LoadClassData(binding.dataShowTxt,binding.classHistoryRecycler, binding.historyShimmer, uid, getActivity());
         loadDataInBackground.execute();
-        TeacherDB databaseHelper = new TeacherDB(getActivity());
-        //databaseHelper.clearAllClassData();
-        List<UploadClassModel> modelList = databaseHelper.getAllClassData();
-        Log.d("MyApp","model count"+modelList.size());
-        Collections.reverse(modelList);
-        ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, getActivity());
-        binding.classHistoryRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.classHistoryRecycler.setItemAnimator(null);
-        binding.classHistoryRecycler.setAdapter(adapter);
+//        TeacherDB databaseHelper = new TeacherDB(getActivity());
+//        databaseHelper.clearAllClassData();
+//        List<UploadClassModel> modelList = databaseHelper.getAllClassData();
+//        Log.d("MyApp","model count"+modelList.size());
+//        Collections.reverse(modelList);
+//        ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, getActivity());
+//        binding.classHistoryRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        binding.classHistoryRecycler.setItemAnimator(null);
+//        binding.classHistoryRecycler.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
 
 
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("PostedData").child(uid);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.exists()) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        for (int i = 0; i < dataSnapshot.getChildrenCount(); i++){
-                            Log.d("MyApp","dataSnapShot count "+dataSnapshot.getChildrenCount());
-                            UploadClassModel model = dataSnapshot.getValue(UploadClassModel.class);
-                            //modelList.add(model);
-                            databaseHelper.insertClassData(model);
-                        }
-                    }
-
-
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
 
     }
