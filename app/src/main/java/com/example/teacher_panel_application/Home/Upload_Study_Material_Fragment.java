@@ -28,13 +28,23 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncementBinding;
 import com.example.teacher_panel_application.databinding.FragmentUploadStudyMaterialBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Upload_Study_Material_Fragment extends Fragment {
 
@@ -135,7 +145,9 @@ public class Upload_Study_Material_Fragment extends Fragment {
         });
 
         binding.pdfUploadBtn.setOnClickListener(v -> {
-            uploadFile();
+
+
+            //uploadFile();
         });
 
     }
@@ -188,41 +200,51 @@ public class Upload_Study_Material_Fragment extends Fragment {
             Toast.makeText(getActivity(), "Permission Denied",Toast.LENGTH_SHORT).show();
         }
     }
-    private void uploadFile() {
+    private void uploadFile(String year,String semester,String purpose) {
         if (pdfUri != null) {
-            // Define the storage reference
+            HashMap<String,String> hashMap = new HashMap<>();
+            hashMap.put("year",year);
+            hashMap.put("semester",semester);
+            hashMap.put("purpose",purpose);
+            Calendar calendar = Calendar.getInstance();
+            long milli = calendar.getTimeInMillis();
+            String milliSecondChild = String.valueOf(milli);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Announcement")
+                    .child(MethodsUtils.getCurrentUID())
+                    .child(milliSecondChild);
+
             StorageReference storageReference = FirebaseStorage.getInstance().getReference("Teacher_Uploaded_PDF");
-
-            // Create a unique file name
             String fileName = System.currentTimeMillis() + ".pdf";
-
-            // Create a reference to the file in Firebase Storage
             StorageReference fileReference = storageReference.child(fileName);
-
-            // Upload the file to Firebase Storage
             fileReference.putFile(pdfUri)
                     .addOnSuccessListener(taskSnapshot -> {
-                        // File uploaded successfully
-                        Toast.makeText(getActivity(), "File Uploaded Successfully", Toast.LENGTH_SHORT).show();
-                        // Get the download URL
+
+                        ///Toast.makeText(getActivity(), "File Uploaded Successfully", Toast.LENGTH_SHORT).show();
                         fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                            // You can save the download URL to your database
                             String downloadUrl = uri.toString();
-                            // Save the download URL to Firebase Realtime Database or Firestore
+                            hashMap.put("PDF_URL",downloadUrl);
+                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    MethodsUtils.showSuccessDialog(getActivity(),"Success","Data Posted Successfully", SweetAlertDialog.SUCCESS_TYPE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         });
                     })
                     .addOnFailureListener(e -> {
-                        // Handle unsuccessful uploads
                         binding.pdfProgressTxt.setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(), "File Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     })
                     .addOnProgressListener(taskSnapshot -> {
-                        // Track upload progress
                         binding.pdfProgressTxt.setVisibility(View.VISIBLE);
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
 
                         binding.pdfProgressTxt.setText("Uploading... "+progress+"%");
-                        // Display the progress (e.g., in a progress bar)
                     });
         } else {
             Toast.makeText(getActivity(), "No file selected", Toast.LENGTH_SHORT).show();

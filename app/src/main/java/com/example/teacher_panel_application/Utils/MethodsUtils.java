@@ -39,6 +39,8 @@ import org.checkerframework.checker.units.qual.C;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class MethodsUtils {
     public static void shareOnWhatsapp(Context context,String name, String loc, String dura, String dep, String sub, String top, String start){
         String teacherName = "Teacher: " + name + "\n";
@@ -144,6 +146,20 @@ public class MethodsUtils {
 
     }
 
+
+    public static void showSuccessDialog(Context context,String title, String content, int type) {
+
+        final SweetAlertDialog sd = new SweetAlertDialog(context, type)
+                .setTitleText(title)
+                .setContentText(content);
+        sd.show();
+    }
+
+
+    public static String getCurrentUID(){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        return auth.getUid();
+    }
     public static DatabaseReference getCurrentUserRef(String path){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();

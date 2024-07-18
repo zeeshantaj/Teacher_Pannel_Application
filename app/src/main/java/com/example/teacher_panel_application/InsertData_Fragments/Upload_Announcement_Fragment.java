@@ -110,7 +110,7 @@ public class Upload_Announcement_Fragment extends Fragment {
             String titleStr = binding.announceTitle.getText().toString();
             String desStr = binding.announceDescription.getText().toString();
             String dueDateStr = binding.dueDate.getText().toString();
-            Calendar calendar = Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
             long milli = calendar.getTimeInMillis();
             String milliSecondChild = String.valueOf(milli);
             //todo for image
