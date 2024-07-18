@@ -145,9 +145,28 @@ public class Upload_Study_Material_Fragment extends Fragment {
         });
 
         binding.pdfUploadBtn.setOnClickListener(v -> {
+            int selectedYearPosition = binding.selectYear.getSelectedItemPosition();
+            int selectedSemesterPosition = binding.planetsSpinner.getSelectedItemPosition();
+            int selectedPurposePosition = binding.pdfPurpose.getSelectedItemPosition();
 
+            if (selectedYearPosition <= 0) {
+                Toast.makeText(getActivity(), "Please Select Year", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            //uploadFile();
+            if (selectedSemesterPosition <= 0) {
+                Toast.makeText(getActivity(), "Please Select Semester", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (selectedPurposePosition <= 0) {
+                Toast.makeText(getActivity(), "Please Select Purpose", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String year = binding.selectYear.getSelectedItem().toString();
+            String semester  = binding.planetsSpinner.getSelectedItem().toString();
+            String purpose = binding.pdfPurpose.getSelectedItem().toString();
+            uploadFile(year,semester,purpose);
         });
 
     }
