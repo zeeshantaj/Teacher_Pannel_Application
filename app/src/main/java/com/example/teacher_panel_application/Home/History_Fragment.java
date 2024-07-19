@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdapter;
 import com.example.teacher_panel_application.History.ClassHistory_Fragment;
 import com.example.teacher_panel_application.History.AnnouncementHistory_Fragment;
+import com.example.teacher_panel_application.History.View_Study_Material;
 import com.example.teacher_panel_application.databinding.FragmentHistoryBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -31,7 +32,7 @@ public class History_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Fragment[] pages = {new ClassHistory_Fragment(), new AnnouncementHistory_Fragment()}; // Replace with your fragment classes
+        Fragment[] pages = {new ClassHistory_Fragment(), new AnnouncementHistory_Fragment(),new View_Study_Material()}; // Replace with your fragment classes
         UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
         binding.myViewpagerHistory.setAdapter(myPagerAdapter);
 
@@ -55,6 +56,10 @@ public class History_Fragment extends Fragment {
                     } else if (position == 1) {
                         //myViewPager.setCurrentItem(position,true);
                         tab.setText("Announcements");
+                    }
+                    else if (position == 2) {
+                        //myViewPager.setCurrentItem(position,true);
+                        tab.setText("View Material");
                     }
                 }
         );
