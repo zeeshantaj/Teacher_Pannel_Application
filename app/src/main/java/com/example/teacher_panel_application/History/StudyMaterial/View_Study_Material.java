@@ -1,30 +1,30 @@
-package com.example.teacher_panel_application.History;
-
-import static android.content.Context.CONNECTIVITY_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
+package com.example.teacher_panel_application.History.StudyMaterial;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
+import com.example.teacher_panel_application.History.ClassHis.ClassHistoryAdapter;
+import com.example.teacher_panel_application.History.ClassHis.LoadClassData;
+import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.Network.NetworkUtils;
+import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.TeacherHistoryDB.TeacherDB;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
-import com.example.teacher_panel_application.databinding.HistoryClassBinding;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.teacher_panel_application.databinding.FragmentUploadClassDataBinding;
+import com.example.teacher_panel_application.databinding.FragmentViewStudyMaterialBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,23 +32,31 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ClassHistory_Fragment extends Fragment {
-    private HistoryClassBinding binding;
+public class View_Study_Material extends Fragment {
+    public View_Study_Material() {
+        // Required empty public constructor
+    }
+    private FragmentViewStudyMaterialBinding binding;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = HistoryClassBinding.inflate(inflater, container, false);
-        getData(getActivity());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        binding = FragmentViewStudyMaterialBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getData(getActivity());
+
+    }
 
     private void getData(Context context){
-
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -68,19 +76,18 @@ public class ClassHistory_Fragment extends Fragment {
 
         }
     }
-
     private void getOfflineData(){
-        TeacherDB databaseHelper = new TeacherDB(getActivity());
-        List<UploadClassModel> modelList = databaseHelper.getAllClassData();
-        ClassHistoryAdapter adapter = new ClassHistoryAdapter(modelList, getActivity());
-        binding.classHistoryRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.classHistoryRecycler.setItemAnimator(null);
-        binding.classHistoryRecycler.setAdapter(adapter);
+//        TeacherDB databaseHelper = new TeacherDB(getActivity());
+//        List<PDFModel> modelList = databaseHelper.getAllClassData();
+//        ViewStudyHistoryAdapter adapter = new ViewStudyHistoryAdapter(getActivity(), modelList);
+//        binding.studyMaterialRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        binding.studyMaterialRV.setItemAnimator(null);
+//        binding.studyMaterialRV.setAdapter(adapter);
     }
     public void getOnlineData() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
-        LoadClassData loadDataInBackground = new LoadClassData(binding.dataShowTxt,binding.classHistoryRecycler, binding.historyShimmer, uid, getActivity());
+        LoadPdfDataClass loadDataInBackground = new LoadPdfDataClass(binding.dataShowTxt,binding.studyMaterialRV, binding.historyShimmer, uid, getActivity());
         loadDataInBackground.execute();
     }
 }

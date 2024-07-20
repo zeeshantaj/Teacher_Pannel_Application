@@ -3,11 +3,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".History.View_Study_Material">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".History.StudyMaterial.View_Study_Material">
+
+
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/historyShimmer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+            <include layout="@layout/place_holder_hc" />
+
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/studyMaterialRV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:id="@+id/dataShowTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data_to_show"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:visibility="visible"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </FrameLayout>

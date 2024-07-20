@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -14,19 +15,26 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.OpenableColumns;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncementBinding;
@@ -40,6 +48,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -56,6 +66,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
     private FragmentUploadStudyMaterialBinding binding;
     ActivityResultLauncher<Intent> resultLauncher;
     private Uri pdfUri;
+    private int switchLayoutCounter = 1;
+    private int initialOptionsCounter = 2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +77,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
         return binding.getRoot();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -169,7 +182,114 @@ public class Upload_Study_Material_Fragment extends Fragment {
             uploadFile(year,semester,purpose);
         });
 
+        binding.switchToBtn.setOnClickListener(v -> {
+
+            if (switchLayoutCounter == 1){
+                switchLayoutCounter = 2;
+                binding.pdfLayout.setVisibility(View.GONE);
+                binding.videoLinkLayout.setVisibility(View.VISIBLE);
+                binding.createPoolLayout.setVisibility(View.GONE);
+                binding.switchToBtn.setText("Switch To Create Poll");
+            }
+            else if (switchLayoutCounter == 2){
+                switchLayoutCounter = 3;
+                binding.switchToBtn.setText("Switch To Upload PDF File");
+                binding.createPoolLayout.setVisibility(View.VISIBLE);
+                binding.videoLinkLayout.setVisibility(View.GONE);
+                binding.pdfLayout.setVisibility(View.GONE);
+
+            }
+            else if (switchLayoutCounter == 3){
+                switchLayoutCounter = 1;
+                binding.switchToBtn.setText("Switch to Upload Video Link");
+                binding.pdfLayout.setVisibility(View.VISIBLE);
+                binding.createPoolLayout.setVisibility(View.GONE);
+                binding.videoLinkLayout.setVisibility(View.GONE);
+            }
+        });
+
+
+        addTextWatcher(binding.option2);
+        binding.uploadPool.setOnClickListener(v -> {
+            String option1 = binding.option1.getText().toString();
+            String option2 = binding.option2.getText().toString();
+            String question = binding.pollQuestion.getText().toString();
+            if (question.isEmpty()){
+                binding.pollQuestion.setError("Question can not be empty!");
+                return;
+            }
+            if (option1.isEmpty()){
+                binding.option1.setError("Set Option Please");
+                return;
+            }
+            if (option2.isEmpty()){
+                binding.option1.setError("Set Option Please");
+                return;
+            }
+            Toast.makeText(getActivity(), "option set", Toast.LENGTH_SHORT).show();
+
+        });
     }
+
+    private void addTextWatcher(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No action needed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No action needed
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0 && isLastEditText(editText)) {
+                    addNewOption();
+                } else if (s.length() == 0 && isSecondLastEditText(editText)) {
+                    removeLastOption();
+                }
+            }
+        });
+    }
+
+    private boolean isLastEditText(EditText editText) {
+        int index = binding.optionContainer.indexOfChild(editText);
+        return index == binding.optionContainer.getChildCount() - 1;
+    }
+
+    private boolean isSecondLastEditText(EditText editText) {
+        int index = binding.optionContainer.indexOfChild(editText);
+        return index == binding.optionContainer.getChildCount() - 2;
+    }
+
+    private void addNewOption() {
+        EditText newOption = new EditText(getActivity());
+        newOption.setId(View.generateViewId());
+        newOption.setLayoutParams(getLayoutParams());
+        newOption.setHint("+ Add");
+
+        binding.optionContainer.addView(newOption);
+        addTextWatcher(newOption);
+    }
+
+    private void removeLastOption() {
+        int lastIndex = binding.optionContainer.getChildCount() - 1;
+        if (lastIndex > 0) {
+            binding.optionContainer.removeViewAt(lastIndex);
+        }
+    }
+
+    private LinearLayout.LayoutParams getLayoutParams() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMarginStart(60);
+        params.setMarginEnd(60);
+        return params;
+    }
+
     private String getFileName(Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
@@ -219,16 +339,29 @@ public class Upload_Study_Material_Fragment extends Fragment {
             Toast.makeText(getActivity(), "Permission Denied",Toast.LENGTH_SHORT).show();
         }
     }
-    private void uploadFile(String year,String semester,String purpose) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void uploadFile(String year, String semester, String purpose) {
         if (pdfUri != null) {
-            HashMap<String,String> hashMap = new HashMap<>();
-            hashMap.put("year",year);
-            hashMap.put("semester",semester);
-            hashMap.put("purpose",purpose);
+
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
+            String currentDateTimeString = currentDateTime.format(dateTimeFormatter);
+
+
+            String pdfName = getFileName(pdfUri);
+
+            PDFModel pdfModel = new PDFModel();
+            pdfModel.setYear(year);
+            pdfModel.setSemester(semester);
+            pdfModel.setPurpose(purpose);
+            pdfModel.setDateTime(currentDateTimeString);
+            pdfModel.setPDFName(pdfName);
+
             Calendar calendar = Calendar.getInstance();
             long milli = calendar.getTimeInMillis();
             String milliSecondChild = String.valueOf(milli);
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Announcement")
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersPDFData")
                     .child(MethodsUtils.getCurrentUID())
                     .child(milliSecondChild);
 
@@ -241,8 +374,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
                         ///Toast.makeText(getActivity(), "File Uploaded Successfully", Toast.LENGTH_SHORT).show();
                         fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
                             String downloadUrl = uri.toString();
-                            hashMap.put("PDF_URL",downloadUrl);
-                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            pdfModel.setPDFUrl(downloadUrl);
+                            reference.setValue(pdfModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     MethodsUtils.showSuccessDialog(getActivity(),"Success","Data Posted Successfully", SweetAlertDialog.SUCCESS_TYPE);

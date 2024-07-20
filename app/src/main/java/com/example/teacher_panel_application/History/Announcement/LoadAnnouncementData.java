@@ -1,6 +1,5 @@
-package com.example.teacher_panel_application.History;
+package com.example.teacher_panel_application.History.Announcement;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.example.teacher_panel_application.History.Announcement.AnnounceAdapter;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;

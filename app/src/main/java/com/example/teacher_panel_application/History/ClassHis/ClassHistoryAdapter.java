@@ -1,4 +1,4 @@
-package com.example.teacher_panel_application.History;
+package com.example.teacher_panel_application.History.ClassHis;
 
 import android.app.AlertDialog;
 import android.content.Context;

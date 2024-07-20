@@ -11,9 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdapter;
-import com.example.teacher_panel_application.History.ClassHistory_Fragment;
-import com.example.teacher_panel_application.History.AnnouncementHistory_Fragment;
-import com.example.teacher_panel_application.History.View_Study_Material;
+import com.example.teacher_panel_application.History.ClassHis.ClassHistory_Fragment;
+import com.example.teacher_panel_application.History.Announcement.AnnouncementHistory_Fragment;
+import com.example.teacher_panel_application.History.StudyMaterial.View_Study_Material;
 import com.example.teacher_panel_application.databinding.FragmentHistoryBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -59,7 +59,7 @@ public class History_Fragment extends Fragment {
                     }
                     else if (position == 2) {
                         //myViewPager.setCurrentItem(position,true);
-                        tab.setText("View Material");
+                        tab.setText("PDF History");
                     }
                 }
         );
