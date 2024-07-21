@@ -41,6 +41,7 @@ import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncem
 import com.example.teacher_panel_application.databinding.FragmentUploadStudyMaterialBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,6 +54,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -211,6 +213,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
 
         addTextWatcher(binding.option2);
         binding.uploadPool.setOnClickListener(v -> {
+            HashMap<String,String> hashMap = new HashMap<>();
+
             String option1 = binding.option1.getText().toString();
             String option2 = binding.option2.getText().toString();
             String question = binding.pollQuestion.getText().toString();
@@ -226,7 +230,28 @@ public class Upload_Study_Material_Fragment extends Fragment {
                 binding.option1.setError("Set Option Please");
                 return;
             }
-            Toast.makeText(getActivity(), "option set", Toast.LENGTH_SHORT).show();
+            for (int i = 0; i<getAllOptionTexts().size(); i++){
+                hashMap.put("option"+i,getAllOptionTexts().get(i));
+            }
+            hashMap.put("question",question);
+
+
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll")
+                    .child(MethodsUtils.getCurrentUID())
+                    .child(getMillis());
+            reference.setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Toast.makeText(getActivity(), "Poll created", Toast.LENGTH_SHORT).show();
+                    MethodsUtils.showFlawDialog(getActivity(),R.drawable.success_png,"Success ","Your Poll is Created",1);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    MethodsUtils.showFlawDialog(getActivity(),R.drawable.icon_error,"Error",e.getMessage(),1);
+                }
+            });
 
         });
     }
@@ -289,7 +314,24 @@ public class Upload_Study_Material_Fragment extends Fragment {
         params.setMarginEnd(60);
         return params;
     }
+    private List<String> getAllOptionTexts() {
+        List<String> optionTexts = new ArrayList<>();
+        int childCount = binding.optionContainer.getChildCount();
 
+        for (int i = 0; i < childCount; i++) {
+            View child = binding.optionContainer.getChildAt(i);
+            if (child instanceof EditText) {
+                EditText editText = (EditText) child;
+                String text = editText.getText().toString();
+                if (!text.isEmpty()){
+                    optionTexts.add(text);
+                }
+
+            }
+        }
+
+        return optionTexts;
+    }
     private String getFileName(Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
@@ -357,13 +399,9 @@ public class Upload_Study_Material_Fragment extends Fragment {
             pdfModel.setDateTime(currentDateTimeString);
             pdfModel.setPDFName(pdfName);
 
-            Calendar calendar = Calendar.getInstance();
-            long milli = calendar.getTimeInMillis();
-            String milliSecondChild = String.valueOf(milli);
-
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersPDFData")
                     .child(MethodsUtils.getCurrentUID())
-                    .child(milliSecondChild);
+                    .child(getMillis());
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReference("Teacher_Uploaded_PDF");
             String fileName = System.currentTimeMillis() + ".pdf";
@@ -403,4 +441,9 @@ public class Upload_Study_Material_Fragment extends Fragment {
         }
     }
 
+    private String getMillis(){
+        Calendar calendar = Calendar.getInstance();
+        long milli = calendar.getTimeInMillis();
+        return String.valueOf(milli);
+    }
 }

@@ -3,16 +3,24 @@ package com.example.teacher_panel_application.Utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +33,8 @@ import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Models.UploadClassModel;
 import com.example.teacher_panel_application.Network.NetworkUtils;
+import com.example.teacher_panel_application.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -103,8 +113,46 @@ public class MethodsUtils {
         fragmentTransaction.add(android.R.id.content, fragment); // Use android.R.id.content to add the fragment above all views
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    public static void showFlawDialog(Context context, int imageView, String title, String content, int type) {
+        Dialog errorDialog;
+        MaterialButton btnContinue;
+        TextView contentTextView, titleTextView;
+        ImageView imgErrorType;
+        errorDialog = new Dialog(context);
+        errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        errorDialog.setContentView(R.layout.error_type_dialog);
+        errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        imgErrorType = errorDialog.findViewById(R.id.imageView11);
+        btnContinue = errorDialog.findViewById(R.id.button7);
+        contentTextView = errorDialog.findViewById(R.id.pass);
+        titleTextView = errorDialog.findViewById(R.id.textView32);
+
+//        setText:
+        titleTextView.setText("" + title);
+        contentTextView.setText("" + content);
+
+//        showImageType:
+
+
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                errorDialog.dismiss();
+            }
+        });
+
+
+        errorDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        errorDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        errorDialog.setCancelable(false);
+        errorDialog.show();
 
     }
+
+
     public static void showAlertDialogue(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("Internet is turned off. Do you want to turn it on?")
