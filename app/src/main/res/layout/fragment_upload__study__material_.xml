@@ -197,7 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -206,17 +206,39 @@
                     android:text="Upload a Video Link to help Students!"
                     android:textSize="20sp" />
 
+
                 <TextView
                     android:id="@+id/videoLinkTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
+                    android:text="Type Video Link or paste"
+                    app:drawableStartCompat="@drawable/baseline_video_file_24"
+                    app:drawableTint="@color/red" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout1"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
-                    android:background="@drawable/spiner_bg"
-                    android:padding="15dp"
-                    android:text="Select Video Link"
-                    app:drawableStartCompat="@drawable/pdf_icon" />
+                    android:layout_marginBottom="30dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/center"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/videoLinkEdt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Video Link"
+                        android:inputType="textEmailAddress" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
 
                 <com.google.android.material.button.MaterialButton
@@ -238,7 +260,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
 
                 <TextView
