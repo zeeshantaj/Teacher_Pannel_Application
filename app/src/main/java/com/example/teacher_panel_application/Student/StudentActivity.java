@@ -65,11 +65,11 @@ public class StudentActivity extends AppCompatActivity {
     private int getNavigationItem(int position) {
         switch (position) {
             case 0:
-                Objects.requireNonNull(getSupportActionBar()).setTitle("CM");
-                return R.id.studentResources;
-            case 1:
                 Objects.requireNonNull(getSupportActionBar()).setTitle("Announcement");
                 return R.id.studentAnnouncement;
+            case 1:
+                Objects.requireNonNull(getSupportActionBar()).setTitle("Study Material");
+                return R.id.navHistory;
             case 2:
                 Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.profile);
                 return R.id.navProfileStudent;
@@ -79,9 +79,9 @@ public class StudentActivity extends AppCompatActivity {
     }
 
     private int getPositionForNavigationItem(int itemId) {
-        if (itemId == R.id.studentResources) {
+        if (itemId == R.id.studentAnnouncement) {
             return 0;
-        } else if (itemId == R.id.studentAnnouncement) {
+        } else if (itemId == R.id.navHistory) {
             return 1;
         } else if (itemId == R.id.navProfileStudent) {
             return 2;

@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -105,6 +106,15 @@ public class MethodsUtils {
         });
     }
 
+
+    public static void setCurrentUserYearAndSemester(Context context,String year,String semester){
+        //DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference().child("StudentsInfo");
+        SharedPreferences sharedPreferences1 = context.getSharedPreferences("StudentInfoShared",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences1.edit();
+        editor.putString("studentYear",year);
+        editor.putString("studentSemester",semester);
+        editor.apply();
+    }
     public static void setFragment(FragmentManager fragmentManager, Fragment fragment){
         // Create an instance of the transparent fragment
 

@@ -20,11 +20,11 @@ public class StudentViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 1:
-                return new StudentHome();
-            case 2:
                 return new Student_PDF_Fragment();
-            case 3:
+            case 2:
                 return new Settings_Fragment();
+//            case 3:
+//                return new Settings_Fragment();
             case 0:
             default:
                 return new StudentHome();

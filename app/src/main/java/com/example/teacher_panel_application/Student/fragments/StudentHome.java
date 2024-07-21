@@ -43,39 +43,40 @@ public class StudentHome extends Fragment {
                 modelList.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
+                            AnnouncementModel model = new AnnouncementModel();
+                            if (keySnapshot.child("title").exists()) {
+                                String title = keySnapshot.child("title").getValue(String.class);
+                                String date = keySnapshot.child("current_date").getValue(String.class);
+                                String dueDate = keySnapshot.child("due_date").getValue(String.class);
+                                String key = keySnapshot.child("key").getValue(String.class);
+                                String des = keySnapshot.child("description").getValue(String.class);
+                                String id = keySnapshot.child("id").getValue(String.class);
 
-                        AnnouncementModel model = new AnnouncementModel();
-                        if (dataSnapshot.child("title").exists()) {
-                            String title = dataSnapshot.child("title").getValue(String.class);
-                            String date = dataSnapshot.child("current_date").getValue(String.class);
-                            String dueDate = dataSnapshot.child("due_date").getValue(String.class);
-                            String key = dataSnapshot.child("key").getValue(String.class);
-                            String des = dataSnapshot.child("description").getValue(String.class);
-                            String id = dataSnapshot.child("id").getValue(String.class);
+                                model.setDue_date(dueDate);
+                                model.setTitle(title);
+                                model.setKey(key);
+                                model.setDescription(des);
+                                model.setCurrent_date(date);
+                                model.setId(id);
 
-                            model.setDue_date(dueDate);
-                            model.setTitle(title);
-                            model.setKey(key);
-                            model.setDescription(des);
-                            model.setCurrent_date(date);
-                            model.setId(id);
+                            }
+                            if (keySnapshot.child("imageUrl").exists()) {
+                                String imageUrl = keySnapshot.child("imageUrl").getValue(String.class);
+                                String date = keySnapshot.child("current_date").getValue(String.class);
+                                String dueDate = keySnapshot.child("due_date").getValue(String.class);
+                                String key = keySnapshot.child("key").getValue(String.class);
+                                String id = keySnapshot.child("id").getValue(String.class);
+                                model.setImageUrl(imageUrl);
+                                model.setCurrent_date(date);
+                                model.setKey(key);
+                                model.setDue_date(dueDate);
+                                model.setId(id);
+                            }
 
-                        }
-                        if (dataSnapshot.child("imageUrl").exists()) {
-                            String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                            String date = dataSnapshot.child("current_date").getValue(String.class);
-                            String dueDate = dataSnapshot.child("due_date").getValue(String.class);
-                            String key = dataSnapshot.child("key").getValue(String.class);
-                            String id = dataSnapshot.child("id").getValue(String.class);
-                            model.setImageUrl(imageUrl);
-                            model.setCurrent_date(date);
-                            model.setKey(key);
-                            model.setDue_date(dueDate);
-                            model.setId(id);
+                            modelList.add(model);
                         }
                         //textView.setVisibility(View.GONE);
-                        modelList.add(model);
-
                     }
                     Collections.reverse(modelList);
                     AnnounceAdapter adapter = new AnnounceAdapter(modelList,getActivity());

@@ -51,28 +51,34 @@ public class Student_PDF_Fragment extends Fragment {
                 List<PDFModel> modelList = new ArrayList<>();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        PDFModel model = dataSnapshot.getValue(PDFModel.class);
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            PDFModel model = dataSnapshot1.getValue(PDFModel.class);
 
-                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("StudentInfoShared", Context.MODE_PRIVATE);
-                        String year = sharedPreferences.getString("StudentYear","");
-                        String semester = sharedPreferences.getString("StudentSemester","");
-                        if (model != null){
-                            if (model.getYear().equals(year) && model.getSemester().equals(semester)){
-                                modelList.add(model);
+                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("StudentInfoShared", Context.MODE_PRIVATE);
+                            String year = sharedPreferences.getString("studentYear","");
+                            String semester = sharedPreferences.getString("studentSemester","");
+//                            String year = "4th";
+//                            String semester = "eight";
+
+                            if (model != null){
+                                if (model.getYear().equals(year) && model.getSemester().equals(semester)){
+                                    modelList.add(model);
+                                }
                             }
-                        }
 
 
 
-                        Log.d("MyApp","models inserted "+modelList.size());
+                            Log.d("MyApp","models inserted "+modelList.size());
 //                        for (PDFModel model1:modelList){
 //                            //databaseHelper.insertClassData(moPDFModeldel1);
 //                            //modelList.add(model1);
 //                        }
-                        // databaseHelper.clearAllClassData();
+                            // databaseHelper.clearAllClassData();
 //                        textView.setVisibility(View.GONE);
 //                        shimmerFrameLayout.stopShimmerAnimation();
 //                        shimmerFrameLayout.setVisibility(View.GONE);
+                    }
+
                     }
 
                     Collections.reverse(modelList);
