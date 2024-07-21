@@ -12,7 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Student.PDFView;
+import com.rajat.pdfviewer.PdfViewerActivity;
+import com.rajat.pdfviewer.util.saveTo;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHistoryAdapter.ViewHolder> {
@@ -39,8 +43,25 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
         holder.purpose.setText("Purpose: "+model.getPurpose());
         holder.pdfName.setText(model.getPDFName());
         holder.yearSemesTxt.setText("Group: "+model.getYear()+" ("+model.getSemester()+")");
+
+        holder.itemView.setOnClickListener(v -> {
+//            Intent intent = new Intent(v.getContext(), PDFView.class);
+//            intent.putExtra("pdfName",model.getPDFName());
+//            intent.putExtra("pdfUrl",model.getPDFUrl());
+//            context.startActivity(intent);
+            launchPDf(model.getPDFUrl(),model.getPDFName());
+
+
+
+        });
+
     }
 
+    private void launchPDf(String url,String name){
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("empty","empty");
+        context.startActivity(PdfViewerActivity.Companion.launchPdfFromUrl(context,url,name, saveTo.ASK_EVERYTIME,true,hashMap));
+    }
     @Override
     public int getItemCount() {
         return pdfModelList.size();
