@@ -20,6 +20,7 @@ import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Intro.IntroFragment;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.FragmentUtils;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.Utils.ProgressHelper;
 import com.example.teacher_panel_application.databinding.FragmentLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +30,6 @@ public class Login_Fragment extends Fragment {
     public Login_Fragment() {
         // Required empty public constructor
     }
-
     private FrameLayout parentFrameLayout;
     private FragmentLoginBinding binding;
 
@@ -86,8 +86,9 @@ public class Login_Fragment extends Fragment {
                             // You can now access the signed-in user information
                         } else {
                             // Sign-in failed, display an error message
-                            Toast.makeText(getActivity(), "Authentication failed.\n"+task.getException(),
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), ".\n"+task.getException(),
+//                                    Toast.LENGTH_SHORT).show();
+                            MethodsUtils.showFlawDialog(getActivity(),R.drawable.icon_error,"Authentication failed", String.valueOf(task.getException()),1);
                             ProgressHelper.dismissDialog();
                         }
                     });

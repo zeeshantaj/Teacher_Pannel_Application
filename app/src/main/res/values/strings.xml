@@ -27,6 +27,13 @@
         <item>Quiz</item>
         <item>Study Material</item>
     </string-array>
+    <string-array name="major_array">
+        <item>Select Major</item>
+        <item>BSSE</item>
+        <item>BSCS</item>
+        <item>BSAI</item>
+        <item>BSMC</item>
+    </string-array>
 
     <string name="admob_app_id">ca-app-pub-4144305165966580~6299934712</string>
     <string name="admob_banner_id">ca-app-pub-4144305165966580/3630690721</string>

@@ -8,6 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.teacher_panel_application.Home.History_Fragment;
 import com.example.teacher_panel_application.Home.Settings_Fragment;
 import com.example.teacher_panel_application.Student.fragments.StudentHome;
+import com.example.teacher_panel_application.Student.fragments.Student_PDF_Fragment;
 
 public class StudentViewPagerAdapter extends FragmentStateAdapter {
     private static final int NUM_PAGES = 4;
@@ -21,7 +22,7 @@ public class StudentViewPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new StudentHome();
             case 2:
-                return new History_Fragment();
+                return new Student_PDF_Fragment();
             case 3:
                 return new Settings_Fragment();
             case 0:

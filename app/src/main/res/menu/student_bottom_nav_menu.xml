@@ -11,11 +11,11 @@
         android:icon="@drawable/announcement_icon"
         android:title="Announcement"
         app:showAsAction="ifRoom" />
-<!--    <item-->
-<!--        android:id="@+id/navHistory"-->
-<!--        android:icon="@drawable/history_icon"-->
-<!--        android:title="History"-->
-<!--        app:showAsAction="ifRoom" />-->
+    <item
+        android:id="@+id/navHistory"
+        android:icon="@drawable/history_icon"
+        android:title="History"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/navProfileStudent"
         android:icon="@drawable/baseline_settings_24"

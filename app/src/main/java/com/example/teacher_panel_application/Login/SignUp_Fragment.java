@@ -107,44 +107,60 @@ public class SignUp_Fragment extends Fragment {
                 String pass = binding.SignUpPass.getText().toString();
                 String conPass = binding.SignUpConPass.getText().toString();
                 String id = binding.studentId.getText().toString();
-                String year = binding.studentCurrentYear.getText().toString();
-                String semester = binding.studentCurrentSemester.getText().toString();
-                String major = binding.studentCurrentMajor.getText().toString();
+
+                int selectedYearPosition = binding.studentCurrentYear.getSelectedItemPosition();
+                int selectedSemesterPosition = binding.studentCurrentSemester.getSelectedItemPosition();
+                int selectedPurposePosition = binding.studentCurrentMajor.getSelectedItemPosition();
+
+
+
 
                 if (email.isEmpty() && !email.matches(EMAIL_PATTERN)) {
                     binding.SignUpEmail.setError("Email should be in correct pattern and can not be empty");
+                    return;
                 }
                 if (name.isEmpty()) {
                     binding.SignUpName.setError("Name is Empty");
+                    return;
                 }
                 if (pass.isEmpty()) {
                     //Pass.setError("password field is empty");
                     Toast.makeText(getActivity(), "password field is empty", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (conPass.isEmpty()) {
                     //ConPass.setError("confirm password field is empty");
                     Toast.makeText(getActivity(), "confirm password field is empty", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (!pass.equals(conPass)) {
                     Toast.makeText(getActivity(), "Password and Confirm Password should be same", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (id.isEmpty()) {
                     //ConPass.setError("confirm password field is empty");
                     Toast.makeText(getActivity(), "student id field is empty", Toast.LENGTH_SHORT).show();
-                }if (year.isEmpty()) {
-                    //ConPass.setError("confirm password field is empty");
-                    Toast.makeText(getActivity(), "student current year field is empty", Toast.LENGTH_SHORT).show();
-                }if (semester.isEmpty()) {
-                    //ConPass.setError("confirm password field is empty");
-                    Toast.makeText(getActivity(), "student current semester field is empty", Toast.LENGTH_SHORT).show();
-                }if (major.isEmpty()) {
-                    //ConPass.setError("confirm password field is empty");
-                    Toast.makeText(getActivity(), "student major field is empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (selectedYearPosition <= 0) {
+                    Toast.makeText(getActivity(), "Please Select Year", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
+                if (selectedSemesterPosition <= 0) {
+                    Toast.makeText(getActivity(), "Please Select Semester", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                if (!name.isEmpty() && !email.isEmpty()
-                        && !pass.isEmpty() && !conPass.isEmpty() && !id.isEmpty() && !year.isEmpty() && !semester.isEmpty() && !major.isEmpty()) {
+                if (selectedPurposePosition <= 0) {
+                    Toast.makeText(getActivity(), "Please Select Purpose", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String year = binding.studentCurrentYear.getSelectedItem().toString();
+                String semester  = binding.studentCurrentSemester.getSelectedItem().toString();
+                String major = binding.studentCurrentMajor.getSelectedItem().toString();
+
                     dialog.setTitle("Please Wait");
                     dialog.setMessage("Creating User....");
                     dialog.setCancelable(false);
@@ -177,6 +193,13 @@ public class SignUp_Fragment extends Fragment {
                         value.put("studentYear",year);
                         value.put("studentSemester",semester);
                         value.put("studentMajor",major);
+
+                        SharedPreferences sharedPreferences1 = getActivity().getSharedPreferences("StudentInfoShared",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences1.edit();
+                        editor.putString("studentYear",year);
+                        editor.putString("studentSemester",semester);
+                        editor.apply();
+
                         String uid = auth.getUid();
                         databaseReference.child("StudentsInfo").child(Objects.requireNonNull(uid)).setValue(value)
 
@@ -200,7 +223,6 @@ public class SignUp_Fragment extends Fragment {
                         dialog.dismiss();
                     });
 
-                }
 
             });
 
