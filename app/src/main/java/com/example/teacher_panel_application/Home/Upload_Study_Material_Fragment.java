@@ -24,6 +24,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
@@ -43,10 +48,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
@@ -55,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -437,6 +449,11 @@ public class Upload_Study_Material_Fragment extends Fragment {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     MethodsUtils.showSuccessDialog(getActivity(),"Success","Data Posted Successfully", SweetAlertDialog.SUCCESS_TYPE);
+
+                                    notifyUsers(pdfModel);
+
+
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -459,6 +476,50 @@ public class Upload_Study_Material_Fragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "No file selected", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void notifyUsers(PDFModel newPdfModel) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("StudentsInfo");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+
+                    String year = userSnapshot.child("year").getValue(String.class);
+                    String semester = userSnapshot.child("semester").getValue(String.class);
+                    String token = userSnapshot.child("FCMToken").getValue(String.class);
+
+                    if (newPdfModel.getYear().equals(year) && newPdfModel.getSemester().equals(semester)) {
+                        sendNotification(token, "New PDF Available", "Check out the new PDF added.");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors
+            }
+        });
+    }
+    private void sendNotification(String token, String title, String message) {
+        JSONObject notification = new JSONObject();
+        JSONObject notificationBody = new JSONObject();
+        try {
+            notificationBody.put("title", title);
+            notificationBody.put("message", message);
+
+            notification.put("to", token);
+            notification.put("data", notificationBody);
+        } catch (JSONException e) {
+            Log.e("TAG", "onCreate: " + e.getMessage());
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notification,
+                response -> Log.d("TAG", "onResponse: " + response.toString()),
+                error -> Log.d("TAG", "onErrorResponse: Didn't work"));
+
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(request);
     }
 
     private String getMillis(){
