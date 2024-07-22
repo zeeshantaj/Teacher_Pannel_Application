@@ -1,5 +1,6 @@
 package com.example.teacher_panel_application.Home;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -9,11 +10,22 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.teacher_panel_application.Network.NetworkCheckReceiver;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Home_Activity extends AppCompatActivity {
@@ -57,6 +69,7 @@ public class Home_Activity extends AppCompatActivity {
         networkChangeReceiver = new NetworkCheckReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeReceiver, intentFilter);
+        getStatus();
     }
 
     @Override
@@ -66,6 +79,36 @@ public class Home_Activity extends AppCompatActivity {
         unregisterReceiver(networkChangeReceiver);
     }
 
+    private void getStatus(){
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful()){
+                    String token = task.getResult();
+                    //FirebaseUtils.currentUserDetails().update("FCMToken",token);
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeacherInfo").child(MethodsUtils.getCurrentUID());
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("FCMToken", token);
+                    updates.put("uid",MethodsUtils.getCurrentUID());
+                    reference.updateChildren(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(Home_Activity.this, "fcm added", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Home_Activity.this, "Error"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+                else {
+                    Log.e("MyApp","Notification Error "+ task.getException());
+                }
+            }
+        });
+    }
     private int getNavigationItem(int position) {
         switch (position) {
             case 0:

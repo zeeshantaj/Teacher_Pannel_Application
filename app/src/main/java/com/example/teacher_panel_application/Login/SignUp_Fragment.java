@@ -42,10 +42,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class SignUp_Fragment extends Fragment {
@@ -367,6 +371,37 @@ public class SignUp_Fragment extends Fragment {
 
         }
     }
+//    private void sendNotification(String message) {
+//        MethodsUtils.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()){
+//                    UserModel currentUser = task.getResult().toObject(UserModel.class);
+//                    try {
+//                        JSONObject jsonObject = new JSONObject();
+//                        JSONObject notificationObject = new JSONObject();
+//                        notificationObject.put("title",currentUser.getName());
+//                        notificationObject.put("body",message);
+//
+//                        JSONObject dataObj = new JSONObject();
+//                        dataObj.put("userId",currentUser.getAssociatedId());
+//
+//                        jsonObject.put("notification",notificationObject);
+//                        jsonObject.put("data",dataObj);
+//                        jsonObject.put("to",receiverFCMToken);
+//                        callApi(jsonObject);
+//
+//                    }catch (Exception e){
+//                        e.getLocalizedMessage();
+//                    }
+//                }
+//                else {
+//                    Log.e("MyApp","FCM ERROR "+task.getException());
+//                }
+//            }
+//        });
+//
+//    }
 
     private ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {

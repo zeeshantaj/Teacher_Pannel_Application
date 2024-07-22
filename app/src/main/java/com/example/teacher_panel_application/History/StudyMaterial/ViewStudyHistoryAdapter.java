@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
-import com.example.teacher_panel_application.Student.PDFView;
 import com.rajat.pdfviewer.PdfViewerActivity;
 import com.rajat.pdfviewer.util.saveTo;
 
