@@ -93,12 +93,10 @@ public class Home_Activity extends AppCompatActivity {
                     reference.updateChildren(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(Home_Activity.this, "fcm added", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Home_Activity.this, "Error"+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
 

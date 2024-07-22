@@ -117,7 +117,7 @@ public class StudentActivity extends AppCompatActivity {
                     reference.updateChildren(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(StudentActivity.this, "fcm added", Toast.LENGTH_SHORT).show();
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

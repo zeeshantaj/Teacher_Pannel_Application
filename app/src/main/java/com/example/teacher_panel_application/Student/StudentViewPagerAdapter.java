@@ -11,7 +11,7 @@ import com.example.teacher_panel_application.Student.fragments.StudentHome;
 import com.example.teacher_panel_application.Student.fragments.Student_PDF_Fragment;
 
 public class StudentViewPagerAdapter extends FragmentStateAdapter {
-    private static final int NUM_PAGES = 4;
+    private static final int NUM_PAGES = 3;
     public StudentViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
@@ -19,15 +19,14 @@ public class StudentViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position){
+            case 0:
+                return new StudentHome();
             case 1:
                 return new Student_PDF_Fragment();
-            case 2:
-                return new Settings_Fragment();
 //            case 3:
 //                return new Settings_Fragment();
-            case 0:
             default:
-                return new StudentHome();
+                return new Settings_Fragment();
         }
     }
 
