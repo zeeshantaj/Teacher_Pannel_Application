@@ -8,6 +8,10 @@ android {
     namespace 'com.example.teacher_panel_application'
     compileSdk 34
 
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+    }
+
     defaultConfig {
         applicationId "com.example.teacher_panel_application"
         minSdk 24
@@ -47,7 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:21.5.1'
     implementation 'com.google.firebase:firebase-auth-ktx:22.3.1'
     implementation 'com.google.firebase:firebase-database-ktx:20.3.1'
-    implementation 'com.google.firebase:firebase-messaging:23.4.1'
+    implementation 'com.google.firebase:firebase-messaging:24.0.0'
     implementation 'com.google.firebase:firebase-storage:20.3.0'
     implementation 'androidx.activity:activity:1.8.0'
     implementation 'androidx.navigation:navigation-fragment:2.6.0'
@@ -56,7 +60,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    implementation 'com.google.android.gms:play-services-ads:23.0.0'
+    implementation 'com.google.android.gms:play-services-ads:23.2.0'
 
     implementation 'com.github.Dimezis:BlurView:version-2.0.3'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
@@ -79,7 +83,12 @@ dependencies {
     implementation 'com.github.erkutaras:ShowcaseView:1.5.0'
     implementation 'com.github.f0ris.sweetalert:library:1.5.6'
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-    //implementation 'com.google.auth:google-auth-library-oauth2-http:1.19.0'
+
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.16.0'
+    implementation 'com.google.http-client:google-http-client-gson:1.42.3'
+
+
+
     implementation 'io.github.afreakyelf:Pdf-Viewer:2.1.1'
     implementation 'com.android.volley:volley:1.2.1'
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:3.0-alpha-1'

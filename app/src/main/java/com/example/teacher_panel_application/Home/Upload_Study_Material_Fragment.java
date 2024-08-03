@@ -35,10 +35,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.teacher_panel_application.Access.SendNotification;
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
@@ -48,6 +52,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.common.collect.Lists;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,7 +65,10 @@ import com.google.firebase.storage.StorageReference;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -484,12 +493,15 @@ public class Upload_Study_Material_Fragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
 
-                    String year = userSnapshot.child("year").getValue(String.class);
-                    String semester = userSnapshot.child("semester").getValue(String.class);
+                    String year = userSnapshot.child("studentYear").getValue(String.class);
+                    String semester = userSnapshot.child("studentSemester").getValue(String.class);
                     String token = userSnapshot.child("FCMToken").getValue(String.class);
 
                     if (newPdfModel.getYear().equals(year) && newPdfModel.getSemester().equals(semester)) {
-                        sendNotification(token, "New PDF Available", "Check out the new PDF added.");
+                        //sendNotification(token, "New PDF Available", "Check out the new PDF added.");
+                        SendNotification sendNotification = new SendNotification(token,"check out new pdf","new pdf uploaded!",getActivity());
+                        sendNotification.sendNotification();
+
                     }
                 }
             }
@@ -500,27 +512,48 @@ public class Upload_Study_Material_Fragment extends Fragment {
             }
         });
     }
-    private void sendNotification(String token, String title, String message) {
-        JSONObject notification = new JSONObject();
-        JSONObject notificationBody = new JSONObject();
-        try {
-            notificationBody.put("title", title);
-            notificationBody.put("message", message);
+//    private void sendNotification(String token, String title, String message) {
+//        JSONObject notification = new JSONObject();
+//        JSONObject notificationBody = new JSONObject();
+//        try {
+//            notificationBody.put("title", title);
+//            notificationBody.put("message", message);
+//
+//            notification.put("to", token);
+//            notification.put("data", notificationBody);
+//        } catch (JSONException e) {
+//            Log.e("TAG", "onCreate: " + e.getMessage());
+//        }
+//
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notification, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject jsonObject) {
+//                Toast.makeText(getActivity(), "Notification sent", Toast.LENGTH_SHORT).show();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Toast.makeText(getActivity(), "Error: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+//                Log.d("MyApp","error "+volleyError.getMessage());
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Authorization", "Bearer AAAA7reCDoQ:APA91bHKOMdHeoUOtVUznGapVkZe27TYREQXUNAcON5FUepw3w_GOAer_ODZhNCmYC-ihXlagEojfs8dvj3DcWgeJqQpvYbxmRz8FMXWrb_b1keKYtRsv1agAC1fKnyiyJ1WWWKCO65F");
+//                params.put("Content-Type", "application/json");
+//                return params;
+//            }
+//        };
 
-            notification.put("to", token);
-            notification.put("data", notificationBody);
-        } catch (JSONException e) {
-            Log.e("TAG", "onCreate: " + e.getMessage());
-        }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notification,
-                response -> Log.d("TAG", "onResponse: " + response.toString()),
-                error -> Log.d("TAG", "onErrorResponse: Didn't work"));
+//
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notification,
+//                response -> Log.d("TAG", "onResponse: " + response.toString()) ,
+//                error -> Log.d("TAG", "onErrorResponse: Didn't work"));
 
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(request);
-    }
+
+    //}
 
     private String getMillis(){
         Calendar calendar = Calendar.getInstance();
