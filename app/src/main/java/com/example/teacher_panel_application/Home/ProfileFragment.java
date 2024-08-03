@@ -3,8 +3,10 @@ package com.example.teacher_panel_application.Home;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -99,6 +101,13 @@ public class ProfileFragment extends BottomSheetDialogFragment {
         // Set minimum height to full screen
         CoordinatorLayout coordinatorLayout = view.findViewById(R.id.bottomSheetLayoutProfile);
         coordinatorLayout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+        if (isTrue){
+            binding.classCountTxt.setVisibility(View.GONE);
+            binding.announceCountTxt.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -147,7 +156,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
                                 String imageUri = uri.toString();
                                 HashMap<String, Object> value = new HashMap<>();
                                 value.put("image",imageUri);
-                                MethodsUtils.getCurrentUserRef("UsersInfo").updateChildren(value).addOnSuccessListener(unused -> {
+                                MethodsUtils.getCurrentUserRef(getReference()).updateChildren(value).addOnSuccessListener(unused -> {
 
                                     Toast.makeText(getActivity(), "Profile Image Changed", Toast.LENGTH_SHORT).show();
 
@@ -160,7 +169,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
                 }
             });
     private void getUserInfo(){
-        MethodsUtils.getCurrentUserRef("UsersInfo").addListenerForSingleValueEvent(new ValueEventListener() {
+        MethodsUtils.getCurrentUserRef(getReference()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -243,7 +252,7 @@ public class ProfileFragment extends BottomSheetDialogFragment {
             }
             HashMap<String, Object> value = new HashMap<>();
             value.put("name",name);
-            MethodsUtils.getCurrentUserRef("UsersInfo").updateChildren(value).addOnSuccessListener(unused -> {
+            MethodsUtils.getCurrentUserRef(getReference()).updateChildren(value).addOnSuccessListener(unused -> {
 
                 Toast.makeText(getActivity(), "Name Changes", Toast.LENGTH_SHORT).show();
                 getUserInfo();
@@ -253,6 +262,19 @@ public class ProfileFragment extends BottomSheetDialogFragment {
             dialog.dismiss();
         });
     }
+
+    private String getReference(){
+        String child = "";
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+        if (isTrue){
+            child = "StudentsInfo";
+        }else {
+            child = "TeacherInfo";
+        }
+        return child;
+    }
+
     @Override
     public void onResume() {
         super.onResume();

@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent">
+
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
@@ -28,6 +29,7 @@
             android:id="@+id/userProfile_pf"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:elevation="10dp"
             android:src="@drawable/user_img_place_holder"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
             app:layout_constraintEnd_toEndOf="parent"
