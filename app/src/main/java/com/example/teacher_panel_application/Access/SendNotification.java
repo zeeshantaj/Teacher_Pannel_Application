@@ -48,17 +48,10 @@ public class SendNotification {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, mainObj, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
-                    Log.d("MyApp","response success");
-                    // For example, if the response contains a field "message" indicating success
-                    try {
-                        String message = jsonObject.getString("message");
-                        Log.d("MyApp", "Server message: " + message);
-                        // Optionally, show a toast or update UI
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.d("MyApp", "JSON parsing error: " + e.getMessage());
-                    }
+
+                    Log.d("MyApp", "Response: success");
+
                 }
             }, new Response.ErrorListener() {
                 @Override

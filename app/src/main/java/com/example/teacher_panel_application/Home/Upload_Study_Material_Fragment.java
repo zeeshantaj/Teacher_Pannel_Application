@@ -461,8 +461,6 @@ public class Upload_Study_Material_Fragment extends Fragment {
 
                                     notifyUsers(pdfModel);
 
-
-
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -479,7 +477,6 @@ public class Upload_Study_Material_Fragment extends Fragment {
                     .addOnProgressListener(taskSnapshot -> {
                         binding.pdfProgressTxt.setVisibility(View.VISIBLE);
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-
                         binding.pdfProgressTxt.setText("Uploading... "+progress+"%");
                     });
         } else {
