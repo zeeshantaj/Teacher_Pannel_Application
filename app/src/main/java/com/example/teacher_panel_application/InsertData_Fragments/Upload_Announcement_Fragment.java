@@ -99,7 +99,7 @@ public class Upload_Announcement_Fragment extends Fragment {
         binding.dueDate.setOnClickListener(v -> {
             TimePickerFragment timePickerFragment = new TimePickerFragment();
             timePickerFragment.setOnDateSetListener((year, month, day) -> {
-                String selectedDate = year + ":" + (month + 1) + ":" + day;
+                String selectedDate = day + ":" + (month + 1) + ":" + year;
                 binding.dueDate.setText(selectedDate);
 
             });

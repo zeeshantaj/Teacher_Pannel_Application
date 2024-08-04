@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,13 +46,14 @@ public class StudentHome extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 modelList.clear();
                 if (snapshot.exists()) {
+                    String dueDate = "";
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
                             AnnouncementModel model = new AnnouncementModel();
                             if (keySnapshot.child("title").exists()) {
                                 String title = keySnapshot.child("title").getValue(String.class);
                                 String date = keySnapshot.child("current_date").getValue(String.class);
-                                String dueDate = keySnapshot.child("due_date").getValue(String.class);
+                                dueDate = keySnapshot.child("due_date").getValue(String.class);
                                 String key = keySnapshot.child("key").getValue(String.class);
                                 String des = keySnapshot.child("description").getValue(String.class);
                                 String id = keySnapshot.child("id").getValue(String.class);
@@ -64,7 +69,7 @@ public class StudentHome extends Fragment {
                             if (keySnapshot.child("imageUrl").exists()) {
                                 String imageUrl = keySnapshot.child("imageUrl").getValue(String.class);
                                 String date = keySnapshot.child("current_date").getValue(String.class);
-                                String dueDate = keySnapshot.child("due_date").getValue(String.class);
+                                dueDate = keySnapshot.child("due_date").getValue(String.class);
                                 String key = keySnapshot.child("key").getValue(String.class);
                                 String id = keySnapshot.child("id").getValue(String.class);
                                 model.setImageUrl(imageUrl);
@@ -73,6 +78,17 @@ public class StudentHome extends Fragment {
                                 model.setDue_date(dueDate);
                                 model.setId(id);
                             }
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd");
+                            LocalDateTime currentDateTime = LocalDateTime.now();
+                            String currentTime = currentDateTime.format(formatter);
+                            LocalDateTime startTime = LocalDateTime.parse(currentTime, formatter);
+                            LocalDateTime endTime = LocalDateTime.parse(dueDate, formatter);
+                            long timeDifferenceMillis = Duration.between(startTime, endTime).toMillis();
+                            Log.e("MyApp","announcement due date"+endTime);
+                            Log.e("MyApp","announcement start time "+startTime);
+                            Log.e("MyApp","announcement into millis  "+timeDifferenceMillis);
+
+
 
                             modelList.add(model);
                         }
@@ -103,6 +119,8 @@ public class StudentHome extends Fragment {
                 Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Announcement");
 
         return binding.getRoot();
     }

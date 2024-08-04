@@ -92,7 +92,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
     private Uri pdfUri;
     private int switchLayoutCounter = 1;
     private int initialOptionsCounter = 2;
-
+    String teacherName = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -519,7 +519,9 @@ public class Upload_Study_Material_Fragment extends Fragment {
 
                     if (newPdfModel.getYear().equals(year) && newPdfModel.getSemester().equals(semester)) {
                         //sendNotification(token, "New PDF Available", "Check out the new PDF added.");
-                        SendNotification sendNotification = new SendNotification(token,"check out new pdf","new pdf uploaded!",getActivity());
+                        SendNotification sendNotification = new SendNotification(token,
+                                "check out new pdf\n"+"by sir "+getTeacherName(),
+                                "new pdf uploaded!",getActivity());
                         sendNotification.sendNotification();
 
                     }
@@ -531,6 +533,24 @@ public class Upload_Study_Material_Fragment extends Fragment {
                 // Handle possible errors
             }
         });
+    }
+    private String getTeacherName(){
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeacherInfo").child(MethodsUtils.getCurrentUID());
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    teacherName = snapshot.child("name").getValue(String.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                teacherName = "";
+            }
+        });
+        return teacherName;
     }
 
     private String getMillis(){

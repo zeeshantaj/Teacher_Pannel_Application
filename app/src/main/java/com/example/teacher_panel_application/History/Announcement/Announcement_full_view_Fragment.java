@@ -1,6 +1,8 @@
 package com.example.teacher_panel_application.History.Announcement;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +56,9 @@ public class Announcement_full_view_Fragment extends DialogFragment {
             String json = getArguments().getString("announcement");
             AnnouncementModel model = new Gson().fromJson(json, AnnouncementModel.class);
             if (model != null) {
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginType", Context.MODE_PRIVATE);
+                boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+
                 // Use the data as needed
                 dueDate.setText(model.getDue_date());
                 postedDate.setText(model.getCurrent_date());
@@ -72,15 +77,22 @@ public class Announcement_full_view_Fragment extends DialogFragment {
                     title.setText(model.getTitle());
                     description.setText(model.getDescription());
                 }
+                if (!isTrue){
+                    deleteBtn.setVisibility(View.VISIBLE);
+                    dismissBtn.setVisibility(View.VISIBLE);
+                    deleteBtn.setOnClickListener(v -> {
+                        String id = model.getId();
+                        String url = model.getImageUrl();
+                        removeItem(id,url);
+                    });
+                    dismissBtn.setOnClickListener(v -> {
+                        dismiss();
+                    });
+                }else {
+                    deleteBtn.setVisibility(View.GONE);
+                    dismissBtn.setVisibility(View.GONE);
+                }
 
-                deleteBtn.setOnClickListener(v -> {
-                    String id = model.getId();
-                    String url = model.getImageUrl();
-                    removeItem(id,url);
-                });
-                dismissBtn.setOnClickListener(v -> {
-                    dismiss();
-                });
 
             }
         }
