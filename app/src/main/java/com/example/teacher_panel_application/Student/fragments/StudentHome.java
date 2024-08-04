@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.example.teacher_panel_application.History.Announcement.AnnounceAdapter;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Student.Adapter.PollAdapter;
 import com.example.teacher_panel_application.Student.PollModel;
 import com.example.teacher_panel_application.databinding.FragmentStudentHomeBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +37,7 @@ public class StudentHome extends Fragment {
         // Required empty public constructor
     }
     private FragmentStudentHomeBinding binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,11 +123,12 @@ public class StudentHome extends Fragment {
                 Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
+        List<PollModel> pollModelList = new ArrayList<>();
         DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll");
         reference2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                pollModelList.clear();
                 if (snapshot.exists()){
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
@@ -137,20 +141,29 @@ public class StudentHome extends Fragment {
 
                                 PollModel model = new PollModel();
                                 model.setQuestion(question);
-                                if (!op1.isEmpty() || !op2.isEmpty() || !op3.isEmpty() || !op4.isEmpty()){
+                                if (!op1.isEmpty()){
                                     model.setOption1(op1);
+                                }
+                                if (!op2.isEmpty()){
                                     model.setOption2(op2);
+                                }
+                                if (!op3.isEmpty()){
                                     model.setOption3(op3);
+                                }
+                                if (!op4.isEmpty()){
                                     model.setOption4(op4);
                                 }
+                                pollModelList.add(model);
 
                             }
                         }
                     }
-
+                    Collections.reverse(pollModelList);
+                    PollAdapter adapter = new PollAdapter(pollModelList,getActivity());
+                    binding.studentPollRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    binding.studentPollRecycler.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 }
-                
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
