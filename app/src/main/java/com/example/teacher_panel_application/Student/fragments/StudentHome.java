@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.teacher_panel_application.History.Announcement.AnnounceAdapter;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Student.PollModel;
 import com.example.teacher_panel_application.databinding.FragmentStudentHomeBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -78,15 +79,15 @@ public class StudentHome extends Fragment {
                                 model.setDue_date(dueDate);
                                 model.setId(id);
                             }
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd");
-                            LocalDateTime currentDateTime = LocalDateTime.now();
-                            String currentTime = currentDateTime.format(formatter);
-                            LocalDateTime startTime = LocalDateTime.parse(currentTime, formatter);
-                            LocalDateTime endTime = LocalDateTime.parse(dueDate, formatter);
-                            long timeDifferenceMillis = Duration.between(startTime, endTime).toMillis();
-                            Log.e("MyApp","announcement due date"+endTime);
-                            Log.e("MyApp","announcement start time "+startTime);
-                            Log.e("MyApp","announcement into millis  "+timeDifferenceMillis);
+//                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd");
+//                            LocalDateTime currentDateTime = LocalDateTime.now();
+//                            String currentTime = currentDateTime.format(formatter);
+//                            LocalDateTime startTime = LocalDateTime.parse(currentTime, formatter);
+//                            LocalDateTime endTime = LocalDateTime.parse(dueDate, formatter);
+//                            long timeDifferenceMillis = Duration.between(startTime, endTime).toMillis();
+//                            Log.e("MyApp","announcement due date"+endTime);
+//                            Log.e("MyApp","announcement start time "+startTime);
+//                            Log.e("MyApp","announcement into millis  "+timeDifferenceMillis);
 
 
 
@@ -120,8 +121,42 @@ public class StudentHome extends Fragment {
             }
         });
 
-        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Announcement");
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll");
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
+                            if (keySnapshot.child("question").exists()) {
+                                String question = keySnapshot.child("question").getValue(String.class);
+                                String op1 = keySnapshot.child("option1").getValue(String.class);
+                                String op2 = keySnapshot.child("option2").getValue(String.class);
+                                String op3 = keySnapshot.child("option3").getValue(String.class);
+                                String op4 = keySnapshot.child("option4").getValue(String.class);
 
+                                PollModel model = new PollModel();
+                                model.setQuestion(question);
+                                if (!op1.isEmpty() || !op2.isEmpty() || !op3.isEmpty() || !op4.isEmpty()){
+                                    model.setOption1(op1);
+                                    model.setOption2(op2);
+                                    model.setOption3(op3);
+                                    model.setOption4(op4);
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+                
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "Error getting poll ", Toast.LENGTH_SHORT).show();
+            }
+        });
         return binding.getRoot();
     }
 }

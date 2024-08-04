@@ -93,11 +93,8 @@ public class Announcement_full_view_Fragment extends DialogFragment {
                     dismissBtn.setVisibility(View.GONE);
                 }
 
-
             }
         }
-
-
         return view;
     }
 

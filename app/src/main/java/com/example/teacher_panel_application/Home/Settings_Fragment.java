@@ -83,12 +83,17 @@ public class Settings_Fragment extends Fragment {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences sharedPreference = getActivity().getSharedPreferences("loginType", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreference.edit();
+                            editor.remove("typeBool"); // To remove the value
+                            editor.apply();
                             ProgressHelper.showDialog(getActivity(),"Logout","Please Wait...");
                             Intent intent = new Intent(getActivity(), Login_Activity.class);
                             startActivity(intent);
                             getActivity().finish();
                             auth.signOut();
                             //ProgressHelper.dismissDialog();
+
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
