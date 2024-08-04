@@ -130,7 +130,7 @@ public class Login_Fragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     // Email exists in TeacherInfo
                     // Send user to TeacherActivity
-                    Intent intent = new Intent(getActivity(), Home_Fragment.class);
+                    Intent intent = new Intent(getActivity(), Home_Activity.class);
                     startActivity(intent);
                     getActivity().finish();
                 } else {

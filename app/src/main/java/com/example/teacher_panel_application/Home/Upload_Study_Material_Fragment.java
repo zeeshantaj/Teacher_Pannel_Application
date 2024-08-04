@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.OpenableColumns;
@@ -105,6 +106,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
                 getActivity(),
                 R.array.classYearArray,
@@ -164,20 +167,40 @@ public class Upload_Study_Material_Fragment extends Fragment {
                 });
 
         binding.selectPDfBtn.setOnClickListener(v -> {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                // When permission is not granted
-                // Result permission
-                ActivityCompat.requestPermissions(
-                        getActivity(),
-                        new String[]{
-                                Manifest.permission
-                                        .READ_EXTERNAL_STORAGE},
-                        1);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                // For Android 13 and above
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                    // Request READ_MEDIA_IMAGES permission
+                    ActivityCompat.requestPermissions(
+                            getActivity(), new String[]{Manifest.permission.READ_MEDIA_IMAGES}, 1);
+                } else {
+                    // Permission granted, proceed with selecting PDF
+                    selectPDF();
+                }
             } else {
-                // When permission is granted
-                // Create method
-                selectPDF();
+                // For Android 12 and below
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    // Request READ_EXTERNAL_STORAGE permission
+                    ActivityCompat.requestPermissions(
+                            getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                } else {
+                    // Permission granted, proceed with selecting PDF
+                    selectPDF();
+                }
             }
+
+
+//            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                // When permission is not granted
+//                // Result permission
+//                ActivityCompat.requestPermissions(
+//                        getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+//            } else {
+//                // When permission is granted
+//                // Create method
+//                selectPDF();
+//            }
         });
 
         binding.pdfUploadBtn.setOnClickListener(v -> {
@@ -509,48 +532,6 @@ public class Upload_Study_Material_Fragment extends Fragment {
             }
         });
     }
-//    private void sendNotification(String token, String title, String message) {
-//        JSONObject notification = new JSONObject();
-//        JSONObject notificationBody = new JSONObject();
-//        try {
-//            notificationBody.put("title", title);
-//            notificationBody.put("message", message);
-//
-//            notification.put("to", token);
-//            notification.put("data", notificationBody);
-//        } catch (JSONException e) {
-//            Log.e("TAG", "onCreate: " + e.getMessage());
-//        }
-//
-//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notification, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject jsonObject) {
-//                Toast.makeText(getActivity(), "Notification sent", Toast.LENGTH_SHORT).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                Toast.makeText(getActivity(), "Error: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
-//                Log.d("MyApp","error "+volleyError.getMessage());
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Authorization", "Bearer AAAA7reCDoQ:APA91bHKOMdHeoUOtVUznGapVkZe27TYREQXUNAcON5FUepw3w_GOAer_ODZhNCmYC-ihXlagEojfs8dvj3DcWgeJqQpvYbxmRz8FMXWrb_b1keKYtRsv1agAC1fKnyiyJ1WWWKCO65F");
-//                params.put("Content-Type", "application/json");
-//                return params;
-//            }
-//        };
-
-
-//
-//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notification,
-//                response -> Log.d("TAG", "onResponse: " + response.toString()) ,
-//                error -> Log.d("TAG", "onErrorResponse: Didn't work"));
-
-
-    //}
 
     private String getMillis(){
         Calendar calendar = Calendar.getInstance();

@@ -22,6 +22,7 @@
         app:itemRippleColor="@color/darkBlue"
         app:itemTextAppearanceActive="@color/darkBlue"
         app:labelVisibilityMode="unlabeled"
+        app:itemIconTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

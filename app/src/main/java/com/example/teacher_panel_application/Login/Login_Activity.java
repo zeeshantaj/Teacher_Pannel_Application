@@ -41,7 +41,7 @@ public class Login_Activity extends AppCompatActivity {
         splashView = getLayoutInflater().inflate(R.layout.splash_screen, null);
         setContentView(splashView);
 
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         new Handler().postDelayed(() -> {
             setContentView(R.layout.activity_login);
             binding = ActivityLoginBinding.inflate(getLayoutInflater());

@@ -6,16 +6,19 @@
         android:id="@+id/studentAnnouncement"
         android:icon="@drawable/announcement_icon"
         android:title="Announcement"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:enabled="true"/>
     <item
         android:id="@+id/navHistory"
         android:icon="@drawable/history_icon"
         android:title="History"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:enabled="true"/>
     <item
         android:id="@+id/navProfileStudent"
         android:icon="@drawable/baseline_settings_24"
         android:title="Profile"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:enabled="true"/>
 
 </menu>
