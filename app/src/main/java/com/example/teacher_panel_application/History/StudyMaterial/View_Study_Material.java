@@ -77,6 +77,7 @@ public class View_Study_Material extends Fragment {
         }
     }
     private void getOfflineData(){
+        binding.offlineTxt.setVisibility(View.VISIBLE);
 //        TeacherDB databaseHelper = new TeacherDB(getActivity());
 //        List<PDFModel> modelList = databaseHelper.getAllClassData();
 //        ViewStudyHistoryAdapter adapter = new ViewStudyHistoryAdapter(getActivity(), modelList);
@@ -85,6 +86,7 @@ public class View_Study_Material extends Fragment {
 //        binding.studyMaterialRV.setAdapter(adapter);
     }
     public void getOnlineData() {
+        binding.offlineTxt.setVisibility(View.GONE);
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
         LoadPdfDataClass loadDataInBackground = new LoadPdfDataClass(binding.dataShowTxt,binding.studyMaterialRV, binding.historyShimmer, uid, getActivity());

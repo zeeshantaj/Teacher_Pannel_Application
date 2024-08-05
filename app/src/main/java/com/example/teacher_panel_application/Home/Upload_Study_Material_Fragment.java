@@ -311,7 +311,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
             HashMap<String,String> hashMap = new HashMap<>();
             hashMap.put("videoLink",videoLink);
             reference.setValue(hashMap).addOnSuccessListener(unused ->
-                    MethodsUtils.showFlawDialog(getActivity(),R.drawable.success_png,"Success ","Your Video Link Uploaded",1)).addOnFailureListener(new OnFailureListener() {
+                    MethodsUtils.showFlawDialog(getActivity(),R.drawable.success_png,"Success ","Your Video Link Uploaded",1))
+                    .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     MethodsUtils.showFlawDialog(getActivity(),R.drawable.icon_error,"Error",e.getMessage(),1);

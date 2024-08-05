@@ -1,13 +1,17 @@
 package com.example.teacher_panel_application.Student.fragments;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.ColorSpace;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,33 +61,21 @@ public class Student_PDF_Fragment extends Fragment {
                             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("StudentInfoShared", Context.MODE_PRIVATE);
                             String year = sharedPreferences.getString("studentYear","");
                             String semester = sharedPreferences.getString("studentSemester","");
-//                            String year = "4th";
-//                            String semester = "eight";
 
                             if (model != null){
                                 if (model.getYear().equals(year) && model.getSemester().equals(semester)){
                                     modelList.add(model);
+                                    for (PDFModel model1:modelList){
+                                     //   downloadAndSavePDF(model1.getPDFUrl(),model1.getPDFName());
+                                    }
                                 }
                             }
-
-
-
-                            Log.d("MyApp","models inserted "+modelList.size());
-//                        for (PDFModel model1:modelList){
-//                            //databaseHelper.insertClassData(moPDFModeldel1);
-//                            //modelList.add(model1);
-//                        }
-                            // databaseHelper.clearAllClassData();
-//                        textView.setVisibility(View.GONE);
-//                        shimmerFrameLayout.stopShimmerAnimation();
-//                        shimmerFrameLayout.setVisibility(View.GONE);
-                    }
+                        }
 
                     }
 
                     Collections.reverse(modelList);
 
-                    //List<UploadClassModel> modelList = databaseHelper.getAllClassData();
 
                     ViewStudyHistoryAdapter adapter = new ViewStudyHistoryAdapter(getActivity(), modelList);
                     binding.studentPDFRV.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -91,23 +83,28 @@ public class Student_PDF_Fragment extends Fragment {
                     binding.studentPDFRV.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
 
-                } else {
-//                    textView.setVisibility(View.VISIBLE);
-//                    shimmerFrameLayout.stopShimmerAnimation();
-//                    shimmerFrameLayout.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-//                shimmerFrameLayout.stopShimmerAnimation();
-//                shimmerFrameLayout.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Error "+error
+                        .getMessage(), Toast.LENGTH_SHORT).show();
                 MethodsUtils.showFlawDialog(getActivity(),R.drawable.icon_error,"Error",error.getMessage(),1);
-                //Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
         return binding.getRoot();
     }
+
+    private void downloadAndSavePDF(String url, String fileName) {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setTitle(fileName);
+        request.setDescription("Downloading PDF");
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(getActivity(), Environment.DIRECTORY_DOWNLOADS, fileName);
+
+        DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+        downloadManager.enqueue(request);
+    }
+
 }

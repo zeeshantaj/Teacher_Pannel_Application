@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,21 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
         holder.op3.setText(model.getOption3());
         holder.op4.setText(model.getOption4());
 
+        if (model.getOption3()  != null &&  !model.getOption3().isEmpty() ) {
+            holder.op3.setVisibility(View.VISIBLE);
+            holder.seek_bar3.setVisibility(View.VISIBLE);
+        }else {
+            holder.op3.setVisibility(View.GONE);
+            holder.seek_bar3.setVisibility(View.GONE);
+        }
+        if (model.getOption4() != null  &&  !model.getOption4().isEmpty()){
+            holder.op4.setVisibility(View.VISIBLE);
+            holder.seek_bar4.setVisibility(View.VISIBLE);
+        }else {
+            holder.op4.setVisibility(View.GONE);
+            holder.seek_bar4.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -49,6 +65,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
     public class
     ViewHolder extends RecyclerView.ViewHolder {
         private TextView question,op1,op2,op3,op4,pr1,pr2,pr3,pr4;
+        private SeekBar seek_bar4,seek_bar1,seek_bar2,seek_bar3;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             question = itemView.findViewById(R.id.tv_question);
@@ -60,6 +77,10 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
             pr2 = itemView.findViewById(R.id.tv_percent2);
             pr3 = itemView.findViewById(R.id.tv_percent3);
             pr4 = itemView.findViewById(R.id.tv_percent4);
+            seek_bar4 = itemView.findViewById(R.id.seek_bar4);
+            seek_bar1 = itemView.findViewById(R.id.seek_bar1);
+            seek_bar2 = itemView.findViewById(R.id.seek_bar2);
+            seek_bar3 = itemView.findViewById(R.id.seek_bar3);
 
         }
     }

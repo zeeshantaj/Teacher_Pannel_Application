@@ -134,23 +134,24 @@ public class StudentHome extends Fragment {
                         for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
                             if (keySnapshot.child("question").exists()) {
                                 String question = keySnapshot.child("question").getValue(String.class);
-                                String op1 = keySnapshot.child("option1").getValue(String.class);
-                                String op2 = keySnapshot.child("option2").getValue(String.class);
-                                String op3 = keySnapshot.child("option3").getValue(String.class);
-                                String op4 = keySnapshot.child("option4").getValue(String.class);
+                                String op1 = keySnapshot.child("option0").getValue(String.class);
+                                String op2 = keySnapshot.child("option1").getValue(String.class);
+                                String op3 = keySnapshot.child("option2").getValue(String.class);
+                                String op4 = keySnapshot.child("option3").getValue(String.class);
 
                                 PollModel model = new PollModel();
                                 model.setQuestion(question);
-                                if (!op1.isEmpty()){
+                                // Check and set each option if it exists
+                                if (op1 != null && !op1.isEmpty()) {
                                     model.setOption1(op1);
                                 }
-                                if (!op2.isEmpty()){
+                                if (op2 != null && !op2.isEmpty()) {
                                     model.setOption2(op2);
                                 }
-                                if (!op3.isEmpty()){
+                                if (op3 != null && !op3.isEmpty()) {
                                     model.setOption3(op3);
                                 }
-                                if (!op4.isEmpty()){
+                                if (op4 != null && !op4.isEmpty()) {
                                     model.setOption4(op4);
                                 }
                                 pollModelList.add(model);
