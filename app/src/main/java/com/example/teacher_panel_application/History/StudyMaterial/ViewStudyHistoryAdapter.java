@@ -56,8 +56,12 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
 //        }
 
         holder.itemView.setOnClickListener(v -> {
-   //         launchPDf(model.getPDFUrl(),model.getPDFName());
-            openFragment(model);
+            if (model.getPurpose().equals("Study Material")){
+                openFragment(model);
+            }else {
+                launchPDf(model.getPDFUrl(),model.getPDFName());
+            }
+
         });
 
     }

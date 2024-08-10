@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,9 @@ public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragmen
 
             }
         }
-
+        binding.submittedPdfRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        SubmittedPDFAdapeter adapter = new SubmittedPDFAdapeter();
+        binding.submittedPdfRecycler.setAdapter(adapter);
         return binding.getRoot();
     }
     private void launchPDf(String url,String name){
