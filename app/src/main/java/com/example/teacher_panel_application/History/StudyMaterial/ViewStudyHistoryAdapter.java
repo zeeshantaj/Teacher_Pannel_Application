@@ -2,16 +2,21 @@ package com.example.teacher_panel_application.History.StudyMaterial;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
+import com.google.gson.Gson;
 import com.rajat.pdfviewer.PdfViewerActivity;
 import com.rajat.pdfviewer.util.saveTo;
 
@@ -34,7 +39,7 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
         return new ViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(@NonNull ViewStudyHistoryAdapter.ViewHolder holder, int position) {
         PDFModel model = pdfModelList.get(position);
@@ -43,19 +48,28 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
         holder.pdfName.setText(model.getPDFName());
         holder.yearSemesTxt.setText("Group: "+model.getYear()+" ("+model.getSemester()+")");
 
+        if (model.getPurpose().equals("Study Material")){
+            holder.purpose.setTextColor(R.color.green);
+        }
+//        else {
+//            holder.purpose.setTextColor(R.color.green);
+//        }
+
         holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(v.getContext(), PDFView.class);
-//            intent.putExtra("pdfName",model.getPDFName());
-//            intent.putExtra("pdfUrl",model.getPDFUrl());
-//            context.startActivity(intent);
-            launchPDf(model.getPDFUrl(),model.getPDFName());
-
-
-
+   //         launchPDf(model.getPDFUrl(),model.getPDFName());
+            openFragment(model);
         });
 
     }
+    private void openFragment(PDFModel model) {
 
+        Received_PDF_From_Student_Fragment editDataFragment = new Received_PDF_From_Student_Fragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("PDFData",  new Gson().toJson(model));
+        editDataFragment.setArguments(bundle);
+        editDataFragment.show(((AppCompatActivity) context).getSupportFragmentManager(),editDataFragment.getTag());
+
+    }
     private void launchPDf(String url,String name){
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("empty","empty");

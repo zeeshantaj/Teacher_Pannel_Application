@@ -92,4 +92,6 @@ public class View_Study_Material extends Fragment {
         LoadPdfDataClass loadDataInBackground = new LoadPdfDataClass(binding.dataShowTxt,binding.studyMaterialRV, binding.historyShimmer, uid, getActivity());
         loadDataInBackground.execute();
     }
+
+
 }
