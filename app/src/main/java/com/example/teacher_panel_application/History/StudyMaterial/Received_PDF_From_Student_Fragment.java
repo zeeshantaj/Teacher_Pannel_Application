@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.example.teacher_panel_application.History.StudyMaterial.Adapter.SubmittedModel;
+import com.example.teacher_panel_application.History.StudyMaterial.Adapter.SubmittedPDFAdapter;
 import com.example.teacher_panel_application.Models.AnnouncementModel;
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
@@ -21,7 +23,9 @@ import com.google.gson.Gson;
 import com.rajat.pdfviewer.PdfViewerActivity;
 import com.rajat.pdfviewer.util.saveTo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragment {
 
@@ -53,10 +57,20 @@ public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragmen
 
             }
         }
-        binding.submittedPdfRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        SubmittedPDFAdapeter adapter = new SubmittedPDFAdapeter();
-        binding.submittedPdfRecycler.setAdapter(adapter);
+
+
+
         return binding.getRoot();
+    }
+    private void setData(){
+        List<SubmittedModel> modelList = new ArrayList<>();
+
+
+
+
+        binding.submittedPdfRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        SubmittedPDFAdapter adapter = new SubmittedPDFAdapter(getActivity(),modelList);
+        binding.submittedPdfRecycler.setAdapter(adapter);
     }
     private void launchPDf(String url,String name){
         HashMap<String,String> hashMap = new HashMap<>();

@@ -2,6 +2,7 @@ package com.example.teacher_panel_application.History.StudyMaterial;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
@@ -57,7 +59,15 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
 
         holder.itemView.setOnClickListener(v -> {
             if (model.getPurpose().equals("Study Material")){
-                openFragment(model);
+                SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
+                boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+                if (isTrue){
+                    SubmitePDF_Fragment fragment = new SubmitePDF_Fragment();
+                    fragment.show(((AppCompatActivity) context).getSupportFragmentManager(),fragment.getTag());
+                }else {
+                    openFragment(model);
+                }
+
             }else {
                 launchPDf(model.getPDFUrl(),model.getPDFName());
             }
