@@ -24,6 +24,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.History.StudyMaterial.Adapter.SubmittedModel;
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
@@ -31,8 +32,11 @@ import com.example.teacher_panel_application.databinding.StudentSubmitPdfFragmen
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -49,6 +53,7 @@ public class SubmitePDF_Fragment extends DialogFragment {
     StudentSubmitPdfFragmentBinding binding;
     ActivityResultLauncher<Intent> resultLauncher;
     private Uri pdfUri;
+    private String userName,userImg;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -110,16 +115,15 @@ public class SubmitePDF_Fragment extends DialogFragment {
 
             String pdfName = getFileName(pdfUri);
 
-//            PDFModel pdfModel = new PDFModel();
-//            pdfModel.setYear(year);
-//            pdfModel.setSemester(semester);
-//            pdfModel.setPurpose(purpose);
-//            pdfModel.setDateTime(currentDateTimeString);
-//            pdfModel.setPDFName(pdfName);
-//
-//
+            getUserInfo();
+
             SubmittedModel model = new SubmittedModel();
-            model.setPDFUrl(us);
+            model.setDateTime(currentDateTimeString);
+            model.setPDFName(pdfName);
+            model.setUid(MethodsUtils.getCurrentUID());
+            model.setUserName(userName);
+            model.setImgUrl(userImg);
+
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("StudentsSubmittedPDF")
                     .child(MethodsUtils.getCurrentUID())
@@ -186,6 +190,7 @@ public class SubmitePDF_Fragment extends DialogFragment {
             Toast.makeText(getActivity(), "Permission Denied",Toast.LENGTH_SHORT).show();
         }
     }
+
     private String getFileName(Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
@@ -211,6 +216,29 @@ public class SubmitePDF_Fragment extends DialogFragment {
             }
         }
         return result;
+    }
+    private void getUserInfo() {
+        MethodsUtils.getCurrentUserRef("StudentsInfo").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String name = snapshot.child("name").getValue(String.class);
+                    String imageUrl = snapshot.child("image").getValue(String.class);
+                    String email = snapshot.child("email").getValue(String.class);
+
+                    userName = name;
+                    userImg = imageUrl;
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
     private String getMillis(){
         Calendar calendar = Calendar.getInstance();
