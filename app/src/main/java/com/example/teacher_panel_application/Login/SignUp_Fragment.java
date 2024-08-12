@@ -342,6 +342,7 @@ public class SignUp_Fragment extends Fragment {
                         value.put("image",downloadedImageUri);
                         value.put("name",name);
                         value.put("email",email);
+
                         String uid = auth.getUid();
                         databaseReference.child("TeacherInfo").child(Objects.requireNonNull(uid)).setValue(value)
 

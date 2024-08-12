@@ -1,9 +1,19 @@
 package com.example.teacher_panel_application.Models;
 
 public class PDFModel {
-    private String PDFName,PDFUrl,dateTime,year,semester,purpose;
+    private String teacherName,PDFName,PDFUrl,FCMToken,dateTime,year,semester,purpose;
 
     public PDFModel() {
+    }
+
+    public PDFModel(String PDFName, String PDFUrl, String FCMToken, String dateTime, String year, String semester, String purpose) {
+        this.PDFName = PDFName;
+        this.PDFUrl = PDFUrl;
+        this.FCMToken = FCMToken;
+        this.dateTime = dateTime;
+        this.year = year;
+        this.semester = semester;
+        this.purpose = purpose;
     }
 
     public PDFModel(String PDFName, String PDFUrl, String dateTime, String year, String semester, String purpose) {
@@ -13,6 +23,33 @@ public class PDFModel {
         this.year = year;
         this.semester = semester;
         this.purpose = purpose;
+    }
+
+    public PDFModel(String teacherName, String PDFName, String PDFUrl, String FCMToken, String dateTime, String year, String semester, String purpose) {
+        this.teacherName = teacherName;
+        this.PDFName = PDFName;
+        this.PDFUrl = PDFUrl;
+        this.FCMToken = FCMToken;
+        this.dateTime = dateTime;
+        this.year = year;
+        this.semester = semester;
+        this.purpose = purpose;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getFCMToken() {
+        return FCMToken;
+    }
+
+    public void setFCMToken(String FCMToken) {
+        this.FCMToken = FCMToken;
     }
 
     public String getPDFName() {

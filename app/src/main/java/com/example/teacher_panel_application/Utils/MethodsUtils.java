@@ -213,6 +213,17 @@ public class MethodsUtils {
         sd.show();
     }
 
+    public static void putString(Context context,String key,String value){
+        SharedPreferences sharedPreference = context.getSharedPreferences("SharedUserInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreference.edit();
+        editor.putString(key,value);
+        editor.apply();
+    }
+    public static String getString(Context context,String key){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key,"");
+    }
+
 
     public static String getCurrentUID(){
         FirebaseAuth auth = FirebaseAuth.getInstance();

@@ -463,6 +463,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
             pdfModel.setPurpose(purpose);
             pdfModel.setDateTime(currentDateTimeString);
             pdfModel.setPDFName(pdfName);
+            pdfModel.setTeacherName(getTeacherName());
+            pdfModel.setFCMToken(MethodsUtils.getString(getActivity(),"FCMToken"));
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersPDFData")
                     .child(MethodsUtils.getCurrentUID())
@@ -543,6 +545,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     teacherName = snapshot.child("name").getValue(String.class);
+                    MethodsUtils.putString(getActivity(),"teacherName",teacherName);
                 }
             }
 

@@ -63,6 +63,9 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
                 boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
                 if (isTrue){
                     SubmitePDF_Fragment fragment = new SubmitePDF_Fragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("PDFDataFromTeacher",  new Gson().toJson(model));
+                    fragment.setArguments(bundle);
                     fragment.show(((AppCompatActivity) context).getSupportFragmentManager(),fragment.getTag());
                 }else {
                     openFragment(model);

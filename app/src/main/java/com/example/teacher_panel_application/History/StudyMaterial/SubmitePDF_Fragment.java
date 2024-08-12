@@ -39,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,12 +54,19 @@ public class SubmitePDF_Fragment extends DialogFragment {
     StudentSubmitPdfFragmentBinding binding;
     ActivityResultLauncher<Intent> resultLauncher;
     private Uri pdfUri;
-    private String userName,userImg;
+    private String userName,userImg,teacherName;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = StudentSubmitPdfFragmentBinding.inflate(inflater,container,false);
 
+        if (getArguments() != null) {
+            String json = getArguments().getString("PDFDataFromTeacher");
+            PDFModel model = new Gson().fromJson(json, PDFModel.class);
+            if (model != null) {
+                 teacherName = model.getTeacherName();
+            }
+        }
 
         resultLauncher = registerForActivityResult(
                 new ActivityResultContracts
@@ -105,7 +113,7 @@ public class SubmitePDF_Fragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void uploadFile(String year, String semester, String purpose) {
+    private void uploadFile() {
         if (pdfUri != null) {
 
             LocalDateTime currentDateTime = LocalDateTime.now();
@@ -150,7 +158,7 @@ public class SubmitePDF_Fragment extends DialogFragment {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    MethodsUtils.showSuccessDialog(getActivity(),"Error","PDF not Posted", SweetAlertDialog.ERROR_TYPE);
                                 }
                             });
                         });
