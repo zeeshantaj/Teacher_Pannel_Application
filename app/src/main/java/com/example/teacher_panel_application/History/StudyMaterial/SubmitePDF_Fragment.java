@@ -25,6 +25,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.teacher_panel_application.Access.SendNotification;
 import com.example.teacher_panel_application.History.StudyMaterial.Adapter.SubmittedModel;
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
@@ -54,7 +55,7 @@ public class SubmitePDF_Fragment extends DialogFragment {
     StudentSubmitPdfFragmentBinding binding;
     ActivityResultLauncher<Intent> resultLauncher;
     private Uri pdfUri;
-    private String userName,userImg,teacherName;
+    private String userName,userImg,teacherName,teacherFCMToken;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class SubmitePDF_Fragment extends DialogFragment {
             PDFModel model = new Gson().fromJson(json, PDFModel.class);
             if (model != null) {
                  teacherName = model.getTeacherName();
+                 teacherFCMToken = model.getFCMToken();
             }
         }
 
@@ -106,7 +108,9 @@ public class SubmitePDF_Fragment extends DialogFragment {
         binding.pdfUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadFile();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    uploadFile();
+                }
             }
         });
         return binding.getRoot();
@@ -152,7 +156,10 @@ public class SubmitePDF_Fragment extends DialogFragment {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     MethodsUtils.showSuccessDialog(getActivity(),"Success","Data Posted Successfully", SweetAlertDialog.SUCCESS_TYPE);
 
-                                    notifyUsers(pdfModel);
+                                    SendNotification sendNotification = new SendNotification(teacherFCMToken,
+                                            "check out Assignment\n",
+                                            userName+"Submitted the assignment!",getActivity());
+                                    sendNotification.sendNotification();
 
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
