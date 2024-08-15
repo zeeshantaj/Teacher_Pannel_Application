@@ -486,6 +486,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
             pdfModel.setPDFName(pdfName);
             pdfModel.setTeacherName(MethodsUtils.getString(getActivity(),"teacherName"));
             pdfModel.setFCMToken(MethodsUtils.getString(getActivity(),"FCMToken"));
+            pdfModel.setIdentifierForPDF(getMillis());
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersPDFData")
                     .child(MethodsUtils.getCurrentUID())
