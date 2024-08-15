@@ -55,6 +55,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.common.collect.Lists;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -450,6 +451,26 @@ public class Upload_Study_Material_Fragment extends Fragment {
     private void uploadFile(String year, String semester, String purpose) {
         if (pdfUri != null) {
 
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String uid = auth.getUid();
+            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("TeacherInfo").child(uid);
+            reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+                        teacherName = snapshot.child("name").getValue(String.class);
+                        String token = snapshot.child("FCMToken").getValue(String.class);
+                        MethodsUtils.putString(getActivity(),"teacherName",teacherName);
+                        MethodsUtils.putString(getActivity(),"FCMToken",token);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    teacherName = "";
+                }
+            });
+
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
             String currentDateTimeString = currentDateTime.format(dateTimeFormatter);
@@ -463,7 +484,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
             pdfModel.setPurpose(purpose);
             pdfModel.setDateTime(currentDateTimeString);
             pdfModel.setPDFName(pdfName);
-            pdfModel.setTeacherName(getTeacherName());
+            pdfModel.setTeacherName(MethodsUtils.getString(getActivity(),"teacherName"));
             pdfModel.setFCMToken(MethodsUtils.getString(getActivity(),"FCMToken"));
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersPDFData")
@@ -484,8 +505,12 @@ public class Upload_Study_Material_Fragment extends Fragment {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     MethodsUtils.showSuccessDialog(getActivity(),"Success","Data Posted Successfully", SweetAlertDialog.SUCCESS_TYPE);
-
                                     notifyUsers(pdfModel);
+                                    binding.selectYear.setSelection(0);
+                                    binding.pdfPurpose.setSelection(0);
+                                    binding.planetsSpinner.setSelection(0);
+                                    binding.selectPDfBtn.setText("Select A PDF");
+                                    binding.pdfProgressTxt.setVisibility(View.INVISIBLE);
 
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -503,7 +528,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
                     .addOnProgressListener(taskSnapshot -> {
                         binding.pdfProgressTxt.setVisibility(View.VISIBLE);
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        binding.pdfProgressTxt.setText("Uploading... "+progress+"%");
+                        int progressInt = (int) progress;
+                        binding.pdfProgressTxt.setText("Uploading... " + progressInt + "%");
                     });
         } else {
             Toast.makeText(getActivity(), "No file selected", Toast.LENGTH_SHORT).show();
@@ -523,9 +549,10 @@ public class Upload_Study_Material_Fragment extends Fragment {
                     if (newPdfModel.getYear().equals(year) && newPdfModel.getSemester().equals(semester)) {
                         //sendNotification(token, "New PDF Available", "Check out the new PDF added.");
                         SendNotification sendNotification = new SendNotification(token,
-                                "check out new pdf\n"+"by sir "+getTeacherName(),
+                                "check out new pdf\n"+"by sir "+MethodsUtils.getString(getActivity(),"teacherName"),
                                 "new pdf uploaded!",getActivity());
                         sendNotification.sendNotification();
+
 
                     }
                 }
@@ -545,7 +572,9 @@ public class Upload_Study_Material_Fragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     teacherName = snapshot.child("name").getValue(String.class);
+                    String token = snapshot.child("FCMToken").getValue(String.class);
                     MethodsUtils.putString(getActivity(),"teacherName",teacherName);
+                    MethodsUtils.putString(getActivity(),"FCMToken",token);
                 }
             }
 

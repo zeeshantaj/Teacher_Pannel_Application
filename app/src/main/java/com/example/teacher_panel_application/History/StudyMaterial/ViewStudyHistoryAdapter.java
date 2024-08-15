@@ -58,7 +58,7 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
 //        }
 
         holder.itemView.setOnClickListener(v -> {
-            if (model.getPurpose().equals("Study Material")){
+            if (model.getPurpose().equals("Assignment")){
                 SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
                 boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
                 if (isTrue){

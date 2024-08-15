@@ -5,191 +5,195 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:elevation="5dp"
-        app:cardCornerRadius="10dp"
+        android:layout_height="800dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/class_item_blur_bg"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:elevation="5dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/expandableLayoutClassHistory"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
-                >
-
-                <TextView
-                    android:id="@+id/ed_name_cancel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Posted Data"
-                    android:textAlignment="center"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/class_item_blur_bg"
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/expandableLayoutClassHistory"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ed_name_cancel">
+
+                    >
 
                     <TextView
-                        android:id="@+id/pdfUploadDate"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/ed_name_cancel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="Date : 21/12/2024"
-                        android:textSize="20sp"
+                        android:text="Posted Data"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/pdfUploadedPur"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Purpose"
-                        android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="@+id/pdfUploadDate"
-                        app:layout_constraintTop_toBottomOf="@+id/pdfUploadDate" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ed_name_cancel">
+
+                        <TextView
+                            android:id="@+id/pdfUploadDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Date : 21/12/2024"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/pdfUploadedPur"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Purpose"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="@+id/pdfUploadDate"
+                            app:layout_constraintTop_toBottomOf="@+id/pdfUploadDate" />
 
 
-                    <TextView
-                        android:id="@+id/yearSemesterTxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Group: 3rd year (2nd semester)"
-                        android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="@+id/pdfUploadedPur"
-                        app:layout_constraintTop_toBottomOf="@+id/pdfUploadedPur" />
+                        <TextView
+                            android:id="@+id/yearSemesterTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Group: 3rd year (2nd semester)"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="@+id/pdfUploadedPur"
+                            app:layout_constraintTop_toBottomOf="@+id/pdfUploadedPur" />
 
-                    <TextView
-                        android:id="@+id/pdfFileName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:drawablePadding="8dp"
-                        android:singleLine="true"
-                        android:text="pdf name"
-                        android:textSize="20sp"
-                        app:drawableStartCompat="@drawable/pdf_icon"
-                        app:layout_constraintStart_toStartOf="@+id/pdfUploadedPur"
-                        app:layout_constraintTop_toBottomOf="@+id/yearSemesterTxt" />
+                        <TextView
+                            android:id="@+id/pdfFileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:drawablePadding="8dp"
+                            android:singleLine="true"
+                            android:text="pdf name"
+                            android:textSize="20sp"
+                            app:drawableStartCompat="@drawable/pdf_icon"
+                            app:layout_constraintStart_toStartOf="@+id/pdfUploadedPur"
+                            app:layout_constraintTop_toBottomOf="@+id/yearSemesterTxt" />
 
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/submitPendingTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Your Assignment Submission is pending"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:drawableBottomCompat="@drawable/success_png"
-        app:layout_constraintEnd_toEndOf="@+id/cardView3"
-        app:layout_constraintStart_toStartOf="@+id/cardView3"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+        <TextView
+            android:id="@+id/submitPendingTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Your Assignment Submission is pending"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:drawableBottomCompat="@drawable/success_png"
+            app:layout_constraintEnd_toEndOf="@+id/cardView3"
+            app:layout_constraintStart_toStartOf="@+id/cardView3"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/addAssignmentLay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="@+id/submitPendingTxt"
-        app:layout_constraintTop_toBottomOf="@+id/submitPendingTxt">
-
-        <ImageView
-            android:id="@+id/imageView3"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/addAssignmentLay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="45"
-            android:src="@drawable/cancel_icon"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/submitPendingTxt"
+            app:layout_constraintTop_toBottomOf="@+id/submitPendingTxt">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rotation="45"
+                android:src="@drawable/cancel_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="250dp"
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:background="@color/txt1"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/selectPDfBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/spiner_bg"
+            android:padding="15dp"
+            android:text="Select A PDF "
+            android:visibility="visible"
+            app:drawableStartCompat="@drawable/pdf_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/addAssignmentLay"
+            app:layout_constraintTop_toBottomOf="@+id/addAssignmentLay" />
+
+
+        <TextView
+            android:id="@+id/pdfProgressTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="Uploading... 0%"
+            android:textColor="@color/txt1"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/selectPDfBtn"
+            app:layout_constraintStart_toStartOf="@+id/selectPDfBtn"
+            app:layout_constraintTop_toBottomOf="@+id/selectPDfBtn" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pdfUploadBtn"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/btnColor1"
+            android:text="@string/upload"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:cornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/pdfProgressTxt" />
 
-        <View
-            android:id="@+id/view3"
-            android:layout_width="250dp"
-            android:layout_height="2dp"
-            android:background="@color/txt1"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-            app:layout_constraintStart_toEndOf="@id/imageView3"
-            app:layout_constraintTop_toTopOf="@+id/imageView3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-    <TextView
-        android:id="@+id/selectPDfBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/spiner_bg"
-        android:padding="15dp"
-        android:text="Select A PDF "
-        android:visibility="invisible"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        app:drawableStartCompat="@drawable/pdf_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-
-    <TextView
-        android:id="@+id/pdfProgressTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Uploading... 0%"
-        android:textColor="@color/txt1"
-        android:visibility="invisible"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/selectPDfBtn"
-        app:layout_constraintStart_toStartOf="@+id/selectPDfBtn"
-        app:layout_constraintTop_toBottomOf="@+id/selectPDfBtn" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/pdfUploadBtn"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:backgroundTint="@color/btnColor1"
-        android:text="@string/upload"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:visibility="invisible"
-        app:cornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pdfProgressTxt" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

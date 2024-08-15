@@ -33,6 +33,9 @@ import com.example.teacher_panel_application.databinding.StudentSubmitPdfFragmen
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +51,7 @@ import java.util.Calendar;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class SubmitePDF_Fragment extends DialogFragment {
+public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
     public SubmitePDF_Fragment() {
     }
 
@@ -67,6 +70,12 @@ public class SubmitePDF_Fragment extends DialogFragment {
             if (model != null) {
                  teacherName = model.getTeacherName();
                  teacherFCMToken = model.getFCMToken();
+
+                 binding.pdfUploadDate.setText("Date : "+model.getDateTime());
+                 binding.pdfUploadedPur.setText("Purpose "+model.getPurpose());
+                 binding.pdfUploadedPur.setText("Group: "+model.getYear()+" ("+model.getSemester()+")");
+                 binding.pdfFileName.setText(model.getPDFName());
+
             }
         }
 
@@ -104,6 +113,9 @@ public class SubmitePDF_Fragment extends DialogFragment {
                     }
                 });
 
+        binding.selectPDfBtn.setOnClickListener(v -> {
+            selectPDF();
+        });
 
         binding.pdfUploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +131,29 @@ public class SubmitePDF_Fragment extends DialogFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void uploadFile() {
         if (pdfUri != null) {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String uid = auth.getUid();
+            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("StudentsInfo").child(uid);
+            reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String name = snapshot.child("name").getValue(String.class);
+                        String imageUrl = snapshot.child("image").getValue(String.class);
+
+                        MethodsUtils.putString(getActivity(),"studentName",name);
+                        MethodsUtils.putString(getActivity(),"studentImage",imageUrl);
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
 
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
@@ -126,15 +161,14 @@ public class SubmitePDF_Fragment extends DialogFragment {
 
 
             String pdfName = getFileName(pdfUri);
-
             getUserInfo();
 
             SubmittedModel model = new SubmittedModel();
             model.setDateTime(currentDateTimeString);
             model.setPDFName(pdfName);
             model.setUid(MethodsUtils.getCurrentUID());
-            model.setUserName(userName);
-            model.setImgUrl(userImg);
+            model.setUserName(MethodsUtils.getString(getActivity(),"studentName"));
+            model.setImgUrl(MethodsUtils.getString(getActivity(),"studentImage"));
 
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("StudentsSubmittedPDF")
@@ -160,6 +194,8 @@ public class SubmitePDF_Fragment extends DialogFragment {
                                             "check out Assignment\n",
                                             userName+"Submitted the assignment!",getActivity());
                                     sendNotification.sendNotification();
+
+                                    binding.pdfUploadBtn.setEnabled(false);
 
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -192,6 +228,32 @@ public class SubmitePDF_Fragment extends DialogFragment {
         resultLauncher.launch(intent);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Get the parent view of the fragment
+        View parentView = (View) view.getParent();
+
+        // Set up the BottomSheetBehavior
+        BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(parentView);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+
+        // Set the callback to customize behavior
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                // Handle state changes if needed
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // Restrict upward movement
+                if (slideOffset < 0) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+                }
+            }
+        });
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

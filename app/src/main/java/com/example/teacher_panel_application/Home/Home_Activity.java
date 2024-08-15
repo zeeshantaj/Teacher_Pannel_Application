@@ -102,7 +102,7 @@ public class Home_Activity extends AppCompatActivity {
                     Map<String, Object> updates = new HashMap<>();
                     updates.put("FCMToken", token);
                     updates.put("uid",MethodsUtils.getCurrentUID());
-                    MethodsUtils.putString(Home_Activity.this,"FCMToken",token);
+
                     reference.updateChildren(updates).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {

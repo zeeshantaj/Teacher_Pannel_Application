@@ -220,7 +220,7 @@ public class MethodsUtils {
         editor.apply();
     }
     public static String getString(Context context,String key){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("SharedUserInfo", Context.MODE_PRIVATE);
         return sharedPreferences.getString(key,"");
     }
 

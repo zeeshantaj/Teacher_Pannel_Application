@@ -82,6 +82,8 @@ public class LoadClassData extends AsyncTask<Void,Void, List<UploadClassModel>> 
                     adapter.notifyDataSetChanged();
 
                 } else {
+                    shimmerFrameLayout.stopShimmerAnimation();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                     textView.setVisibility(View.VISIBLE);
                 }
             }
