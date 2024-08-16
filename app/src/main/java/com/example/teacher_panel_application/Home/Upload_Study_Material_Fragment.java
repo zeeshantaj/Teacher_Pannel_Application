@@ -510,7 +510,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
                                     binding.selectYear.setSelection(0);
                                     binding.pdfPurpose.setSelection(0);
                                     binding.planetsSpinner.setSelection(0);
-                                    binding.selectPDfBtn.setText("Select A PDF");
+                                    binding.selectPDfBtn.setText("Click to Select A PDF");
                                     binding.pdfProgressTxt.setVisibility(View.INVISIBLE);
 
                                 }
