@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,8 +52,9 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
         holder.pdfName.setText(model.getPDFName());
         holder.yearSemesTxt.setText("Group: "+model.getYear()+" ("+model.getSemester()+")");
 
-        if (model.getPurpose().equals("Study Material")){
-            holder.purpose.setTextColor(R.color.green);
+        if (model.getPurpose().equals("Assignment")){
+            //holder.pdfBg.setBackground(context.getResources().getDrawable(R.drawable.assignment_bg));
+            holder.pdfBg.setBackground(ContextCompat.getDrawable(context,R.drawable.assignment_bg));
         }
 //        else {
 //            holder.purpose.setTextColor(R.color.green);
@@ -99,12 +102,14 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView pdfName,dateTime,purpose,yearSemesTxt;
+        private LinearLayout pdfBg;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             pdfName = itemView.findViewById(R.id.pdfFileName);
             yearSemesTxt = itemView.findViewById(R.id.yearSemesterTxt);
             purpose = itemView.findViewById(R.id.pdfUploadedPur);
             dateTime = itemView.findViewById(R.id.pdfUploadDate);
+            pdfBg = itemView.findViewById(R.id.pdfBg);
         }
     }
 }

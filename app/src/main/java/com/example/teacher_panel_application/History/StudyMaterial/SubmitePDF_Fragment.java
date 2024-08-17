@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +40,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+import com.rajat.pdfviewer.PdfViewerActivity;
+import com.rajat.pdfviewer.util.saveTo;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.internal.cache.DiskLruCache;
@@ -50,7 +54,6 @@ import okhttp3.internal.cache.DiskLruCache;
 public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
     public SubmitePDF_Fragment() {
     }
-
     StudentSubmitPdfFragmentBinding binding;
     ActivityResultLauncher<Intent> resultLauncher;
     private Uri pdfUri;
@@ -67,40 +70,67 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
                  teacherName = model.getTeacherName();
                  teacherFCMToken = model.getFCMToken();
 
+
+                binding.cardView3.setOnClickListener(v -> {
+                    launchPDf(model.getPDFUrl(),model.getPDFName());
+                });
+
                  binding.pdfUploadDate.setText("Date : "+model.getDateTime());
                  binding.pdfUploadedPur.setText("Purpose "+model.getPurpose());
                  binding.pdfUploadedPur.setText("Group: "+model.getYear()+" ("+model.getSemester()+")");
                  binding.pdfFileName.setText(model.getPDFName());
                  pdfIdentifier = model.getIdentifierForPDF();
-            }
-        }
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String uid = auth.getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("StudentsSubmittedPDF")
-                .child(uid);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        String identifier = dataSnapshot.child("pdfIdentifier").getValue(String.class);
-                        if (identifier.equals(pdfIdentifier)){
-                            binding.submittedTxt.setVisibility(View.VISIBLE);
-                            binding.assignmentSubmissionLay.setVisibility(View.GONE);
+
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String uid = auth.getUid();
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("StudentsSubmittedPDF")
+                        .child(uid);
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                                if (dataSnapshot.exists()){
+                                    String identifier = dataSnapshot.child("pdfIdentifier").getValue(String.class);
+
+                                    if (identifier != null && pdfIdentifier != null){
+                                        Log.e("MyApp","identifier "+identifier);
+                                        Log.e("MyApp","identifier "+pdfIdentifier);
+                                        if (!identifier.isEmpty()&&!pdfIdentifier.isEmpty()){
+                                            if (identifier.equals(pdfIdentifier)){
+                                                binding.submittedTxt.setVisibility(View.VISIBLE);
+                                                binding.submittedTxt.setText("Your Assignment is Submitted to sir "+teacherName);
+                                                binding.assignmentSubmissionLay.setVisibility(View.GONE);
+                                                binding.subProgress.setVisibility(View.GONE);
+                                            }else {
+                                                binding.subProgress.setVisibility(View.GONE);
+                                                binding.submittedTxt.setVisibility(View.GONE);
+                                                binding.assignmentSubmissionLay.setVisibility(View.VISIBLE);
+                                            }
+                                        }
+                                    }
+                                }else {
+                                    binding.subProgress.setVisibility(View.GONE);
+                                    binding.submittedTxt.setVisibility(View.GONE);
+                                    binding.assignmentSubmissionLay.setVisibility(View.VISIBLE);
+                                }
+
+                            }
                         }else {
+                            binding.subProgress.setVisibility(View.GONE);
                             binding.submittedTxt.setVisibility(View.GONE);
                             binding.assignmentSubmissionLay.setVisibility(View.VISIBLE);
                         }
                     }
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-
-            }
-        });
+        }
 
 
 
@@ -145,7 +175,11 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
         });
         return binding.getRoot();
     }
-
+    private void launchPDf(String url,String name){
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("empty","empty");
+        startActivity(PdfViewerActivity.Companion.launchPdfFromUrl(getActivity(),url,name, saveTo.ASK_EVERYTIME,true,hashMap));
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void uploadFile() {
         if (pdfUri != null) {
@@ -231,7 +265,8 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
                     .addOnProgressListener(taskSnapshot -> {
                         binding.pdfProgressTxt.setVisibility(View.VISIBLE);
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        binding.pdfProgressTxt.setText("Uploading... "+progress+"%");
+                        int progressInt = (int) progress;
+                        binding.pdfProgressTxt.setText("Uploading... " + progressInt + "%");
                     });
         } else {
             Toast.makeText(getActivity(), "No file selected", Toast.LENGTH_SHORT).show();

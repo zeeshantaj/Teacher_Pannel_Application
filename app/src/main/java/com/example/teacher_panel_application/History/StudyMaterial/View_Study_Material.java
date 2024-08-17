@@ -56,6 +56,12 @@ public class View_Study_Material extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData(getActivity());
+    }
+
     private void getData(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {

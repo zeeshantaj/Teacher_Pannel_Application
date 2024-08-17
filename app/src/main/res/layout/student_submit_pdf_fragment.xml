@@ -120,7 +120,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Your Assignment is Submitted"
+            android:text=""
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
