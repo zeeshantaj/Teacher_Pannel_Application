@@ -8,10 +8,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Student.PollModel;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
 import java.util.List;
 
@@ -54,7 +62,62 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
             holder.op4.setVisibility(View.GONE);
             holder.seek_bar4.setVisibility(View.GONE);
         }
+        // Handle the selected option and increment the counter
+        View.OnClickListener optionClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String selectedOptionKey = "";
+                String countKey = "";
 
+                if (view.getId() == R.id.tv_option1){
+                    selectedOptionKey = "option0";
+                    countKey = "option0_count";
+                }else if (view.getId() == R.id.tv_option2){
+                    selectedOptionKey = "option1";
+                    countKey = "option1_count";
+                }else if (view.getId() == R.id.tv_option3){
+                    selectedOptionKey = "option2";
+                    countKey = "option2_count";
+                }else if (view.getId() == R.id.tv_option4){
+                    selectedOptionKey = "option3";
+                    countKey = "option3_count";
+                }
+
+                // Increment the selected option counter in Firebase
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll")
+                        .child(MethodsUtils.getCurrentUID())
+                        .child(model.getPollId()) // Assuming you have pollId stored in PollModel
+                        .child(countKey);
+
+                reference.runTransaction(new Transaction.Handler() {
+                    @NonNull
+                    @Override
+                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                        Integer currentCount = currentData.getValue(Integer.class);
+                        if (currentCount == null) {
+                            currentCount = 0;
+                        }
+                        currentData.setValue(currentCount + 1);
+                        return Transaction.success(currentData);
+                    }
+
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                        if (committed) {
+                            MethodsUtils.showFlawDialog(holder.itemView.getContext(), R.drawable.success_png, "Success", "Your vote has been submitted", 1);
+                            model.setSelectedOption(selectedOptionKey); // Update the model with the selected option
+                            notifyDataSetChanged(); // Optionally update the UI
+                        } else {
+                            MethodsUtils.showFlawDialog(holder.itemView.getContext(), R.drawable.icon_error, "Error", "Failed to submit vote", 1);
+                        }
+                    }
+                });
+            }
+        };
+        holder.op1.setOnClickListener(optionClickListener);
+        holder.op2.setOnClickListener(optionClickListener);
+        holder.op3.setOnClickListener(optionClickListener);
+        holder.op4.setOnClickListener(optionClickListener);
     }
 
     @Override

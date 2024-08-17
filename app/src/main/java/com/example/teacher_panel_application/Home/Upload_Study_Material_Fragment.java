@@ -45,6 +45,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.teacher_panel_application.Access.SendNotification;
 import com.example.teacher_panel_application.Models.PDFModel;
+import com.example.teacher_panel_application.Models.PollModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncementBinding;
@@ -258,8 +259,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
 
         addTextWatcher(binding.option2);
         binding.uploadPool.setOnClickListener(v -> {
-            HashMap<String,String> hashMap = new HashMap<>();
-
+            HashMap<String,Object> hashMap = new HashMap<>();
+            //PollModel model = new PollModel();
             String option1 = binding.option1.getText().toString();
             String option2 = binding.option2.getText().toString();
             String question = binding.pollQuestion.getText().toString();
@@ -276,9 +277,12 @@ public class Upload_Study_Material_Fragment extends Fragment {
                 return;
             }
             for (int i = 0; i<getAllOptionTexts().size(); i++){
-                hashMap.put("option"+i,getAllOptionTexts().get(i));
+                hashMap.put("option" + i, getAllOptionTexts().get(i));
+                hashMap.put("option" + i + "_count", 0); // Initialize the counter to 0
+
             }
             hashMap.put("question",question);
+            hashMap.put("pollId",getMillis());
 
 
 
