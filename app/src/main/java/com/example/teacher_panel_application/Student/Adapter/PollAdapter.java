@@ -1,6 +1,11 @@
 package com.example.teacher_panel_application.Student.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.teacher_panel_application.Login.Login_Activity;
+import com.example.teacher_panel_application.Models.ResultModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Student.PollModel;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
+import com.example.teacher_panel_application.Utils.ProgressHelper;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,9 +43,16 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
     private Context context;
     private String selectedOptionKey;
 
+    private List<ResultModel> resultModelsList;
+
     public PollAdapter(List<PollModel> pollModelsList, Context context) {
         this.pollModelsList = pollModelsList;
         this.context = context;
+    }
+
+    public PollAdapter(Context context, List<ResultModel> resultModelsList) {
+        this.context = context;
+        this.resultModelsList = resultModelsList;
     }
 
     @NonNull
@@ -46,72 +64,142 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PollAdapter.ViewHolder holder, int position) {
-        PollModel model = pollModelsList.get(position);
-        // Set the text for each option and manage visibility
-        holder.radioOption1.setText(model.getOption1());
-        holder.radioOption2.setText(model.getOption2());
 
-        if (model.getOption3() != null && !model.getOption3().isEmpty()) {
-            holder.radioOption3.setText(model.getOption3());
-            holder.radioOption3.setVisibility(View.VISIBLE);
-        } else {
-            holder.radioOption3.setVisibility(View.GONE);
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+
+
+
+        if (!isTrue){
+            disableVotingOptions(holder);
+
+            ResultModel model = resultModelsList.get(position);
+            holder.question.setText(model.getQuestion());
+            holder.radioOption1.setText(model.getOption0()+" Votes "+model.getOption1_count());
+            holder.radioOption2.setText(model.getOption1()+" Votes "+model.getOption2_count());
+
+
+            if (holder.radioOption3.getVisibility() == View.VISIBLE) {
+                holder.radioOption3.setText(model.getOption2()+" Votes "+model.getOption3_count());
+
+            }
+            if (holder.radioOption4.getVisibility() == View.VISIBLE) {
+                holder.radioOption4.setText(model.getOption3()+" Votes "+model.getOption4_count());
+
+            }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Long press to delete it ", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Delete Poll")
+                            .setMessage("Do you want Delete this poll?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DatabaseReference reference2 = FirebaseDatabase.getInstance()
+                                            .getReference("TeachersCreatedPoll")
+                                            .child(MethodsUtils.getCurrentUID());
+                                    reference2.orderByChild("pollId").equalTo(model.getPollId()).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot pollSnapshot : snapshot.getChildren()) {
+                                                pollSnapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Toast.makeText(context, "Poll deleted successfully", Toast.LENGTH_SHORT).show();
+
+
+                                                    }
+                                                }).addOnFailureListener(e -> Toast.makeText(context, "Error while deleting the poll", Toast.LENGTH_SHORT).show());
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(context, "Error while deleting the poll", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    //ProgressHelper.dismissDialog();
+                                }
+                            })
+                            .show();
+                    return true;
+                }
+            });
+
+        }
+        else {
+            PollModel model = pollModelsList.get(position);
+            holder.question.setText(model.getQuestion());
+
+            // Set the text for each option and manage visibility
+            holder.radioOption1.setText(model.getOption1());
+            holder.radioOption2.setText(model.getOption2());
+
+            if (model.getOption3() != null && !model.getOption3().isEmpty()) {
+                holder.radioOption3.setText(model.getOption3());
+                holder.radioOption3.setVisibility(View.VISIBLE);
+            } else {
+                holder.radioOption3.setVisibility(View.GONE);
+            }
+
+            if (model.getOption4() != null && !model.getOption4().isEmpty()) {
+                holder.radioOption4.setText(model.getOption4());
+                holder.radioOption4.setVisibility(View.VISIBLE);
+            } else {
+                holder.radioOption4.setVisibility(View.GONE);
+            }
+
+            checkIfVoteExist(model.getUid(), model.getKey(),holder);
+            holder.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+                String selectedOption = "";
+                if (checkedId == R.id.option1){
+                    selectedOption = "option1_count";
+                }
+                else if (checkedId == R.id.option2) {
+                    selectedOption = "option2_count";
+                }
+                else if (checkedId == R.id.option3) {
+                    selectedOption = "option3_count";
+                }
+                else if (checkedId == R.id.option4) {
+                    selectedOption = "option4_count";
+                }
+                Toast.makeText(context, ""+model.getKey()+model.getUid(), Toast.LENGTH_SHORT).show();
+
+                updatePollOption(model.getUid(), model.getKey(), selectedOption,holder);
+            });
         }
 
-        if (model.getOption4() != null && !model.getOption4().isEmpty()) {
-            holder.radioOption4.setText(model.getOption4());
-            holder.radioOption4.setVisibility(View.VISIBLE);
-        } else {
-            holder.radioOption4.setVisibility(View.GONE);
-        }
-
-        checkIfVoteExist(model.getUid(), model.getKey(),holder);
-        holder.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            String selectedOption = "";
-            if (checkedId == R.id.option1){
-                selectedOption = "option1_count";
-            }
-            else if (checkedId == R.id.option2) {
-                selectedOption = "option2_count";
-            }
-            else if (checkedId == R.id.option3) {
-                selectedOption = "option3_count";
-            }
-            else if (checkedId == R.id.option4) {
-                selectedOption = "option4_count";
-            }
-            Toast.makeText(context, ""+model.getKey()+model.getUid(), Toast.LENGTH_SHORT).show();
-
-            updatePollOption(model.getUid(), model.getKey(), selectedOption,holder);
-        });
-
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll")
-//                .child(model.getUid())
-//                .child(model.getKey());
-//
-//        reference.child(MethodsUtils.getCurrentUID()).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot.exists()) {
-//                    // The user has already voted
-//                    Toast.makeText(context, "You have already voted!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    // The user hasn't voted, proceed with voting
-//                    //updatePollOption(reference);
-//                }
-//
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
     }
 
     @Override
     public int getItemCount() {
-        return pollModelsList.size();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+        if (!isTrue){
+            return resultModelsList.size();
+        }else {
+            return pollModelsList.size();
+        }
+
     }
     private void updatePollOption(String uid,String key, String selectedOptionCount,ViewHolder holder) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll")

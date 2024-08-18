@@ -1,7 +1,6 @@
 package com.example.teacher_panel_application.Home;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,45 +16,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.teacher_panel_application.Access.SendNotification;
 import com.example.teacher_panel_application.Models.PDFModel;
-import com.example.teacher_panel_application.Models.PollModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
-import com.example.teacher_panel_application.databinding.FragmentUploadAnnouncementBinding;
 import com.example.teacher_panel_application.databinding.FragmentUploadStudyMaterialBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,20 +48,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -191,18 +166,6 @@ public class Upload_Study_Material_Fragment extends Fragment {
                     selectPDF();
                 }
             }
-
-
-//            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//                // When permission is not granted
-//                // Result permission
-//                ActivityCompat.requestPermissions(
-//                        getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-//            } else {
-//                // When permission is granted
-//                // Create method
-//                selectPDF();
-//            }
         });
 
         binding.pdfUploadBtn.setOnClickListener(v -> {

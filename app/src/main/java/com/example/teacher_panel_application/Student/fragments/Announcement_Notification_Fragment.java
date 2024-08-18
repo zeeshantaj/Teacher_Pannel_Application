@@ -82,17 +82,6 @@ public class Announcement_Notification_Fragment extends Fragment {
                                 model.setDue_date(dueDate);
                                 model.setId(id);
                             }
-//                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd");
-//                            LocalDateTime currentDateTime = LocalDateTime.now();
-//                            String currentTime = currentDateTime.format(formatter);
-//                            LocalDateTime startTime = LocalDateTime.parse(currentTime, formatter);
-//                            LocalDateTime endTime = LocalDateTime.parse(dueDate, formatter);
-//                            long timeDifferenceMillis = Duration.between(startTime, endTime).toMillis();
-//                            Log.e("MyApp","announcement due date"+endTime);
-//                            Log.e("MyApp","announcement start time "+startTime);
-//                            Log.e("MyApp","announcement into millis  "+timeDifferenceMillis);
-
-
 
                             modelList.add(model);
                         }
