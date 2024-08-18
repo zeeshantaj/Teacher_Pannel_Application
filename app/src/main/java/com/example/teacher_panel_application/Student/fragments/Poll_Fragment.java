@@ -48,14 +48,24 @@ public class Poll_Fragment extends Fragment {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
                             if (keySnapshot.child("question").exists()) {
+
                                 String question = keySnapshot.child("question").getValue(String.class);
                                 String op1 = keySnapshot.child("option0").getValue(String.class);
                                 String op2 = keySnapshot.child("option1").getValue(String.class);
                                 String op3 = keySnapshot.child("option2").getValue(String.class);
                                 String op4 = keySnapshot.child("option3").getValue(String.class);
+                                String pollId = keySnapshot.child("pollId").getValue(String.class);
+                                String uid = keySnapshot.child("uid").getValue(String.class);
+                                //String postedId = keySnapshot.child("uid").getValue(String.class);
+
+
 
                                 PollModel model = new PollModel();
                                 model.setQuestion(question);
+                                model.setPollId(pollId);
+                                model.setUid(uid);
+                                model.setKey(keySnapshot.getKey());
+
                                 // Check and set each option if it exists
                                 if (op1 != null && !op1.isEmpty()) {
                                     model.setOption1(op1);

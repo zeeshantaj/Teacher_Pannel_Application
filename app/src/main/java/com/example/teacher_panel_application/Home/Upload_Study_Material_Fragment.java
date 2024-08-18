@@ -283,6 +283,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
             }
             hashMap.put("question",question);
             hashMap.put("pollId",getMillis());
+            hashMap.put("uid",MethodsUtils.getCurrentUID());
 
 
 
@@ -394,8 +395,11 @@ public class Upload_Study_Material_Fragment extends Fragment {
                 EditText editText = (EditText) child;
                 String text = editText.getText().toString();
                 if (!text.isEmpty()){
-                    optionTexts.add(text);
+                    if (optionTexts.size() <= 3){
+                        optionTexts.add(text);
+                    }
                 }
+
 
             }
         }

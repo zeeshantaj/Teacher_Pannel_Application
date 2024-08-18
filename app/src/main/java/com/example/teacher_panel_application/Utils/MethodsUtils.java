@@ -145,6 +145,7 @@ public class MethodsUtils {
 
 //        showImageType:
 
+        imgErrorType.setImageResource(imageView);
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
