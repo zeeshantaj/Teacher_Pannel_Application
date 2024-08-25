@@ -8,12 +8,12 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -25,10 +25,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Teacher_Panel_Application"
         tools:targetApi="31">
-
+        <activity
+            android:name=".History.StudyMaterial.AssignmentActivity.AssignmentCheckingActivity"
+            android:exported="false" />
         <activity
             android:name=".Student.StudentActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -36,9 +38,7 @@
 
         <activity
             android:name=".Home.Home_Activity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Login.Login_Activity"
             android:exported="true">
@@ -51,6 +51,7 @@
 
         <receiver android:name=".Notification.NotificationBroadcastReceiver" />
         <receiver android:name=".Network.NetworkCheckReceiver" />
+
         <service
             android:name=".NotificationService.FCMNotificationService"
             android:exported="false">

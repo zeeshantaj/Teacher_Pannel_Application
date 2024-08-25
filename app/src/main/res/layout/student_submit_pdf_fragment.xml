@@ -124,11 +124,100 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:visibility="gone"
+            android:visibility="visible"
             app:drawableBottomCompat="@drawable/success_png"
             app:layout_constraintEnd_toEndOf="@+id/cardView3"
             app:layout_constraintStart_toStartOf="@+id/cardView3"
             app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/submittedTxt"
+            app:layout_constraintStart_toStartOf="@+id/submittedTxt"
+            app:layout_constraintTop_toBottomOf="@+id/submittedTxt">
+
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:background="@color/red"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_check_circle_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/red" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/destination_pending"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/center" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:background="@color/red"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/destination_checked"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/red" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/submittedTxt"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Assignment Result"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="98/100"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView25"
+                app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/assignmentSubmissionLay"

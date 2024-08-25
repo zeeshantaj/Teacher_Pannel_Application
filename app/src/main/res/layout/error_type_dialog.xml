@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/btnColor1"
+                android:backgroundTint="@color/center"
                 android:text="Ok"
                 android:textColor="@color/white"
                 android:textSize="18sp"

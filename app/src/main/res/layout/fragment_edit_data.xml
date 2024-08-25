@@ -13,7 +13,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
-            android:background="@color/btnColor1">
+            android:background="@color/center">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -228,7 +228,7 @@
                                 android:layout_width="190dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:backgroundTint="@color/btnColor1"
+                                android:backgroundTint="@color/center"
                                 android:text="@string/upload"
                                 android:textColor="@color/white"
                                 android:textSize="18sp"

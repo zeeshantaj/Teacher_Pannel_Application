@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/start">
+    android:background="@color/transparent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/btnColor1"
+                        android:backgroundTint="@color/center"
                         android:drawableTop="@drawable/baseline_do_not_disturb_24"
                         android:drawableTint="@color/black"
                         android:text="@string/no"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/btnColor1"
+                        android:backgroundTint="@color/center"
                         android:drawableTop="@drawable/baseline_delete_24"
                         android:text="@string/delete"
                         android:textColor="@color/white"
