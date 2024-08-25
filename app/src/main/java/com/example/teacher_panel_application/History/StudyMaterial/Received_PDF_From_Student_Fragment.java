@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.History.StudyMaterial.Adapter.SubmittedModel;
@@ -23,11 +24,18 @@ import com.example.teacher_panel_application.databinding.FragmentReceivedPDFFrom
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.rajat.pdfviewer.PdfViewerActivity;
 import com.rajat.pdfviewer.util.saveTo;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +70,7 @@ public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragmen
 
             }
         }
+        setData();
         return binding.getRoot();
     }
 
@@ -95,9 +104,33 @@ public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragmen
     private void setData(){
         List<SubmittedModel> modelList = new ArrayList<>();
 
-        binding.submittedPdfRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        SubmittedPDFAdapter adapter = new SubmittedPDFAdapter(getActivity(),modelList);
-        binding.submittedPdfRecycler.setAdapter(adapter);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("StudentsSubmittedPDF");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                            SubmittedModel model = dataSnapshot1.getValue(SubmittedModel.class);
+                            modelList.add(model);
+                        }
+                    }
+                    Collections.reverse(modelList);
+                    binding.submittedPdfRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    SubmittedPDFAdapter adapter = new SubmittedPDFAdapter(getActivity(),modelList);
+                    binding.submittedPdfRecycler.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
     }
     private void launchPDf(String url,String name){
         HashMap<String,String> hashMap = new HashMap<>();

@@ -36,7 +36,9 @@
 
         <activity
             android:name=".Home.Home_Activity"
-            android:exported="false"></activity>
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".Login.Login_Activity"
             android:exported="true">

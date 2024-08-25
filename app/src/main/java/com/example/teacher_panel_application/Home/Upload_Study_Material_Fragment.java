@@ -70,6 +70,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
     private int switchLayoutCounter = 1;
     private int initialOptionsCounter = 2;
     String teacherName = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,7 +83,6 @@ public class Upload_Study_Material_Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
@@ -188,29 +188,27 @@ public class Upload_Study_Material_Fragment extends Fragment {
                 return;
             }
             String year = binding.selectYear.getSelectedItem().toString();
-            String semester  = binding.planetsSpinner.getSelectedItem().toString();
+            String semester = binding.planetsSpinner.getSelectedItem().toString();
             String purpose = binding.pdfPurpose.getSelectedItem().toString();
-            uploadFile(year,semester,purpose);
+            uploadFile(year, semester, purpose);
         });
 
         binding.switchToBtn.setOnClickListener(v -> {
 
-            if (switchLayoutCounter == 1){
+            if (switchLayoutCounter == 1) {
                 switchLayoutCounter = 2;
                 binding.pdfLayout.setVisibility(View.GONE);
                 binding.videoLinkLayout.setVisibility(View.VISIBLE);
                 binding.createPoolLayout.setVisibility(View.GONE);
                 binding.switchToBtn.setText("Switch To Create Poll");
-            }
-            else if (switchLayoutCounter == 2){
+            } else if (switchLayoutCounter == 2) {
                 switchLayoutCounter = 3;
                 binding.switchToBtn.setText("Switch To Upload PDF File");
                 binding.createPoolLayout.setVisibility(View.VISIBLE);
                 binding.videoLinkLayout.setVisibility(View.GONE);
                 binding.pdfLayout.setVisibility(View.GONE);
 
-            }
-            else if (switchLayoutCounter == 3){
+            } else if (switchLayoutCounter == 3) {
                 switchLayoutCounter = 1;
                 binding.switchToBtn.setText("Switch to Upload Video Link");
                 binding.pdfLayout.setVisibility(View.VISIBLE);
@@ -222,32 +220,31 @@ public class Upload_Study_Material_Fragment extends Fragment {
 
         addTextWatcher(binding.option2);
         binding.uploadPool.setOnClickListener(v -> {
-            HashMap<String,Object> hashMap = new HashMap<>();
+            HashMap<String, Object> hashMap = new HashMap<>();
             //PollModel model = new PollModel();
             String option1 = binding.option1.getText().toString();
             String option2 = binding.option2.getText().toString();
             String question = binding.pollQuestion.getText().toString();
-            if (question.isEmpty()){
+            if (question.isEmpty()) {
                 binding.pollQuestion.setError("Question can not be empty!");
                 return;
             }
-            if (option1.isEmpty()){
+            if (option1.isEmpty()) {
                 binding.option1.setError("Set Option Please");
                 return;
             }
-            if (option2.isEmpty()){
+            if (option2.isEmpty()) {
                 binding.option1.setError("Set Option Please");
                 return;
             }
-            for (int i = 0; i<getAllOptionTexts().size(); i++){
+            for (int i = 0; i < getAllOptionTexts().size(); i++) {
                 hashMap.put("option" + i, getAllOptionTexts().get(i));
                 hashMap.put("option" + i + "_count", 0); // Initialize the counter to 0
 
             }
-            hashMap.put("question",question);
-            hashMap.put("pollId",getMillis());
-            hashMap.put("uid",MethodsUtils.getCurrentUID());
-
+            hashMap.put("question", question);
+            hashMap.put("pollId", getMillis());
+            hashMap.put("uid", MethodsUtils.getCurrentUID());
 
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll")
@@ -256,19 +253,19 @@ public class Upload_Study_Material_Fragment extends Fragment {
             reference.setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
-                    MethodsUtils.showFlawDialog(getActivity(),R.drawable.success_png,"Success ","Your Poll is Created",1);
+                    MethodsUtils.showFlawDialog(getActivity(), R.drawable.success_png, "Success ", "Your Poll is Created", 1);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    MethodsUtils.showFlawDialog(getActivity(),R.drawable.icon_error,"Error",e.getMessage(),1);
+                    MethodsUtils.showFlawDialog(getActivity(), R.drawable.icon_error, "Error", e.getMessage(), 1);
                 }
             });
 
         });
         binding.uploadVideo.setOnClickListener(v -> {
             String videoLink = binding.videoLinkEdt.getText().toString();
-            if (videoLink.isEmpty()){
+            if (videoLink.isEmpty()) {
                 binding.videoLinkEdt.setError("Please Add Video Link");
                 return;
             }
@@ -277,16 +274,16 @@ public class Upload_Study_Material_Fragment extends Fragment {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersUploadedVideoLink")
                     .child(MethodsUtils.getCurrentUID())
                     .child(getMillis());
-            HashMap<String,String> hashMap = new HashMap<>();
-            hashMap.put("videoLink",videoLink);
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("videoLink", videoLink);
             reference.setValue(hashMap).addOnSuccessListener(unused ->
-                    MethodsUtils.showFlawDialog(getActivity(),R.drawable.success_png,"Success ","Your Video Link Uploaded",1))
+                            MethodsUtils.showFlawDialog(getActivity(), R.drawable.success_png, "Success ", "Your Video Link Uploaded", 1))
                     .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    MethodsUtils.showFlawDialog(getActivity(),R.drawable.icon_error,"Error",e.getMessage(),1);
-                }
-            });
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            MethodsUtils.showFlawDialog(getActivity(), R.drawable.icon_error, "Error", e.getMessage(), 1);
+                        }
+                    });
         });
     }
 
@@ -348,6 +345,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
         params.setMarginEnd(60);
         return params;
     }
+
     private List<String> getAllOptionTexts() {
         List<String> optionTexts = new ArrayList<>();
         int childCount = binding.optionContainer.getChildCount();
@@ -357,18 +355,15 @@ public class Upload_Study_Material_Fragment extends Fragment {
             if (child instanceof EditText) {
                 EditText editText = (EditText) child;
                 String text = editText.getText().toString();
-                if (!text.isEmpty()){
-                    if (optionTexts.size() <= 3){
-                        optionTexts.add(text);
-                    }
+                if (!text.isEmpty()) {
+                    optionTexts.add(text);
                 }
-
-
             }
         }
 
         return optionTexts;
     }
+
     private String getFileName(Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
@@ -415,9 +410,10 @@ public class Upload_Study_Material_Fragment extends Fragment {
         } else {
             // When permission is denied
             // Display toast
-            Toast.makeText(getActivity(), "Permission Denied",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void uploadFile(String year, String semester, String purpose) {
         if (pdfUri != null) {
@@ -428,11 +424,11 @@ public class Upload_Study_Material_Fragment extends Fragment {
             reference1.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()){
+                    if (snapshot.exists()) {
                         teacherName = snapshot.child("name").getValue(String.class);
                         String token = snapshot.child("FCMToken").getValue(String.class);
-                        MethodsUtils.putString(getActivity(),"teacherName",teacherName);
-                        MethodsUtils.putString(getActivity(),"FCMToken",token);
+                        MethodsUtils.putString(getActivity(), "teacherName", teacherName);
+                        MethodsUtils.putString(getActivity(), "FCMToken", token);
                     }
                 }
 
@@ -455,8 +451,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
             pdfModel.setPurpose(purpose);
             pdfModel.setDateTime(currentDateTimeString);
             pdfModel.setPDFName(pdfName);
-            pdfModel.setTeacherName(MethodsUtils.getString(getActivity(),"teacherName"));
-            pdfModel.setFCMToken(MethodsUtils.getString(getActivity(),"FCMToken"));
+            pdfModel.setTeacherName(MethodsUtils.getString(getActivity(), "teacherName"));
+            pdfModel.setFCMToken(MethodsUtils.getString(getActivity(), "FCMToken"));
             pdfModel.setIdentifierForPDF(getMillis());
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersPDFData")
@@ -476,7 +472,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
                             reference.setValue(pdfModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    MethodsUtils.showSuccessDialog(getActivity(),"Success","Data Posted Successfully", SweetAlertDialog.SUCCESS_TYPE);
+                                    MethodsUtils.showSuccessDialog(getActivity(), "Success", "Data Posted Successfully", SweetAlertDialog.SUCCESS_TYPE);
                                     notifyUsers(pdfModel);
                                     binding.selectYear.setSelection(0);
                                     binding.pdfPurpose.setSelection(0);
@@ -488,7 +484,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         });
@@ -507,6 +503,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
             Toast.makeText(getActivity(), "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void notifyUsers(PDFModel newPdfModel) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("StudentsInfo");
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -521,8 +518,8 @@ public class Upload_Study_Material_Fragment extends Fragment {
                     if (newPdfModel.getYear().equals(year) && newPdfModel.getSemester().equals(semester)) {
                         //sendNotification(token, "New PDF Available", "Check out the new PDF added.");
                         SendNotification sendNotification = new SendNotification(token,
-                                "check out new pdf\n"+"by sir "+MethodsUtils.getString(getActivity(),"teacherName"),
-                                "new pdf uploaded!",getActivity());
+                                "check out new pdf\n" + "by sir " + MethodsUtils.getString(getActivity(), "teacherName"),
+                                "new pdf uploaded!", getActivity());
                         sendNotification.sendNotification();
 
 
@@ -536,17 +533,18 @@ public class Upload_Study_Material_Fragment extends Fragment {
             }
         });
     }
-    private String getTeacherName(){
+
+    private String getTeacherName() {
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeacherInfo").child(MethodsUtils.getCurrentUID());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     teacherName = snapshot.child("name").getValue(String.class);
                     String token = snapshot.child("FCMToken").getValue(String.class);
-                    MethodsUtils.putString(getActivity(),"teacherName",teacherName);
-                    MethodsUtils.putString(getActivity(),"FCMToken",token);
+                    MethodsUtils.putString(getActivity(), "teacherName", teacherName);
+                    MethodsUtils.putString(getActivity(), "FCMToken", token);
                 }
             }
 
@@ -558,7 +556,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
         return teacherName;
     }
 
-    private String getMillis(){
+    private String getMillis() {
         Calendar calendar = Calendar.getInstance();
         long milli = calendar.getTimeInMillis();
         return String.valueOf(milli);

@@ -58,7 +58,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
     @NonNull
     @Override
     public PollAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poll_recycler_layout,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poll_recycler_layout, parent, false);
         return new ViewHolder(view);
     }
 
@@ -67,25 +67,39 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
 
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
-        boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+        boolean isTrue = sharedPreferences.getBoolean("typeBool", false);
 
 
-
-        if (!isTrue){
+        if (!isTrue) {
             disableVotingOptions(holder);
 
             ResultModel model = resultModelsList.get(position);
+
+            if (model.getOption2() != null && !model.getOption2().isEmpty()) {
+                holder.radioOption3.setText(model.getOption2());
+                holder.radioOption3.setVisibility(View.VISIBLE);
+            } else {
+                holder.radioOption3.setVisibility(View.GONE);
+            }
+
+            if (model.getOption3() != null && !model.getOption3().isEmpty()) {
+                holder.radioOption4.setText(model.getOption3());
+                holder.radioOption4.setVisibility(View.VISIBLE);
+            } else {
+                holder.radioOption4.setVisibility(View.GONE);
+            }
+
             holder.question.setText(model.getQuestion());
-            holder.radioOption1.setText(model.getOption0()+" Votes "+model.getOption1_count());
-            holder.radioOption2.setText(model.getOption1()+" Votes "+model.getOption2_count());
+            holder.radioOption1.setText(model.getOption0() + " Votes " + model.getOption1_count());
+            holder.radioOption2.setText(model.getOption1() + " Votes " + model.getOption2_count());
 
 
             if (holder.radioOption3.getVisibility() == View.VISIBLE) {
-                holder.radioOption3.setText(model.getOption2()+" Votes "+model.getOption3_count());
+                holder.radioOption3.setText(model.getOption2() + " Votes " + model.getOption3_count());
 
             }
             if (holder.radioOption4.getVisibility() == View.VISIBLE) {
-                holder.radioOption4.setText(model.getOption3()+" Votes "+model.getOption4_count());
+                holder.radioOption4.setText(model.getOption3() + " Votes " + model.getOption4_count());
 
             }
 
@@ -143,8 +157,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
                 }
             });
 
-        }
-        else {
+        } else {
             PollModel model = pollModelsList.get(position);
             holder.question.setText(model.getQuestion());
 
@@ -166,24 +179,21 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
                 holder.radioOption4.setVisibility(View.GONE);
             }
 
-            checkIfVoteExist(model.getUid(), model.getKey(),holder);
+            checkIfVoteExist(model.getUid(), model.getKey(), holder);
             holder.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 String selectedOption = "";
-                if (checkedId == R.id.option1){
+                if (checkedId == R.id.option1) {
                     selectedOption = "option1_count";
-                }
-                else if (checkedId == R.id.option2) {
+                } else if (checkedId == R.id.option2) {
                     selectedOption = "option2_count";
-                }
-                else if (checkedId == R.id.option3) {
+                } else if (checkedId == R.id.option3) {
                     selectedOption = "option3_count";
-                }
-                else if (checkedId == R.id.option4) {
+                } else if (checkedId == R.id.option4) {
                     selectedOption = "option4_count";
                 }
-                Toast.makeText(context, ""+model.getKey()+model.getUid(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "" + model.getKey() + model.getUid(), Toast.LENGTH_SHORT).show();
 
-                updatePollOption(model.getUid(), model.getKey(), selectedOption,holder);
+                updatePollOption(model.getUid(), model.getKey(), selectedOption, holder);
             });
         }
 
@@ -193,15 +203,16 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
-        boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
-        if (!isTrue){
+        boolean isTrue = sharedPreferences.getBoolean("typeBool", false);
+        if (!isTrue) {
             return resultModelsList.size();
-        }else {
+        } else {
             return pollModelsList.size();
         }
 
     }
-    private void updatePollOption(String uid,String key, String selectedOptionCount,ViewHolder holder) {
+
+    private void updatePollOption(String uid, String key, String selectedOptionCount, ViewHolder holder) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll")
                 .child(uid)
                 .child(key);
@@ -227,7 +238,8 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
             }
         });
     }
-    private void checkIfVoteExist(String uid,String key,ViewHolder holder) {
+
+    private void checkIfVoteExist(String uid, String key, ViewHolder holder) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersCreatedPoll")
                 .child(uid)
                 .child(key);
@@ -235,8 +247,8 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    if (snapshot.child(MethodsUtils.getCurrentUID()).exists()){
+                if (snapshot.exists()) {
+                    if (snapshot.child(MethodsUtils.getCurrentUID()).exists()) {
                         disableVotingOptions(holder);
                         String op1 = snapshot.child("option0").getValue(String.class);
                         String op2 = snapshot.child("option1").getValue(String.class);
@@ -248,17 +260,30 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
                         Long count2 = snapshot.child("option3_count").getValue(Long.class);
                         Long count3 = snapshot.child("option4_count").getValue(Long.class);
 
+                        if (count == null) {
+                            count = 0L;
+                        }
+                        if (count1 == null) {
+                            count1 = 0L;
+                        }
 
-                        holder.radioOption1.setText(op1+" Votes "+count);
-                        holder.radioOption2.setText(op2+" Votes "+count1);
+
+                        holder.radioOption1.setText(op1 + " Votes " + count);
+                        holder.radioOption2.setText(op2 + " Votes " + count1);
 
 
                         if (holder.radioOption3.getVisibility() == View.VISIBLE) {
-                            holder.radioOption3.setText(op3+" Votes "+count2);
+                            if (count2 == null) {
+                                count2 = 0L;
+                            }
+                            holder.radioOption3.setText(op3 + " Votes " + count2);
 
                         }
                         if (holder.radioOption4.getVisibility() == View.VISIBLE) {
-                            holder.radioOption4.setText(op4+" Votes "+count3);
+                            if (count3 == null) {
+                                count3 = 0L;
+                            }
+                            holder.radioOption4.setText(op4 + " Votes " + count3);
 
                         }
                     }
@@ -272,6 +297,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
         });
 
     }
+
     private void disableVotingOptions(PollAdapter.ViewHolder holder) {
         // Disable voting options and show results
         holder.radioOption1.setEnabled(false);
@@ -282,6 +308,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
         // Show the result counts
         //showResults(holder, reference);
     }
+
     private void showResults(PollAdapter.ViewHolder holder, DatabaseReference reference) {
         // Fetch the current vote counts and display them for option 1
         reference.child("option1_count").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -292,7 +319,8 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
         // Fetch the current vote counts and display them for option 2
@@ -304,7 +332,8 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
         // Check if option 3 exists, if it does, fetch and display its count
@@ -317,7 +346,8 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {}
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
             });
         }
 
@@ -331,15 +361,18 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {}
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
             });
         }
     }
+
     public class
     ViewHolder extends RecyclerView.ViewHolder {
         private TextView question;
         private RadioGroup radioGroup;
-        private RadioButton radioOption1,radioOption2,radioOption3,radioOption4;
+        private RadioButton radioOption1, radioOption2, radioOption3, radioOption4;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             question = itemView.findViewById(R.id.question);

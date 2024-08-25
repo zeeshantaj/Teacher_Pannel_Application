@@ -73,6 +73,9 @@ public class ResultModel {
     }
 
     public Long getOption1_count() {
+        if (option1_count == null){
+            option1_count = 0L;
+        }
         return option1_count;
     }
 
@@ -81,6 +84,9 @@ public class ResultModel {
     }
 
     public Long getOption2_count() {
+        if (option2_count == null){
+            option2_count = 0L;
+        }
         return option2_count;
     }
 
@@ -89,6 +95,9 @@ public class ResultModel {
     }
 
     public Long getOption3_count() {
+        if (option3_count == null){
+            option3_count = 0L;
+        }
         return option3_count;
     }
 
@@ -97,6 +106,9 @@ public class ResultModel {
     }
 
     public Long getOption4_count() {
+        if (option4_count == null){
+            option4_count = 0L;
+        }
         return option4_count;
     }
 

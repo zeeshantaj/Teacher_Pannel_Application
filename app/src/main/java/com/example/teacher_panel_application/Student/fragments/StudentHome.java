@@ -54,7 +54,7 @@ public class StudentHome extends Fragment {
 
 
 
-        Fragment[] pages = {new Current_Class_Fragment(), new Announcement_Notification_Fragment(),new Poll_Fragment()}; // Replace with your fragment classes
+        Fragment[] pages = { new Announcement_Notification_Fragment(),new Poll_Fragment()}; // Replace with your fragment classes
         UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
         binding.myViewpagerHistory.setAdapter(myPagerAdapter);
 
@@ -74,12 +74,8 @@ public class StudentHome extends Fragment {
                     // Customize the tab text and titles based on your needs.
                     if (position == 0) {
                         //myViewPager.setCurrentItem(position,true);
-                        tab.setText("Current Class");
-                    } else if (position == 1) {
-                        //myViewPager.setCurrentItem(position,true);
                         tab.setText("Announcements");
-                    }
-                    else if (position == 2) {
+                    } else if (position == 1) {
                         //myViewPager.setCurrentItem(position,true);
                         tab.setText("Poll");
                     }
