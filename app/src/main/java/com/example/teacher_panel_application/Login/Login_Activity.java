@@ -77,7 +77,7 @@ public class Login_Activity extends AppCompatActivity {
 
     }
     public void checkUserRole(String email) {
-
+        Log.d("MyApp","check user role");
         DatabaseReference teacherRef = FirebaseDatabase.getInstance().getReference().child("TeacherInfo");
         DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference().child("StudentsInfo");
         // Query the TeacherInfo reference
@@ -85,8 +85,6 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Email exists in TeacherInfo
-                    // Send user to TeacherActivity
                     Intent intent = new Intent(Login_Activity.this, Home_Activity.class);
                     startActivity(intent);
                    finish();

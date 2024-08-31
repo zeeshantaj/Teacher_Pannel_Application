@@ -1,13 +1,28 @@
 package com.example.teacher_panel_application.Models;
 
 public class PDFModel {
-    private String teacherName,PDFName,identifierForPDF,PDFUrl,FCMToken,dateTime,year,semester,purpose;
+    private String teacherName,imageUrl,PDFName,identifierForPDF,PDFUrl,FCMToken,dateTime,year,semester,purpose,dueDate;
 
     public PDFModel() {
     }
 
-    public PDFModel(String teacherName, String PDFName, String identifierForPDF, String PDFUrl, String FCMToken, String dateTime, String year, String semester, String purpose) {
+    public PDFModel(String teacherName, String imageUrl, String PDFName, String identifierForPDF, String PDFUrl, String FCMToken, String dateTime, String year, String semester, String purpose, String dueDate) {
         this.teacherName = teacherName;
+        this.imageUrl = imageUrl;
+        this.PDFName = PDFName;
+        this.identifierForPDF = identifierForPDF;
+        this.PDFUrl = PDFUrl;
+        this.FCMToken = FCMToken;
+        this.dateTime = dateTime;
+        this.year = year;
+        this.semester = semester;
+        this.purpose = purpose;
+        this.dueDate = dueDate;
+    }
+
+    public PDFModel(String teacherName, String imageUrl, String PDFName, String identifierForPDF, String PDFUrl, String FCMToken, String dateTime, String year, String semester, String purpose) {
+        this.teacherName = teacherName;
+        this.imageUrl = imageUrl;
         this.PDFName = PDFName;
         this.identifierForPDF = identifierForPDF;
         this.PDFUrl = PDFUrl;
@@ -46,6 +61,22 @@ public class PDFModel {
         this.year = year;
         this.semester = semester;
         this.purpose = purpose;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getIdentifierForPDF() {

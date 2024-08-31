@@ -124,7 +124,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:visibility="visible"
+            android:visibility="gone"
             app:drawableBottomCompat="@drawable/success_png"
             app:layout_constraintEnd_toEndOf="@+id/cardView3"
             app:layout_constraintStart_toStartOf="@+id/cardView3"
@@ -134,6 +134,7 @@
             android:id="@+id/constraintLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="@+id/submittedTxt"
             app:layout_constraintStart_toStartOf="@+id/submittedTxt"
             app:layout_constraintTop_toBottomOf="@+id/submittedTxt">
@@ -166,7 +167,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view4"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/center" />
+                app:tint="@color/red" />
 
             <View
                 android:id="@+id/view5"
@@ -193,17 +194,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/submittedTxt"
+            android:layout_marginStart="10dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
             <TextView
                 android:id="@+id/textView25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="Assignment Result"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -223,11 +226,11 @@
             android:id="@+id/assignmentSubmissionLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:visibility="gone"
+            android:visibility="visible"
+            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView3">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
 
             <TextView
@@ -235,9 +238,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Your Assignment Submission is pending"
+                android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -275,13 +278,13 @@
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="30dp"
                 android:backgroundTint="@color/btnColor1"
                 android:text="@string/upload"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:cornerRadius="15dp"
-                android:layout_marginTop="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

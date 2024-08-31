@@ -26,14 +26,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/expandableLayoutClassHistory"
-
                 >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/pdfUploaderImg"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="6dp"
+                    android:src="@drawable/place_holder_person"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/ed_name_cancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Posted Data"
                     android:textAlignment="center"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +53,20 @@
                     android:paddingBottom="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ed_name_cancel">
+                    app:layout_constraintTop_toBottomOf="@+id/pdfUploaderImg">
+
+
+                    <TextView
+                        android:id="@+id/pdfUploaderName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Uploaded By sir "
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/pdfUploadDate"
@@ -54,9 +74,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="Date : 21/12/2024"
+                        android:layout_marginTop="5dp"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/pdfUploaderName" />
 
                     <TextView
                         android:id="@+id/pdfUploadedPur"
@@ -84,13 +105,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="pdf name"
-                        android:singleLine="true"
-                        android:textSize="20sp"
                         android:drawablePadding="8dp"
+                        android:singleLine="true"
+                        android:text="pdf name"
+                        android:textSize="20sp"
+                        app:drawableStartCompat="@drawable/pdf_icon"
                         app:layout_constraintStart_toStartOf="@+id/pdfUploadedPur"
-                        app:layout_constraintTop_toBottomOf="@+id/yearSemesterTxt"
-                        app:drawableStartCompat="@drawable/pdf_icon" />
+                        app:layout_constraintTop_toBottomOf="@+id/yearSemesterTxt" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,4 +25,13 @@
     <color name="btnColor1">#9b88d7</color>
     <color name="darkBlueshade">#7880AF</color>
     <color name="colorOverlay">#78ffffff</color>
+
+        <color name="default_end_color">#02C3E1</color>
+        <color name="default_center_color">#029CB3</color>
+        <color name="default_start_color">#037485</color>
+        <color name="pressed_start_color">#6A2C77</color>
+        <color name="pressed_center_color">#8E4BB3</color>
+        <color name="pressed_end_color">#6F4A8E</color>
+
+
 </resources>

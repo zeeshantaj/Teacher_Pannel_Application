@@ -37,6 +37,8 @@
                     android:background="@drawable/spiner_bg"
                     android:padding="15dp" />
 
+
+
                 <Spinner
                     android:id="@+id/planets_spinner"
                     android:layout_width="match_parent"
@@ -57,6 +59,18 @@
                     android:background="@drawable/spiner_bg"
                     android:padding="15dp" />
 
+                <TextView
+                    android:id="@+id/dueDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/due_date"
+                    android:textSize="18sp"
+                    android:padding="15dp"
+                    android:visibility="gone"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/date_pick_bg"/>
                 <TextView
                     android:id="@+id/selectPDfBtn"
                     android:layout_width="match_parent"

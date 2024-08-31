@@ -1,5 +1,6 @@
 package com.example.teacher_panel_application.History.StudyMaterial;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.EditDataFragments.EditDataFragment;
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
@@ -26,6 +28,8 @@ import com.rajat.pdfviewer.util.saveTo;
 
 import java.util.HashMap;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHistoryAdapter.ViewHolder> {
     private Context context;
@@ -46,24 +50,38 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
     @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(@NonNull ViewStudyHistoryAdapter.ViewHolder holder, int position) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
+        boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+
         PDFModel model = pdfModelList.get(position);
         holder.dateTime.setText("Date: "+model.getDateTime());
         holder.purpose.setText("Purpose: "+model.getPurpose());
         holder.pdfName.setText(model.getPDFName());
         holder.yearSemesTxt.setText("Group: "+model.getYear()+" ("+model.getSemester()+")");
 
+        Glide.with(context)
+                .load(model.getImageUrl())
+                .into(holder.img);
+
+        if (isTrue){
+            holder.name.setText("Uploaded By Sir "+model.getTeacherName());
+        }else {
+            holder.name.setText("Uploaded By You");
+        }
+
         if (model.getPurpose().equals("Assignment")){
             //holder.pdfBg.setBackground(context.getResources().getDrawable(R.drawable.assignment_bg));
-            holder.pdfBg.setBackground(ContextCompat.getDrawable(context,R.drawable.assignment_bg));
+//            holder.pdfBg.setBackground(ContextCompat.getDrawable(context,R.drawable.assignment_bg));
         }
 //        else {
 //            holder.purpose.setTextColor(R.color.green);
 //        }
 
         holder.itemView.setOnClickListener(v -> {
+
             if (model.getPurpose().equals("Assignment")){
-                SharedPreferences sharedPreferences = context.getSharedPreferences("loginType", Context.MODE_PRIVATE);
-                boolean isTrue = sharedPreferences.getBoolean("typeBool",false);
+
                 if (isTrue){
                     SubmitePDF_Fragment fragment = new SubmitePDF_Fragment();
                     Bundle bundle = new Bundle();
@@ -101,8 +119,9 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView pdfName,dateTime,purpose,yearSemesTxt;
+        private TextView pdfName,dateTime,purpose,yearSemesTxt,name;
         private LinearLayout pdfBg;
+        private CircleImageView img;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             pdfName = itemView.findViewById(R.id.pdfFileName);
@@ -110,6 +129,8 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
             purpose = itemView.findViewById(R.id.pdfUploadedPur);
             dateTime = itemView.findViewById(R.id.pdfUploadDate);
             pdfBg = itemView.findViewById(R.id.pdfBg);
+            name = itemView.findViewById(R.id.pdfUploaderName);
+            img = itemView.findViewById(R.id.pdfUploaderImg);
         }
     }
 }

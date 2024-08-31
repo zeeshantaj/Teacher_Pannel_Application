@@ -25,12 +25,14 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.Access.SendNotification;
+import com.example.teacher_panel_application.InsertData_Fragments.TimePickerFragment;
 import com.example.teacher_panel_application.Models.PDFModel;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
@@ -168,6 +170,32 @@ public class Upload_Study_Material_Fragment extends Fragment {
             }
         });
 
+        binding.pdfPurpose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1){
+                    binding.dueDate.setVisibility(View.VISIBLE);
+                    binding.dueDate.setOnClickListener(v1 -> {
+                        TimePickerFragment timePickerFragment = new TimePickerFragment();
+                        timePickerFragment.setOnDateSetListener((year1, month, day) -> {
+                            String selectedDate = day + ":" + (month + 1) + ":" + year1;
+                            binding.dueDate.setText(selectedDate);
+
+                        });
+                        timePickerFragment.show(getActivity().getSupportFragmentManager(), "date picker");
+
+                    });
+                }else {
+                    binding.dueDate.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         binding.pdfUploadBtn.setOnClickListener(v -> {
             int selectedYearPosition = binding.selectYear.getSelectedItemPosition();
             int selectedSemesterPosition = binding.planetsSpinner.getSelectedItemPosition();
@@ -187,10 +215,23 @@ public class Upload_Study_Material_Fragment extends Fragment {
                 Toast.makeText(getActivity(), "Please Select Purpose", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            if (binding.dueDate.getVisibility() == View.VISIBLE){
+                if (binding.dueDate.getText().toString().equals("Due Date")) {
+                Toast.makeText(getActivity(), "Please Select Due Date", Toast.LENGTH_SHORT).show();
+                return;
+                }
+            }
+            String dueData = binding.dueDate.getText().toString();
             String year = binding.selectYear.getSelectedItem().toString();
             String semester = binding.planetsSpinner.getSelectedItem().toString();
             String purpose = binding.pdfPurpose.getSelectedItem().toString();
-            uploadFile(year, semester, purpose);
+
+
+
+
+
+            uploadFile(year, semester, purpose,dueData);
         });
 
         binding.switchToBtn.setOnClickListener(v -> {
@@ -415,28 +456,9 @@ public class Upload_Study_Material_Fragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void uploadFile(String year, String semester, String purpose) {
+    private void uploadFile(String year, String semester, String purpose,String dueDate) {
         if (pdfUri != null) {
 
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            String uid = auth.getUid();
-            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("TeacherInfo").child(uid);
-            reference1.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        teacherName = snapshot.child("name").getValue(String.class);
-                        String token = snapshot.child("FCMToken").getValue(String.class);
-                        MethodsUtils.putString(getActivity(), "teacherName", teacherName);
-                        MethodsUtils.putString(getActivity(), "FCMToken", token);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    teacherName = "";
-                }
-            });
 
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
@@ -452,8 +474,10 @@ public class Upload_Study_Material_Fragment extends Fragment {
             pdfModel.setDateTime(currentDateTimeString);
             pdfModel.setPDFName(pdfName);
             pdfModel.setTeacherName(MethodsUtils.getString(getActivity(), "teacherName"));
+            pdfModel.setImageUrl(MethodsUtils.getString(getActivity(), "teacherImg"));
             pdfModel.setFCMToken(MethodsUtils.getString(getActivity(), "FCMToken"));
             pdfModel.setIdentifierForPDF(getMillis());
+            pdfModel.setDateTime(dueDate);
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TeachersPDFData")
                     .child(MethodsUtils.getCurrentUID())
@@ -560,5 +584,31 @@ public class Upload_Study_Material_Fragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         long milli = calendar.getTimeInMillis();
         return String.valueOf(milli);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("TeacherInfo").child(uid);
+        reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String teacherName = snapshot.child("name").getValue(String.class);
+                    String img = snapshot.child("image").getValue(String.class);
+                    String token = snapshot.child("FCMToken").getValue(String.class);
+                    MethodsUtils.putString(getActivity(), "teacherName", teacherName);
+                    MethodsUtils.putString(getActivity(), "teacherImg", img);
+                    MethodsUtils.putString(getActivity(), "FCMToken", token);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
