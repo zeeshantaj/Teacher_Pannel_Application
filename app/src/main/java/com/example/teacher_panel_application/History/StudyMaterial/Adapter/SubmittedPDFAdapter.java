@@ -2,6 +2,7 @@ package com.example.teacher_panel_application.History.StudyMaterial.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +39,24 @@ public class SubmittedPDFAdapter extends RecyclerView.Adapter<SubmittedPDFAdapte
     public void onBindViewHolder(@NonNull SubmittedPDFAdapter.ViewHolder holder, int position) {
         SubmittedModel model = modelList.get(position);
         holder.name.setText(model.getUserName());
-        holder.date.setText("Submitted Date: "+model.getDateTime());
+        holder.date.setText("Date: "+model.getDateTime());
         Glide.with(context)
                 .load(model.getImgUrl())
                 .into(holder.img);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, AssignmentCheckingActivity.class);
+            intent.putExtra("name",model.getUserName());
+            intent.putExtra("imageUrl",model.getImgUrl());
+            intent.putExtra("date",model.getDateTime());
+            intent.putExtra("pdfUrl",model.getPDFUrl());
+            intent.putExtra("pdfName",model.getPDFName());
+            intent.putExtra("pdfPurpose",model.getPurpose());
+            intent.putExtra("pdfIdentifier",model.getPdfIdentifier());
+            intent.putExtra("pdfChecked",model.isChecked());
+            intent.putExtra("year",model.getYear());
+            intent.putExtra("semester",model.getSemester());
+
             context.startActivity(intent);
         });
 

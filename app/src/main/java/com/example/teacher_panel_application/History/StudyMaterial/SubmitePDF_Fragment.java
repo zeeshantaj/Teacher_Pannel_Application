@@ -183,29 +183,7 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void uploadFile() {
         if (pdfUri != null) {
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            String uid = auth.getUid();
-            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("StudentsInfo").child(uid);
-            reference1.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        String name = snapshot.child("name").getValue(String.class);
-                        String imageUrl = snapshot.child("image").getValue(String.class);
 
-                        MethodsUtils.putString(getActivity(),"studentName",name);
-                        MethodsUtils.putString(getActivity(),"studentImage",imageUrl);
-
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
 
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd:hh:mm:ss:a");
@@ -218,6 +196,7 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
             model.setDateTime(currentDateTimeString);
             model.setPDFName(pdfName);
             model.setPdfIdentifier(pdfIdentifier);
+            model.setChecked(false);
             model.setUid(MethodsUtils.getCurrentUID());
             model.setUserName(MethodsUtils.getString(getActivity(),"studentName"));
             model.setImgUrl(MethodsUtils.getString(getActivity(),"studentImage"));
@@ -352,4 +331,29 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
         long milli = calendar.getTimeInMillis();
         return String.valueOf(milli);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("StudentsInfo").child(uid);
+        reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String name = snapshot.child("name").getValue(String.class);
+                    String imageUrl = snapshot.child("image").getValue(String.class);
+                    MethodsUtils.putString(getActivity(),"studentName",name);
+                    MethodsUtils.putString(getActivity(),"studentImage",imageUrl);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 }
+

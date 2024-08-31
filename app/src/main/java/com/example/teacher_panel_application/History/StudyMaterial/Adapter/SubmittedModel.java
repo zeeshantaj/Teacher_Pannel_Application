@@ -4,8 +4,22 @@ public class SubmittedModel {
     // we have two classes and need to use all the field in the another class what the easy way
 
      private String userName,uid,pdfIdentifier,PDFName,imgUrl,PDFUrl,dateTime,year,semester,purpose;
-
+     private boolean isChecked;
     public SubmittedModel() {
+    }
+
+    public SubmittedModel(String userName, String uid, String pdfIdentifier, String PDFName, String imgUrl, String PDFUrl, String dateTime, String year, String semester, String purpose, boolean isChecked) {
+        this.userName = userName;
+        this.uid = uid;
+        this.pdfIdentifier = pdfIdentifier;
+        this.PDFName = PDFName;
+        this.imgUrl = imgUrl;
+        this.PDFUrl = PDFUrl;
+        this.dateTime = dateTime;
+        this.year = year;
+        this.semester = semester;
+        this.purpose = purpose;
+        this.isChecked = isChecked;
     }
 
     public SubmittedModel(String userName, String uid, String pdfIdentifier, String PDFName, String imgUrl, String PDFUrl, String dateTime, String year, String semester, String purpose) {
@@ -31,6 +45,14 @@ public class SubmittedModel {
         this.year = year;
         this.semester = semester;
         this.purpose = purpose;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public String getPdfIdentifier() {

@@ -226,11 +226,7 @@ public class Upload_Study_Material_Fragment extends Fragment {
             String year = binding.selectYear.getSelectedItem().toString();
             String semester = binding.planetsSpinner.getSelectedItem().toString();
             String purpose = binding.pdfPurpose.getSelectedItem().toString();
-
-
-
-
-
+            
             uploadFile(year, semester, purpose,dueData);
         });
 

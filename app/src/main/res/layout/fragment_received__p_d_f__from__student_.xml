@@ -107,21 +107,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Submitted PDF From Students"
+            android:layout_marginStart="10dp"
+            android:text="@string/submitted_pdf_from_students"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/cardView3"
             app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/submittedPdfRecycler"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="700dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="600dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
         app:layout_constraintStart_toStartOf="@+id/textView23"
-        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+        app:layout_constraintTop_toBottomOf="@+id/textView23">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/submittedPdfRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp" />
+
+    </LinearLayout>
 
 </LinearLayout>
