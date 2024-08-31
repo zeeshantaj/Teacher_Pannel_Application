@@ -111,7 +111,9 @@ public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragmen
                 if (snapshot.exists()){
                     for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                            dataSnapshot1.getKey();
                             SubmittedModel model = dataSnapshot1.getValue(SubmittedModel.class);
+                            model.setKey(dataSnapshot.getKey());
                             modelList.add(model);
                         }
                     }

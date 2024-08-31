@@ -56,6 +56,8 @@ public class SubmittedPDFAdapter extends RecyclerView.Adapter<SubmittedPDFAdapte
             intent.putExtra("pdfChecked",model.isChecked());
             intent.putExtra("year",model.getYear());
             intent.putExtra("semester",model.getSemester());
+            intent.putExtra("key",model.getKey());
+            intent.putExtra("uid",model.getUid());
 
             context.startActivity(intent);
         });
