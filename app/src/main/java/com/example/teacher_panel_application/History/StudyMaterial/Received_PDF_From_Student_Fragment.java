@@ -46,6 +46,7 @@ public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragmen
     }
 
     FragmentReceivedPDFFromStudentBinding binding;
+    private String teacherIdentifier,studentIdentifier;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragmen
             PDFModel model = new Gson().fromJson(json, PDFModel.class);
             if (model != null) {
 
+                teacherIdentifier = model.getIdentifierForPDF();
                 // Use the data as needed
                 binding.pdfFileName.setText(model.getPDFName());
                 binding.pdfUploadDate.setText(model.getDateTime());
@@ -113,8 +115,12 @@ public class Received_PDF_From_Student_Fragment extends BottomSheetDialogFragmen
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                             dataSnapshot1.getKey();
                             SubmittedModel model = dataSnapshot1.getValue(SubmittedModel.class);
-                            model.setKey(dataSnapshot.getKey());
-                            modelList.add(model);
+                            model.setKey(dataSnapshot1.getKey());
+                            studentIdentifier = model.getPdfIdentifier();
+                            if (studentIdentifier.equals(teacherIdentifier)){
+                                modelList.add(model);
+                            }
+
                         }
                     }
                     Collections.reverse(modelList);

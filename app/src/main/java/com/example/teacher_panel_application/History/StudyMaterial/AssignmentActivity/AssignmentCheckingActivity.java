@@ -3,6 +3,7 @@ package com.example.teacher_panel_application.History.StudyMaterial.AssignmentAc
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -51,11 +52,30 @@ public class AssignmentCheckingActivity extends AppCompatActivity {
         String pdfUrl = intent.getStringExtra("pdfUrl");
         String pdfIdentifier = intent.getStringExtra("pdfIdentifier");
         String pdfName = intent.getStringExtra("pdfName");
-        String pdfChecked = intent.getStringExtra("pdfChecked");
+        boolean pdfChecked = intent.getBooleanExtra("pdfChecked",false);
         String year = intent.getStringExtra("year");
         String semester = intent.getStringExtra("semester");
         String key = intent.getStringExtra("key");
         String uid = intent.getStringExtra("uid");
+        String fromStr = intent.getStringExtra("from");
+        String outStr = intent.getStringExtra("out");
+
+        if (pdfChecked){
+            binding.uploadLayout.setVisibility(View.GONE);
+            binding.subProgress.setVisibility(View.GONE);
+            binding.checkedLayout.setVisibility(View.VISIBLE);
+            binding.yourAlreadyCheckTxt.setText("You already Checked this assignment\n" +
+                    "marks given "+outStr+" out of "+fromStr);
+            binding.recheckBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.uploadLayout.setVisibility(View.VISIBLE);
+                }
+            });
+        }else {
+            binding.uploadLayout.setVisibility(View.VISIBLE);
+            binding.subProgress.setVisibility(View.GONE);
+        }
 
 
         Glide.with(this)

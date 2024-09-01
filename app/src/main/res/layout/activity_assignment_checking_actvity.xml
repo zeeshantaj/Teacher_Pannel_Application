@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".History.StudyMaterial.AssignmentActivity.AssignmentCheckingActivity">
 
+
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="0dp"
@@ -167,107 +169,162 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
-            <TextView
-                android:id="@+id/textView26"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Give Marks"
-                android:layout_marginStart="10dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/cardView3"
-                app:layout_constraintTop_toBottomOf="@+id/cardView3" />
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/uploadLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginTop="20dp">
-
-                <Spinner
-                    android:id="@+id/fromMarks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:background="@drawable/spiner_bg"
-                    android:padding="15dp"
-                    app:layout_constraintStart_toStartOf="@+id/textView26"
-                    app:layout_constraintTop_toBottomOf="@+id/textView26" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/textView28"
+                    android:id="@+id/textView26"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="Give Marks"
                     android:layout_marginStart="10dp"
-                    android:text="Out of"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/pdfPurpose"
-                    app:layout_constraintStart_toEndOf="@+id/pdfPurpose"
-                    app:layout_constraintTop_toTopOf="@+id/pdfPurpose" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/cardView3"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
-                <Spinner
-                    android:id="@+id/outOfMarks"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp">
+
+                    <Spinner
+                        android:id="@+id/fromMarks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:background="@drawable/spiner_bg"
+                        android:padding="15dp"
+                        app:layout_constraintStart_toStartOf="@+id/textView26"
+                        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+                    <TextView
+                        android:id="@+id/textView28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:text="Out of"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/pdfPurpose"
+                        app:layout_constraintStart_toEndOf="@+id/pdfPurpose"
+                        app:layout_constraintTop_toTopOf="@+id/pdfPurpose" />
+
+                    <Spinner
+                        android:id="@+id/outOfMarks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/spiner_bg"
+                        android:padding="15dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView28"
+                        app:layout_constraintStart_toEndOf="@+id/textView28"
+                        app:layout_constraintTop_toTopOf="@+id/textView28" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout3"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="20dp"
+                    android:hint="Add Remark"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/txt1"
+                    app:hintTextColor="@color/txt1"
                     android:layout_marginStart="10dp"
-                    android:background="@drawable/spiner_bg"
-                    android:padding="15dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView28"
-                    app:layout_constraintStart_toEndOf="@+id/textView28"
-                    app:layout_constraintTop_toTopOf="@+id/textView28" />
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView3"
+                    app:layout_constraintStart_toStartOf="@+id/pdfPurpose"
+                    app:layout_constraintTop_toBottomOf="@+id/pdfPurpose1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/SignUpName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        app:textInputLayoutFocusedRectEnabled="true"
+                        android:inputType="textPersonName"
+                        android:text=" "
+                        android:maxLines="5"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/singUpBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:backgroundTint="@color/btnColor1"
+                    android:text="@string/upload"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:cornerRadius="12dp"
+                    android:layout_gravity="center"/>
+
 
             </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout3"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
+                android:id="@+id/checkedLayout"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="20dp"
-                android:hint="Add Remark"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/txt1"
-                app:hintTextColor="@color/txt1"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/cardView3"
-                app:layout_constraintStart_toStartOf="@+id/pdfPurpose"
-                app:layout_constraintTop_toBottomOf="@+id/pdfPurpose1">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/SignUpName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="start"
-                    app:textInputLayoutFocusedRectEnabled="true"
-                    android:inputType="textPersonName"
-                    android:text=" "
-                    android:maxLines="5"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/singUpBtn"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/btnColor1"
-                android:text="@string/upload"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:cornerRadius="12dp"
-                android:layout_gravity="center"/>
+                android:orientation="vertical"
+                android:visibility="gone">
 
+                <TextView
+                    android:id="@+id/yourAlreadyCheckTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    android:layout_gravity="center"
+                    app:drawableBottomCompat="@drawable/success_png"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView3"
+                    app:layout_constraintStart_toStartOf="@+id/cardView3"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/recheckBtn"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:backgroundTint="@color/btnColor1"
+                    android:text="Recheck"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:cornerRadius="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pdfProgressTxt" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
+
+    <ProgressBar
+        android:id="@+id/sub_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

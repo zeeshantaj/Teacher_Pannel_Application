@@ -87,7 +87,7 @@ public class Settings_Fragment extends Fragment {
                             SharedPreferences.Editor editor = sharedPreference.edit();
                             editor.remove("typeBool"); // To remove the value
                             editor.apply();
-                            ProgressHelper.showDialog(getActivity(),"Logout","Please Wait...");
+                            ProgressHelper.showDialog(getContext(),"Logout","Please Wait...");
                             Intent intent = new Intent(getActivity(), Login_Activity.class);
                             startActivity(intent);
                             getActivity().finish();

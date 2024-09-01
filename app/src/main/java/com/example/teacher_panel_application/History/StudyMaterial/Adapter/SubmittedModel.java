@@ -3,12 +3,12 @@ package com.example.teacher_panel_application.History.StudyMaterial.Adapter;
 public class SubmittedModel {
     // we have two classes and need to use all the field in the another class what the easy way
 
-     private String userName,uid,pdfIdentifier,PDFName,imgUrl,PDFUrl,dateTime,year,semester,purpose,key;
+     private String userName,uid,pdfIdentifier,PDFName,imgUrl,PDFUrl,dateTime,year,semester,purpose,key,fromMark,outOfMark,remark;
      private boolean isChecked;
     public SubmittedModel() {
     }
 
-    public SubmittedModel(String userName, String uid, String pdfIdentifier, String PDFName, String imgUrl, String PDFUrl, String dateTime, String year, String semester, String purpose, String key, boolean isChecked) {
+    public SubmittedModel(String userName, String uid, String pdfIdentifier, String PDFName, String imgUrl, String PDFUrl, String dateTime, String year, String semester, String purpose, String key, String fromMark, String outOfMark, String remark, boolean isChecked) {
         this.userName = userName;
         this.uid = uid;
         this.pdfIdentifier = pdfIdentifier;
@@ -20,7 +20,34 @@ public class SubmittedModel {
         this.semester = semester;
         this.purpose = purpose;
         this.key = key;
+        this.fromMark = fromMark;
+        this.outOfMark = outOfMark;
+        this.remark = remark;
         this.isChecked = isChecked;
+    }
+
+    public String getFromMark() {
+        return fromMark;
+    }
+
+    public void setFromMark(String fromMark) {
+        this.fromMark = fromMark;
+    }
+
+    public String getOutOfMark() {
+        return outOfMark;
+    }
+
+    public void setOutOfMark(String outOfMark) {
+        this.outOfMark = outOfMark;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getKey() {

@@ -2,6 +2,7 @@ package com.example.teacher_panel_application.History.StudyMaterial;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -21,9 +22,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+
 import com.example.teacher_panel_application.Access.SendNotification;
 import com.example.teacher_panel_application.History.StudyMaterial.Adapter.SubmittedModel;
 import com.example.teacher_panel_application.Models.PDFModel;
+import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.StudentSubmitPdfFragmentBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,7 +61,7 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
     StudentSubmitPdfFragmentBinding binding;
     ActivityResultLauncher<Intent> resultLauncher;
     private Uri pdfUri;
-    private String teacherName,teacherFCMToken,pdfIdentifier;
+    private String teacherName,teacherFCMToken,pdfIdentifier,year,semester,purpose;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,7 +73,9 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
             if (model != null) {
                  teacherName = model.getTeacherName();
                  teacherFCMToken = model.getFCMToken();
-
+                 purpose = model.getPurpose();
+                 year = model.getYear();
+                 semester = model.getSemester();
 
                 binding.cardView3.setOnClickListener(v -> {
                     launchPDf(model.getPDFUrl(),model.getPDFName());
@@ -92,6 +98,10 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                                 if (dataSnapshot.exists()){
                                     String identifier = dataSnapshot.child("pdfIdentifier").getValue(String.class);
+                                    boolean isChecked = dataSnapshot.child("checked").getValue(Boolean.class);
+                                    String fromMark = dataSnapshot.child("fromMark").getValue(String.class);
+                                    String outOfMark = dataSnapshot.child("outOfMark").getValue(String.class);
+                                    String remark = dataSnapshot.child("remark").getValue(String.class);
 
                                     if (identifier != null && pdfIdentifier != null){
                                         Log.e("MyApp","identifier "+identifier);
@@ -102,6 +112,19 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
                                                 binding.submittedTxt.setText("Your Assignment is Submitted to sir "+teacherName);
                                                 binding.assignmentSubmissionLay.setVisibility(View.GONE);
                                                 binding.subProgress.setVisibility(View.GONE);
+                                                binding.imageView3.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.green2)));
+                                                binding.imageView4.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.green2)));
+
+                                                if (isChecked){
+                                                    binding.imageView5.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.green2)));
+                                                    binding.resultLayout.setVisibility(View.VISIBLE);
+                                                    binding.resultNumber.setText(fromMark+"/"+outOfMark);
+                                                    if (!remark.equals("")){
+                                                        binding.remartxt.setText(remark);
+                                                    }
+
+                                                }
+
                                             }else {
                                                 binding.subProgress.setVisibility(View.GONE);
                                                 binding.submittedTxt.setVisibility(View.GONE);
@@ -192,11 +215,20 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
 
             String pdfName = getFileName(pdfUri);
 
+
+
             SubmittedModel model = new SubmittedModel();
             model.setDateTime(currentDateTimeString);
             model.setPDFName(pdfName);
             model.setPdfIdentifier(pdfIdentifier);
             model.setChecked(false);
+            model.setRemark("");
+            model.setFromMark("");
+            model.setOutOfMark("");
+            model.setSemester(semester);
+            model.setYear(year);
+            model.setPurpose(purpose);
+            model.setOutOfMark("");
             model.setUid(MethodsUtils.getCurrentUID());
             model.setUserName(MethodsUtils.getString(getActivity(),"studentName"));
             model.setImgUrl(MethodsUtils.getString(getActivity(),"studentImage"));

@@ -58,6 +58,8 @@ public class SubmittedPDFAdapter extends RecyclerView.Adapter<SubmittedPDFAdapte
             intent.putExtra("semester",model.getSemester());
             intent.putExtra("key",model.getKey());
             intent.putExtra("uid",model.getUid());
+            intent.putExtra("from",model.getFromMark());
+            intent.putExtra("out",model.getOutOfMark());
 
             context.startActivity(intent);
         });
