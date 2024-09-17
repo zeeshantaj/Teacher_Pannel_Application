@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/ice"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
@@ -24,6 +25,7 @@
                 android:layout_margin="8dp"
                 android:text="@string/edit_or_share"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/btnColor1"
+                    android:backgroundTint="@color/center"
                     android:drawableTop="@drawable/pencil_icon"
                     android:drawableTint="@color/black"
                     android:text="@string/edit_data"
@@ -57,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/btnColor1"
+                    android:backgroundTint="@color/center"
                     android:drawableTop="@drawable/whatsapp_logo"
                     android:text="@string/share_on_whatsapp"
                     android:textColor="@color/white"
@@ -80,7 +82,7 @@
                 android:foreground="@drawable/foreground_for_buttons"
                 android:padding="5dp"
                 android:text="@string/cancel"
-                android:textColor="@color/btnColor1"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

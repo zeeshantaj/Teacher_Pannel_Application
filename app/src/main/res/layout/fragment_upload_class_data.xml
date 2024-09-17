@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/ice">
 
 
 
@@ -20,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@color/ice"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -30,6 +32,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="30dp"
+                app:boxStrokeColor="@color/center"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -37,6 +40,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/teacher_name"
+
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
                     android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -49,6 +55,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
+                app:boxStrokeColor="@color/center"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -56,6 +63,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/department"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
                     android:inputType="textPersonName" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -69,10 +78,13 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
+                app:boxStrokeColor="@color/center"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/location"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/class_location" />
@@ -87,10 +99,13 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
+                app:boxStrokeColor="@color/center"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/subject"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/subject" />
@@ -105,12 +120,15 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
+                app:boxStrokeColor="@color/center"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/todayTopic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
                     android:hint="@string/today_s_topic" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -123,12 +141,15 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
+                app:boxStrokeColor="@color/center"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edKey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
                     android:hint="@string/key" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -161,7 +182,7 @@
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:backgroundTint="@color/btnColor1"
+                android:backgroundTint="@color/center"
                 android:text="@string/upload"
                 android:textColor="@color/white"
                 android:textSize="18sp"

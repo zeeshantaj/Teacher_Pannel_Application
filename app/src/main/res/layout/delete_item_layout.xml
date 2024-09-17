@@ -26,6 +26,7 @@
                 android:layout_margin="8dp"
                 android:text="@string/are_you_sure_you_want_to_delete_this"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/btnColor1"
+                    android:backgroundTint="@color/center"
                     android:drawableTop="@drawable/baseline_do_not_disturb_24"
                     android:drawableTint="@color/black"
                     android:text="@string/no"
@@ -60,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/btnColor1"
+                    android:backgroundTint="@color/center"
                     android:drawableTop="@drawable/baseline_delete_24"
                     android:text="@string/delete"
                     android:textColor="@color/white"

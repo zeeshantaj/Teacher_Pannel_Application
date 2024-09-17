@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/ice"
     android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
@@ -17,8 +18,9 @@
         app:tabIndicatorColor="?attr/colorAccent"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
+        android:background="@color/ice"
         app:tabRippleColor="?attr/colorControlHighlight"
-        app:tabSelectedTextColor="@color/darkBlueshade"
+        app:tabSelectedTextColor="@color/center"
         app:tabTextAppearance="?android:attr/textAppearanceMedium"
         app:tabTextColor="@color/darkBlue" />
 

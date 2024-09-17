@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/ice"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Student.StudentActivity">
@@ -24,6 +25,7 @@
         app:itemTextAppearanceActive="@color/darkBlue"
         app:labelVisibilityMode="unlabeled"
         app:itemIconTint="@color/black"
+        android:background="@color/ice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

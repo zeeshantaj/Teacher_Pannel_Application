@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -71,11 +73,11 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
         }
 
         if (model.getPurpose().equals("Assignment")){
-            //holder.pdfBg.setBackground(context.getResources().getDrawable(R.drawable.assignment_bg));
-//            holder.pdfBg.setBackground(ContextCompat.getDrawable(context,R.drawable.assignment_bg));
+          //  holder.purpose.setTextColor(R.color.green);
+            blinkAnimation(holder.itemView);
         }
 //        else {
-//            holder.purpose.setTextColor(R.color.green);
+//            holder.purpose.setTextColor(R.color.black);
 //        }
 
         holder.itemView.setOnClickListener(v -> {
@@ -132,5 +134,14 @@ public class ViewStudyHistoryAdapter extends RecyclerView.Adapter<ViewStudyHisto
             name = itemView.findViewById(R.id.pdfUploaderName);
             img = itemView.findViewById(R.id.pdfUploaderImg);
         }
+    }
+
+    private void blinkAnimation(View view) {
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(500); // Duration of the blink
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(5);
+        view.startAnimation(anim);
     }
 }

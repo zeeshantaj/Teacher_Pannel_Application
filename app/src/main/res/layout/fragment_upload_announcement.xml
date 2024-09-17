@@ -19,7 +19,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/ice">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout7"
@@ -28,13 +29,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
+                app:boxStrokeColor="@color/center"
                 android:layout_marginEnd="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/announceTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/announcement_title" />
+                    android:hint="@string/announcement_title"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"/>
+
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,6 +51,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
+                app:boxStrokeColor="@color/center"
                 app:layout_constraintEnd_toEndOf="@+id/textInputLayout7"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayout7"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout7">
@@ -54,7 +60,9 @@
                     android:id="@+id/announceDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/description_optional" />
+                    android:hint="@string/description_optional"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,14 +79,14 @@
                     android:layout_height="1dp"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
-                    android:background="@color/darkBlueshade" />
+                    android:background="@color/grey" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/or"
-                    android:textColor="@color/darkBlueshade"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -87,7 +95,7 @@
                     android:layout_height="1dp"
                     android:layout_margin="20dp"
                     android:layout_weight="1"
-                    android:background="@color/darkBlueshade" />
+                    android:background="@color/grey" />
             </LinearLayout>
 
             <TextView
@@ -95,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/select_an_image"
-                android:textColor="@color/darkBlueshade"
+                android:textColor="@color/black"
                 android:textSize="24sp" />
 
             <ImageView
@@ -112,7 +120,7 @@
                 android:layout_height="1.9dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@color/darkBlueshade" />
+                android:background="@color/grey" />
 
             <TextView
                 android:id="@+id/dueDate"
@@ -133,6 +141,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
+                app:boxStrokeColor="@color/center"
                 app:layout_constraintEnd_toEndOf="@+id/textInputLayout7"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayout7"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout7">
@@ -150,7 +159,7 @@
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/btnColor1"
+                android:backgroundTint="@color/center"
                 android:text="@string/upload"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -165,7 +174,7 @@
         android:id="@+id/announcementProgressIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:indicatorColor="@color/btnColor1"
+        app:indicatorColor="@color/center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

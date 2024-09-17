@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".History.StudyMaterial.Received_PDF_From_Student_Fragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/ice">
 
 
         <androidx.cardview.widget.CardView
@@ -111,6 +112,7 @@
             android:text="@string/submitted_pdf_from_students"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@+id/cardView3"
             app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ice"
     tools:context=".Home.Upload_Study_Material_Fragment">
 
     <ScrollView
@@ -17,14 +18,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/ice">
 
             <LinearLayout
                 android:id="@+id/pdfLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:background="@color/ice">
 
 
                 <Spinner
@@ -99,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:backgroundTint="@color/btnColor1"
+                    android:backgroundTint="@color/center"
                     android:text="@string/upload"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -366,7 +369,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/btnColor1"
+                android:backgroundTint="@color/center"
                 android:text="Switch to Upload Video Link"
                 android:textColor="@color/white"
                 android:textSize="18sp"

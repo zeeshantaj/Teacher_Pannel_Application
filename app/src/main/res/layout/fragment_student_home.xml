@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/ice"
     tools:context=".Student.fragments.StudentHome">
 
     <com.google.android.material.tabs.TabLayout
@@ -15,11 +16,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabBackground="?attr/selectableItemBackground"
         app:tabGravity="fill"
+        android:background="@color/ice"
         app:tabIndicatorColor="?attr/colorAccent"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
         app:tabRippleColor="?attr/colorControlHighlight"
-        app:tabSelectedTextColor="@color/darkBlueshade"
+        app:tabSelectedTextColor="@color/center"
         app:tabTextAppearance="?android:attr/textAppearanceMedium"
         app:tabTextColor="@color/darkBlue" />
 

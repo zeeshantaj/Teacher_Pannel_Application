@@ -74,9 +74,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:checked="true"
+                        android:checked="false"
                         app:trackTint="@color/ice"
-                        app:thumbTint="@color/txt1"
+                        app:thumbTint="@color/default_end_color"
 
                         />
 
@@ -181,7 +181,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
 
 
         </LinearLayout>

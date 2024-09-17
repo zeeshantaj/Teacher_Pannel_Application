@@ -4,28 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/intro_gradient_bg">
+    android:background="@color/ice">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/nestedScrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="center_vertical">
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <TextView
         android:id="@+id/classConnectTxt"
@@ -34,8 +29,9 @@
         android:layout_marginBottom="200dp"
         android:text="@string/class_nconnect"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="34sp"
+        android:drawableTop="@drawable/log_group"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,12 +40,13 @@
 
 
 
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/getStartedBtnAsTeacher"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="95dp"
-        android:backgroundTint="@color/btnColor"
+        android:backgroundTint="@color/center"
         android:text="@string/get_started"
         android:textColor="@color/white"
         android:textSize="18sp"
@@ -77,7 +74,7 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:text="Or"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/getStartedBtnAsTeacher"
         app:layout_constraintStart_toStartOf="@+id/getStartedBtnAsTeacher"
@@ -98,7 +95,7 @@
         android:id="@+id/getStartedBtnAsStudent"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/btnColor"
+        android:backgroundTint="@color/center"
         android:text="@string/get_started1"
         android:textColor="@color/white"
         android:textSize="18sp"
@@ -115,7 +112,7 @@
         android:layout_marginBottom="10dp"
         android:text="@string/inspiring_tech_solution_for_a_nbrighten_future"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/getStartedBtnAsTeacher"
