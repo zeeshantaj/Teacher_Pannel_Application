@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,8 +19,10 @@ import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Home.Home_Fragment;
 import com.example.teacher_panel_application.Intro.IntroFragment;
 import com.example.teacher_panel_application.Network.NetworkCheckReceiver;
+import com.example.teacher_panel_application.Network.NetworkUtils;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Student.StudentActivity;
+import com.example.teacher_panel_application.TeacherHistoryDB.TeacherDB;
 import com.example.teacher_panel_application.Utils.FragmentUtils;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.ActivityLoginBinding;
@@ -34,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 public class Login_Activity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private View splashView;
+    private View noInternetView;
     private NetworkCheckReceiver networkChangeReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,28 +51,8 @@ public class Login_Activity extends AppCompatActivity {
             binding = ActivityLoginBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
 
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            FirebaseUser user = auth.getCurrentUser();
+            checkInternetConnection();
 
-            if (user != null) {
-                Thread thread = new Thread(() -> {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    String email = user.getEmail();
-                    checkUserRole(email);
-//                    startActivity(new Intent(Login_Activity.this, Home_Activity.class));
-//                    finish(); // Finish the current activity to prevent going back to it on back press
-                });
-                thread.start();
-
-            } else {
-                //show intro when user first install app
-                FragmentUtils.SetFragment(getSupportFragmentManager(), new IntroFragment(), binding.loginFrameLayout.getId());
-            }
         }, 1000); // Delay for 1 seconds before loading the actual layout
 
         networkChangeReceiver = new NetworkCheckReceiver();
@@ -121,6 +105,54 @@ public class Login_Activity extends AppCompatActivity {
                 MethodsUtils.showFlawDialog(Login_Activity.this,R.drawable.icon_error,"Error",databaseError.getMessage(),1);
             }
         });
+    }
+    private void checkInternetConnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+                // Device is connected to the internet
+                NetworkUtils.hasInternetAccess(hasInternetAccess -> {
+                    if (hasInternetAccess) {
+                        // Continue to load online data
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        if (user != null) {
+                            loadUserSession(user);
+                        } else {
+                            FragmentUtils.SetFragment(getSupportFragmentManager(), new IntroFragment(), binding.loginFrameLayout.getId());
+                        }
+                    } else {
+                        // No service, show "No Internet" layout
+                        showNoInternetLayout();
+                    }
+                });
+            } else {
+                // No connection at all
+                showNoInternetLayout();
+            }
+        }
+    }
+
+    private void loadUserSession(FirebaseUser user) {
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            String email = user.getEmail();
+            checkUserRole(email);
+        });
+        thread.start();
+    }
+    private void showNoInternetLayout() {
+        // Inflate and show the no internet layout
+        noInternetView = getLayoutInflater().inflate(R.layout.no_internet_layout, null);
+        setContentView(noInternetView);
+
     }
     @Override
     protected void onDestroy() {

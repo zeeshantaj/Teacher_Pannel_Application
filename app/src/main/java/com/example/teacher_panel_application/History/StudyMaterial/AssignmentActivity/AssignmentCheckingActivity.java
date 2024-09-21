@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.teacher_panel_application.Access.SendNotification;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.databinding.ActivityAssignmentCheckingActvityBinding;
@@ -59,6 +60,7 @@ public class AssignmentCheckingActivity extends AppCompatActivity {
         String uid = intent.getStringExtra("uid");
         String fromStr = intent.getStringExtra("from");
         String outStr = intent.getStringExtra("out");
+        String StudentFCMTOKEN = intent.getStringExtra("StudentFCMTOKEN");
 
         if (pdfChecked){
             binding.uploadLayout.setVisibility(View.GONE);
@@ -150,7 +152,7 @@ public class AssignmentCheckingActivity extends AppCompatActivity {
                     .child(uid)
                     .child(key);
             HashMap<String,Object> update = new HashMap<>();
-            update.put("isChecked",true);
+            update.put("checked",true);
             update.put("fromMark",from);
             update.put("outOfMark",out);
             update.put("remark",remark);
@@ -158,6 +160,10 @@ public class AssignmentCheckingActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void unused) {
                     MethodsUtils.showSuccessDialog(AssignmentCheckingActivity.this,"Assignment","Assignment Checking Posted Successfully", SweetAlertDialog.SUCCESS_TYPE);
+                    SendNotification sendNotification = new SendNotification(StudentFCMTOKEN,
+                            "Your Assignment is checked\n",
+                            "check out your marks or remark given by Teacher",AssignmentCheckingActivity.this);
+                    sendNotification.sendNotification();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

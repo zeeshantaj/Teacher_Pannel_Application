@@ -42,6 +42,11 @@ public class TeacherDB extends SQLiteOpenHelper {
 
 
 
+    public static final String User_Credential_TABLE_NAME = "user_Data";
+    public static final String COLUMN_EMAIL = "email";
+    public static final String COLUMN_PASSWORD = "password";
+
+
     public TeacherDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -71,6 +76,11 @@ public class TeacherDB extends SQLiteOpenHelper {
                 + semester + " TEXT,"
                 + year + "TEXT" + ")";
         db.execSQL(CREATE_TABLE1);
+
+        String CREATE_TABLE2 = "CREATE TABLE " + User_Credential_TABLE_NAME + "("
+                + COLUMN_EMAIL + " TEXT,"
+                + COLUMN_PASSWORD + "TEXT" + ")";
+        db.execSQL(CREATE_TABLE2);
     }
 
     @Override
@@ -90,7 +100,30 @@ public class TeacherDB extends SQLiteOpenHelper {
         db.insert(PDF_DATA, null, values);
         db.close();
     }
-    public List<PDFModel> getUserPDf(){
+    public void insertUserINFO(String email,String password){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EMAIL, email);
+        values.put(COLUMN_PASSWORD, password);
+        db.insert(User_Credential_TABLE_NAME, null, values);
+        db.close();
+    }
+    public String[] getUserInfo(){
+        List<PDFModel> classDataList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + User_Credential_TABLE_NAME, null);
+        String email = "";
+        String password = "";
+        if (cursor.moveToFirst()) {
+            do {
+                email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL));
+                password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return new String[]{email,password};
+    }  public List<PDFModel> getUserPDf(){
         List<PDFModel> classDataList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + PDF_DATA, null);

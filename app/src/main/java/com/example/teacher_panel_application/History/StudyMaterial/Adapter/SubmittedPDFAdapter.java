@@ -60,6 +60,8 @@ public class SubmittedPDFAdapter extends RecyclerView.Adapter<SubmittedPDFAdapte
             intent.putExtra("uid",model.getUid());
             intent.putExtra("from",model.getFromMark());
             intent.putExtra("out",model.getOutOfMark());
+            intent.putExtra("out",model.getOutOfMark());
+            intent.putExtra("StudentFCMTOKEN",model.getStudentFCMTOKEN());
 
             context.startActivity(intent);
         });

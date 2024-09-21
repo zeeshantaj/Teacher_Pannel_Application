@@ -3,12 +3,13 @@ package com.example.teacher_panel_application.History.StudyMaterial.Adapter;
 public class SubmittedModel {
     // we have two classes and need to use all the field in the another class what the easy way
 
-     private String userName,uid,pdfIdentifier,PDFName,imgUrl,PDFUrl,dateTime,year,semester,purpose,key,fromMark,outOfMark,remark;
-     private boolean isChecked;
+     private String userName,uid,pdfIdentifier,PDFName,imgUrl,PDFUrl,StudentFCMTOKEN,dateTime,year,semester,purpose,key,fromMark,outOfMark,remark;
+     private boolean checked;
     public SubmittedModel() {
     }
 
-    public SubmittedModel(String userName, String uid, String pdfIdentifier, String PDFName, String imgUrl, String PDFUrl, String dateTime, String year, String semester, String purpose, String key, String fromMark, String outOfMark, String remark, boolean isChecked) {
+    public SubmittedModel(String userName, String uid, String pdfIdentifier, String PDFName, String imgUrl, String PDFUrl,
+                          String dateTime, String year, String semester, String purpose, String key, String fromMark, String outOfMark, String remark, boolean checked) {
         this.userName = userName;
         this.uid = uid;
         this.pdfIdentifier = pdfIdentifier;
@@ -23,7 +24,15 @@ public class SubmittedModel {
         this.fromMark = fromMark;
         this.outOfMark = outOfMark;
         this.remark = remark;
-        this.isChecked = isChecked;
+        this.checked = checked;
+    }
+
+    public String getStudentFCMTOKEN() {
+        return StudentFCMTOKEN;
+    }
+
+    public void setStudentFCMTOKEN(String studentFCMTOKEN) {
+        StudentFCMTOKEN = studentFCMTOKEN;
     }
 
     public String getFromMark() {
@@ -59,11 +68,11 @@ public class SubmittedModel {
     }
 
     public boolean isChecked() {
-        return isChecked;
+        return checked;
     }
 
     public void setChecked(boolean checked) {
-        isChecked = checked;
+        this.checked = checked;
     }
 
     public String getPdfIdentifier() {

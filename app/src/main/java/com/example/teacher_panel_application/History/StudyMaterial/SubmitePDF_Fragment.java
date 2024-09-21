@@ -118,9 +118,9 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
                                                 if (isChecked){
                                                     binding.imageView5.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.green2)));
                                                     binding.resultLayout.setVisibility(View.VISIBLE);
-                                                    binding.resultNumber.setText(fromMark+"/"+outOfMark);
+                                                    binding.resultNumber.setText("Your Obtained marks "+outOfMark + " out of "+""+fromMark);
                                                     if (!remark.equals("")){
-                                                        binding.remartxt.setText(remark);
+                                                        binding.remartxt.setText("Remark given by Sir "+teacherName+" "+remark);
                                                     }
 
                                                 }
@@ -232,6 +232,7 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
             model.setUid(MethodsUtils.getCurrentUID());
             model.setUserName(MethodsUtils.getString(getActivity(),"studentName"));
             model.setImgUrl(MethodsUtils.getString(getActivity(),"studentImage"));
+            model.setStudentFCMTOKEN(MethodsUtils.getString(getActivity(),"StudentFCMToken"));
 
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("StudentsSubmittedPDF")
@@ -376,8 +377,10 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
                 if (snapshot.exists()) {
                     String name = snapshot.child("name").getValue(String.class);
                     String imageUrl = snapshot.child("image").getValue(String.class);
+                    String fcm = snapshot.child("FCMToken").getValue(String.class);
                     MethodsUtils.putString(getActivity(),"studentName",name);
                     MethodsUtils.putString(getActivity(),"studentImage",imageUrl);
+                    MethodsUtils.putString(getActivity(),"StudentFCMToken",fcm);
                 }
             }
             @Override

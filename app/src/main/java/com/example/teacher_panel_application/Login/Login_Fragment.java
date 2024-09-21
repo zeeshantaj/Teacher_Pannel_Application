@@ -95,6 +95,8 @@ public class Login_Fragment extends Fragment {
 //                            getActivity().finish();
 //                            ProgressHelper.dismissDialog();
 
+                            saveEmailPassword();
+
                             checkUserRole(email);
 
                         } else {
@@ -120,6 +122,11 @@ public class Login_Fragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    private void saveEmailPassword() {
+
+
     }
 
     public void checkUserRole(String email) {
