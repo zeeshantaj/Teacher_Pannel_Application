@@ -429,12 +429,23 @@ public class Upload_Study_Material_Fragment extends Fragment {
     }
 
     private void selectPDF() {
-        // Initialize intent
+
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        // set type
-        intent.setType("application/pdf");
-        // Launch intent
+
+// Set multiple types (PDF and PPT)
+        intent.setType("*/*");
+        String[] mimeTypes = {"application/pdf", "application/vnd.ms-powerpoint",
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation"};
+
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+// Launch intent
         resultLauncher.launch(intent);
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        // set type
+//        intent.setType("application/pdf");
+//        // Launch intent
+
+//        resultLauncher.launch(intent);
     }
 
     @Override
