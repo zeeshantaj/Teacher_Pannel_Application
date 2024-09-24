@@ -19,18 +19,22 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.teacher_panel_application.Fragment.TermsAndConditionFragment;
 import com.example.teacher_panel_application.Home.Home_Activity;
 import com.example.teacher_panel_application.Home.Main_HomeViewPagerAdapter;
 import com.example.teacher_panel_application.Network.NetworkCheckReceiver;
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Student.fragments.Ask_Question_Fragment;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -50,7 +54,6 @@ public class StudentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student);
         viewPager2 = findViewById(R.id.studentViewPager);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewStudent);
-
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
         getStatus();
@@ -87,6 +90,11 @@ public class StudentActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
             }
         }
+        FloatingActionButton button = findViewById(R.id.qaFloatingBtn);
+        button.setOnClickListener(v -> {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            MethodsUtils.setFragment(fragmentManager,new Ask_Question_Fragment());
+        });
     }
     private int getNavigationItem(int position) {
         switch (position) {
