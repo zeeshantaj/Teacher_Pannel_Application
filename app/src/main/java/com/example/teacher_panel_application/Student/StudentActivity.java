@@ -2,6 +2,7 @@ package com.example.teacher_panel_application.Student;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -11,23 +12,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.teacher_panel_application.Fragment.TermsAndConditionFragment;
-import com.example.teacher_panel_application.Home.Home_Activity;
-import com.example.teacher_panel_application.Home.Main_HomeViewPagerAdapter;
 import com.example.teacher_panel_application.Network.NetworkCheckReceiver;
 import com.example.teacher_panel_application.R;
-import com.example.teacher_panel_application.Student.fragments.Ask_Question_Fragment;
+import com.example.teacher_panel_application.Student.fragments.Ask_Question_Activity;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,8 +28,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -92,8 +89,9 @@ public class StudentActivity extends AppCompatActivity {
         }
         FloatingActionButton button = findViewById(R.id.qaFloatingBtn);
         button.setOnClickListener(v -> {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            MethodsUtils.setFragment(fragmentManager,new Ask_Question_Fragment());
+            startActivity(new Intent(this,Ask_Question_Activity.class));
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            MethodsUtils.setFragment(fragmentManager,new Ask_Question_Fragment());
         });
     }
     private int getNavigationItem(int position) {
@@ -166,5 +164,37 @@ public class StudentActivity extends AppCompatActivity {
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("StudentsInfo").child(uid);
+        reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String name = snapshot.child("name").getValue(String.class);
+                    String imageUrl = snapshot.child("image").getValue(String.class);
+                    String fcm = snapshot.child("FCMToken").getValue(String.class);
+                    String year = snapshot.child("studentYear").getValue(String.class);
+                    String semester = snapshot.child("studentSemester").getValue(String.class);
+                    String major = snapshot.child("studentMajor").getValue(String.class);
+                    MethodsUtils.putString(StudentActivity.this,"studentName",name);
+                    MethodsUtils.putString(StudentActivity.this,"studentYear",year);
+                    MethodsUtils.putString(StudentActivity.this,"studentSemester",semester);
+                    MethodsUtils.putString(StudentActivity.this,"studentMajor",major);
+                    MethodsUtils.putString(StudentActivity.this,"studentImage",imageUrl);
+                    MethodsUtils.putString(StudentActivity.this,"StudentFCMToken",fcm);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(StudentActivity.this, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }

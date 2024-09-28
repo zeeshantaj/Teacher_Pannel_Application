@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.teacher_panel_application.Adapters.UploadDetailsViewPagerAdapter;
+import com.example.teacher_panel_application.Fragment.QA_Fragment;
 import com.example.teacher_panel_application.History.Announcement.AnnounceAdapter;
 import com.example.teacher_panel_application.History.Announcement.AnnouncementHistory_Fragment;
 import com.example.teacher_panel_application.History.ClassHis.ClassHistory_Fragment;
@@ -54,7 +55,7 @@ public class StudentHome extends Fragment {
 
 
 
-        Fragment[] pages = { new Announcement_Notification_Fragment(),new Poll_Fragment()}; // Replace with your fragment classes
+        Fragment[] pages = { new Announcement_Notification_Fragment(),new Poll_Fragment(),new QA_Fragment()}; // Replace with your fragment classes
         UploadDetailsViewPagerAdapter myPagerAdapter = new UploadDetailsViewPagerAdapter(getActivity(),pages);
         binding.myViewpagerHistory.setAdapter(myPagerAdapter);
 
@@ -78,6 +79,10 @@ public class StudentHome extends Fragment {
                     } else if (position == 1) {
                         //myViewPager.setCurrentItem(position,true);
                         tab.setText("Poll");
+                    }
+                    else if (position == 2) {
+                        //myViewPager.setCurrentItem(position,true);
+                        tab.setText("Q&A");
                     }
                 }
         );

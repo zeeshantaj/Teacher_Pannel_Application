@@ -378,7 +378,13 @@ public class SubmitePDF_Fragment extends BottomSheetDialogFragment {
                     String name = snapshot.child("name").getValue(String.class);
                     String imageUrl = snapshot.child("image").getValue(String.class);
                     String fcm = snapshot.child("FCMToken").getValue(String.class);
+                    String year = snapshot.child("FCMToken").getValue(String.class);
+                    String semester = snapshot.child("FCMToken").getValue(String.class);
+                    String major = snapshot.child("FCMToken").getValue(String.class);
                     MethodsUtils.putString(getActivity(),"studentName",name);
+                    MethodsUtils.putString(getActivity(),"studentYear",year);
+                    MethodsUtils.putString(getActivity(),"studentSemester",semester);
+                    MethodsUtils.putString(getActivity(),"studentYear",major);
                     MethodsUtils.putString(getActivity(),"studentImage",imageUrl);
                     MethodsUtils.putString(getActivity(),"StudentFCMToken",fcm);
                 }

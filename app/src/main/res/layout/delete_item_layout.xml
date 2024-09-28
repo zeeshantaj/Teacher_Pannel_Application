@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
         android:layout_margin="4dp"
+        android:padding="20dp"
+        app:cardBackgroundColor="@color/ice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,7 +19,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="20dp">
 
             <TextView
                 android:id="@+id/textView3"
@@ -34,21 +37,27 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="2"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3">
 
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/baseline_delete_24"
+                    android:layout_gravity="center"
+                    app:tint="@color/lightPink" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/noBtn"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/center"
-                    android:drawableTop="@drawable/baseline_do_not_disturb_24"
                     android:drawableTint="@color/black"
                     android:text="@string/no"
                     android:textColor="@color/white"
@@ -57,12 +66,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/deleteBtn"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/center"
-                    android:drawableTop="@drawable/baseline_delete_24"
                     android:text="@string/delete"
                     android:textColor="@color/white"
                     android:textSize="16sp"

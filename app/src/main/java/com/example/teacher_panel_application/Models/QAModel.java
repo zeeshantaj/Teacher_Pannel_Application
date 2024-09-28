@@ -1,9 +1,35 @@
 package com.example.teacher_panel_application.Models;
 
 public class QAModel {
-    private String question,answer,key,StudentUid,teacherUid,studentName,teacherName,postedData,answerDate;
+    private String question,answer,key,StudentUid,teacherUid,studentName,teacherName,postedData,answerDate,year,semester,major;
+
+
 
     public QAModel() {
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 
     public String getStudentUid() {
