@@ -32,6 +32,7 @@ import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.Utils.ProgressHelper;
+import com.example.teacher_panel_application.VideoStreaming.VideoStreamingActivity;
 import com.example.teacher_panel_application.databinding.FragmentSettingsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -68,6 +69,9 @@ public class Settings_Fragment extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         ClickShrinkUtils.applyClickShrink(binding.rateTxt);
+        binding.startVideoStreamingCard.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), VideoStreamingActivity.class));
+        });
         binding.rateTxt.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             MaterialRating materialRating = new MaterialRating();

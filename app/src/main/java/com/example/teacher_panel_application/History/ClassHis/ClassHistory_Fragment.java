@@ -45,7 +45,7 @@ public class ClassHistory_Fragment extends Fragment {
                         // show online data
                         getOnlineData();
                     }else {
-                        getOfflineData();
+                        //getOfflineData();
                         // show offline data
                     }
                 });

@@ -54,6 +54,7 @@ public class StudentActivity extends AppCompatActivity {
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.darkBlue));
         getStatus();
+        Intent intent = getIntent();
 
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
