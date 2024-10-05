@@ -95,7 +95,10 @@ public class VideoStreamingActivity extends AppCompatActivity {
             config.mEventHandler = mRtcEventHandler;
             // Create and initialize an RtcEngine instance
             mRtcEngine = RtcEngine.create(config);
+            Log.d("MyApp", "Agora SDK initialized successfully");
+
         } catch (Exception e) {
+            Log.e("MyApp", "Agora SDK initialization error: " + e.getMessage());
             throw new RuntimeException("Check the error.");
         }
         // Enable the video module
@@ -121,7 +124,7 @@ public class VideoStreamingActivity extends AppCompatActivity {
         // Specify the user ID yourself and ensure it is unique within the channel
         mRtcEngine.joinChannel(token, channelName, 0, options);
 
-        sendNotificationToUser();
+        //sendNotificationToUser();
     }
 
     private void sendNotificationToUser() {
@@ -155,7 +158,9 @@ public class VideoStreamingActivity extends AppCompatActivity {
                 // Handle possible errors
             }
         });
-    }public void sendNotification(String title, String body, String userFCMToken) {
+    }
+
+    public void sendNotification(String title, String body, String userFCMToken) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject mainObj = new JSONObject();
         try {
@@ -211,6 +216,7 @@ public class VideoStreamingActivity extends AppCompatActivity {
             Log.d("MyApp", "json exception " + e.getMessage());
         }
     }
+
     private void setupRemoteVideo(int uid) {
         FrameLayout container = findViewById(R.id.remote_video_view_container);
         SurfaceView surfaceView = new SurfaceView (getBaseContext());
@@ -219,7 +225,8 @@ public class VideoStreamingActivity extends AppCompatActivity {
         // Pass the SurfaceView object to the SDK and set the remote view
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
     }
-    private static final int PERMISSION_REQ_ID = 22;
+
+    public static final int PERMISSION_REQ_ID = 22;
     // Obtain recording, camera and other permissions required to implement real-time audio and video interaction
     private String[] getRequiredPermissions(){
         // Determine the permissions required when targetSDKVersion is 31 or above
@@ -237,6 +244,7 @@ public class VideoStreamingActivity extends AppCompatActivity {
             };
         }
     }
+
     private boolean checkPermissions() {
         for (String permission : getRequiredPermissions()) {
             int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
@@ -254,6 +262,7 @@ public class VideoStreamingActivity extends AppCompatActivity {
             initializeAndJoinChannel();
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
