@@ -3,7 +3,6 @@ package com.example.teacher_panel_application.VideoStreaming;
 
 
 
-import static com.example.teacher_panel_application.VideoStreaming.VideoStreamingActivity.PERMISSION_REQ_ID;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -17,26 +16,34 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teacher_panel_application.R;
+import com.example.teacher_panel_application.Utils.MethodsUtils;
+import com.google.firebase.auth.FirebaseAuth;
 import com.zegocloud.uikit.prebuilt.livestreaming.ZegoUIKitPrebuiltLiveStreamingConfig;
 import com.zegocloud.uikit.prebuilt.livestreaming.ZegoUIKitPrebuiltLiveStreamingFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ReceivedVideoStreamingActivity extends AppCompatActivity {
-
-
-    String appSign = "95ae7921ce3ed8f0957bf4ffe383a3933491b47574d375e871392c3e10f93ba2";
-    long appID = 707255301;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_received_video_streaming); // Create this layout for video watching
+        RecyclerView recyclerView = findViewById(R.id.videoRecycler);
+        List<StreamModel> modelList = new ArrayList<>();
 
+        ReceiveVideoStreamingAdapter adapter = new ReceiveVideoStreamingAdapter(this,modelList);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerView.setAdapter(adapter);
         if (checkPermissions()) {
             addFragment();
+
         } else {
-            ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+            ActivityCompat.requestPermissions(this, getRequiredPermissions(), 12);
         }
     }
 
@@ -64,14 +71,15 @@ public class ReceivedVideoStreamingActivity extends AppCompatActivity {
         }
     }
     public void addFragment() {
-        String userID = "12345678";
-        String userName = "zeeshan";
-
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String userID = auth.getUid();
+        String userName = MethodsUtils.getString(this,"studentName");
         ZegoUIKitPrebuiltLiveStreamingConfig config = ZegoUIKitPrebuiltLiveStreamingConfig.audience();
         ZegoUIKitPrebuiltLiveStreamingFragment fragment = ZegoUIKitPrebuiltLiveStreamingFragment.newInstance(
-                appID, appSign, userID, userName,"12345",config);
+                KeyConstants.appID, KeyConstants.appSign, userID, userName,"123456",config);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commitNow();
+
     }
 }

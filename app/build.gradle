@@ -91,7 +91,6 @@ dependencies {
 
     implementation 'io.github.afreakyelf:Pdf-Viewer:2.1.1'
     implementation 'com.android.volley:volley:1.2.1'
-    implementation 'io.agora.rtc:full-sdk:4.3.2'
     implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_live_streaming_android:+'
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:3.0-alpha-1'
