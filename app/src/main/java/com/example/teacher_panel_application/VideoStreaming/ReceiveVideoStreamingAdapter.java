@@ -56,7 +56,7 @@ public class ReceiveVideoStreamingAdapter extends RecyclerView.Adapter<ReceiveVi
             intent.putExtra("userId",model.getUserId());
             context.startActivity(intent);
         });
-        holder.liveNow.setText("Live Ended");
+        holder.liveNow.setText("Live now");
     }
 
     @Override

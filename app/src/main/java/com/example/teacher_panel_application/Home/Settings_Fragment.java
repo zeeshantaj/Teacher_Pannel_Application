@@ -21,6 +21,7 @@ import com.example.teacher_panel_application.Login.Login_Activity;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.example.teacher_panel_application.Utils.ProgressHelper;
 import com.example.teacher_panel_application.VideoStreaming.ReceivedVideoStreamingActivity;
+import com.example.teacher_panel_application.VideoStreaming.StreamHistoryFragment;
 import com.example.teacher_panel_application.VideoStreaming.ZegoCloudVideoStreamingActivity;
 import com.example.teacher_panel_application.databinding.FragmentSettingsBinding;
 import com.google.android.material.snackbar.Snackbar;
@@ -104,7 +105,10 @@ public class Settings_Fragment extends Fragment {
         binding.profileCard.setOnClickListener(v -> {
             openFragment();
         });
-
+        binding.streamHistoryBtn.setOnClickListener(view -> {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            MethodsUtils.setFragment(fragmentManager,new StreamHistoryFragment());
+        });
         binding.termsAndCondCard.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             MethodsUtils.setFragment(fragmentManager,new TermsAndConditionFragment());
