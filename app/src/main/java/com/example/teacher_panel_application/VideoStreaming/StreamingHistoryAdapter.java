@@ -24,24 +24,24 @@ import java.util.List;
 import eightbitlab.com.blurview.BlurView;
 import eightbitlab.com.blurview.RenderScriptBlur;
 
-public class ReceiveVideoStreamingAdapter extends RecyclerView.Adapter<ReceiveVideoStreamingAdapter.ViewHolder> {
+public class StreamingHistoryAdapter extends RecyclerView.Adapter<StreamingHistoryAdapter.ViewHolder> {
     private Context context;
     private List<StreamModel> modelList;
 
-    public ReceiveVideoStreamingAdapter(Context context, List<StreamModel> modelList) {
+    public StreamingHistoryAdapter(Context context, List<StreamModel> modelList) {
         this.context = context;
         this.modelList = modelList;
     }
 
     @NonNull
     @Override
-    public ReceiveVideoStreamingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public StreamingHistoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.stream_history_rv_item,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReceiveVideoStreamingAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StreamingHistoryAdapter.ViewHolder holder, int position) {
         StreamModel model = modelList.get(position);
         holder.title.setText(model.getTitle() +"\n"+model.getStreamerName());
         holder.time.setText(model.getTime());
@@ -51,9 +51,10 @@ public class ReceiveVideoStreamingAdapter extends RecyclerView.Adapter<ReceiveVi
                 .into(holder.imageView);
 
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(context,JoinedStreamingActivity.class);
-            intent.putExtra("liveId",model.getLiveId());
-            intent.putExtra("userId",model.getUserId());
+            Intent intent = new Intent(context, StreamDetailsActivity.class);
+            intent.putExtra("liveId",model.getTime());
+            intent.putExtra("title",model.getTitle());
+            intent.putExtra("name",model.getStreamerName());
             context.startActivity(intent);
         });
         holder.liveNow.setText("Live Ended");
