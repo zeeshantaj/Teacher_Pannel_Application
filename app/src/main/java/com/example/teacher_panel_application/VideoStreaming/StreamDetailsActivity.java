@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StreamDetailsActivity extends AppCompatActivity {
-
+    List<AttendeesModel> modelList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,31 +63,24 @@ public class StreamDetailsActivity extends AppCompatActivity {
         }
     }
     private void getUserInfo(String uid){
-        List<AttendeesModel> modelList = new ArrayList<>();
+
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("StudentsInfo")
                 .child(uid);
 
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    modelList.clear(); // Clear the list to avoid duplicate entries on data change
+//                    modelList.clear(); // Clear the list to avoid duplicate entries on data change
+                    String name = snapshot.child("name").getValue(String.class);
+                    String image = snapshot.child("image").getValue(String.class);
 
-                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                        // Initialize a new AttendeesModel object for each child
-                        AttendeesModel model = new AttendeesModel();
+                    AttendeesModel model = new AttendeesModel();
 
-                        String name = snapshot1.child("name").getValue(String.class);
-                        String image = snapshot1.child("image").getValue(String.class);
-
-                        model.setName(name);
-                        model.setImage(image);
-
-                        // Add the model to the list
-                        modelList.add(model);
-                    }
-
+                    model.setName(name);
+                    model.setImage(image);
+                    modelList.add(model);
                     // Set up the adapter and RecyclerView after populating the list
                     AttendeesAdapter adapter = new AttendeesAdapter(StreamDetailsActivity.this, modelList);
                     RecyclerView recyclerView = findViewById(R.id.attendeesRv);
