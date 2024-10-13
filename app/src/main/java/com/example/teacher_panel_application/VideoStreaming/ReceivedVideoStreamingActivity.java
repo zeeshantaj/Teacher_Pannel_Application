@@ -22,6 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.teacher_panel_application.R;
 import com.example.teacher_panel_application.Utils.MethodsUtils;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.zegocloud.uikit.prebuilt.livestreaming.ZegoUIKitPrebuiltLiveStreamingConfig;
 import com.zegocloud.uikit.prebuilt.livestreaming.ZegoUIKitPrebuiltLiveStreamingFragment;
 
@@ -36,11 +41,33 @@ public class ReceivedVideoStreamingActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.videoRecycler);
         List<StreamModel> modelList = new ArrayList<>();
 
-        ReceiveVideoStreamingAdapter adapter = new ReceiveVideoStreamingAdapter(this,modelList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        recyclerView.setAdapter(adapter);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("videoStreaming");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        StreamModel model = dataSnapshot.getValue(StreamModel.class);
+                        if (model.live){
+                            modelList.add(model);
+                        }
+                    }
+                    ReceiveVideoStreamingAdapter adapter = new ReceiveVideoStreamingAdapter(ReceivedVideoStreamingActivity.this,modelList);
+                    recyclerView.setLayoutManager(new GridLayoutManager(ReceivedVideoStreamingActivity.this,2));
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ReceivedVideoStreamingActivity.this, "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         if (checkPermissions()) {
-            addFragment();
 
         } else {
             ActivityCompat.requestPermissions(this, getRequiredPermissions(), 12);
@@ -67,19 +94,7 @@ public class ReceivedVideoStreamingActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (checkPermissions()) {
-            addFragment();
         }
     }
-    public void addFragment() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String userID = auth.getUid();
-        String userName = MethodsUtils.getString(this,"studentName");
-        ZegoUIKitPrebuiltLiveStreamingConfig config = ZegoUIKitPrebuiltLiveStreamingConfig.audience();
-        ZegoUIKitPrebuiltLiveStreamingFragment fragment = ZegoUIKitPrebuiltLiveStreamingFragment.newInstance(
-                KeyConstants.appID, KeyConstants.appSign, userID, userName,"123456",config);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commitNow();
 
-    }
 }

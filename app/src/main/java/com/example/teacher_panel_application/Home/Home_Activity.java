@@ -25,8 +25,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -165,5 +169,31 @@ public class Home_Activity extends AppCompatActivity {
                 // Permission denied
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("TeacherInfo").child(uid);
+        reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String teacherName = snapshot.child("name").getValue(String.class);
+                    String img = snapshot.child("image").getValue(String.class);
+                    String token = snapshot.child("FCMToken").getValue(String.class);
+                    MethodsUtils.putString(Home_Activity.this, "teacherName", teacherName);
+                    MethodsUtils.putString(Home_Activity.this, "teacherImg", img);
+                    MethodsUtils.putString(Home_Activity.this, "FCMToken", token);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Home_Activity.this, "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
