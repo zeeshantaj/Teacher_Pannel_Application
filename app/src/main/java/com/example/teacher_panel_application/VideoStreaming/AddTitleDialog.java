@@ -1,5 +1,6 @@
 package com.example.teacher_panel_application.VideoStreaming;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,11 +40,24 @@ public class AddTitleDialog extends DialogFragment {
                 return;
             }
             onTitleListener.onSuccess(addTitleEdt.getText().toString());
+            dismiss();
         });
         cancel.setOnClickListener(view1 -> {
             onTitleListener.onFailed();
+            dismiss();
         });
 
         return view;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            // Set custom dimensions for width and height
+            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90); // 90% of screen width
+            int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.60); // 80% of screen height
+            dialog.getWindow().setLayout(width, height);
+        }
     }
 }

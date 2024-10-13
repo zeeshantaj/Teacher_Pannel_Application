@@ -52,6 +52,7 @@ public class Settings_Fragment extends Fragment {
         boolean isTrue = sharedPreferences2.getBoolean("typeBool",false);
         if (isTrue){
             // student
+            binding.streamHistoryBtn.setVisibility(View.GONE);
             binding.startVideoStreamingCard.setVisibility(View.GONE);
             binding.receivedVideo.setOnClickListener(v -> {
                 startActivity(new Intent(getActivity(), ReceivedVideoStreamingActivity.class));
@@ -62,7 +63,11 @@ public class Settings_Fragment extends Fragment {
             binding.startVideoStreamingCard.setOnClickListener(v -> {
                 startActivity(new Intent(getActivity(), ZegoCloudVideoStreamingActivity.class));
             });
-        }
+            binding.streamHistoryBtn.setVisibility(View.VISIBLE);
+            binding.streamHistoryBtn.setOnClickListener(view -> {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                MethodsUtils.setFragment(fragmentManager,new StreamHistoryFragment());
+            });        }
 
         binding.rateTxt.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -105,10 +110,7 @@ public class Settings_Fragment extends Fragment {
         binding.profileCard.setOnClickListener(v -> {
             openFragment();
         });
-        binding.streamHistoryBtn.setOnClickListener(view -> {
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            MethodsUtils.setFragment(fragmentManager,new StreamHistoryFragment());
-        });
+
         binding.termsAndCondCard.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             MethodsUtils.setFragment(fragmentManager,new TermsAndConditionFragment());

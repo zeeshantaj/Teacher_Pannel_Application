@@ -1,8 +1,13 @@
 package com.example.teacher_panel_application.VideoStreaming;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StreamModel {
     String streamerName,liveId,title,imageUrl,time,userId;
     boolean live;
+    ArrayList<String> joinedUsersList = new ArrayList<>();
+
 
     public StreamModel(String streamerName, String liveId, String title, String imageUrl, String time, String userId, boolean live) {
         this.streamerName = streamerName;
@@ -71,5 +76,13 @@ public class StreamModel {
 
     public void setLive(boolean live) {
         this.live = live;
+    }
+
+    public ArrayList<String> getJoinedUsersList() {
+        return joinedUsersList;
+    }
+
+    public void setJoinedUsersList(ArrayList<String> joinedUsersList) {
+        this.joinedUsersList = joinedUsersList;
     }
 }

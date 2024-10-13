@@ -43,7 +43,7 @@ public class JoinedStreamingActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragment)
                 .commitNow();
 
-        uploadData(userID,uid);
+        uploadData(uid,userID);
     }
     private void uploadData(String userID,String uid){
         DatabaseReference reference = FirebaseDatabase.getInstance()

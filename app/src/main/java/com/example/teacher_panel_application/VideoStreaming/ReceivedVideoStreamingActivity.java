@@ -49,10 +49,13 @@ public class ReceivedVideoStreamingActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        StreamModel model = dataSnapshot.getValue(StreamModel.class);
-                        if (model.live){
-                            modelList.add(model);
+                        for (DataSnapshot data : dataSnapshot.getChildren()){
+                            StreamModel model = data.getValue(StreamModel.class);
+                            if (model.live){
+                                modelList.add(model);
+                            }
                         }
+
                     }
                     ReceiveVideoStreamingAdapter adapter = new ReceiveVideoStreamingAdapter(ReceivedVideoStreamingActivity.this,modelList);
                     recyclerView.setLayoutManager(new GridLayoutManager(ReceivedVideoStreamingActivity.this,2));

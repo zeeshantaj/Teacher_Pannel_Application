@@ -55,6 +55,8 @@ public class StreamingHistoryAdapter extends RecyclerView.Adapter<StreamingHisto
             intent.putExtra("liveId",model.getTime());
             intent.putExtra("title",model.getTitle());
             intent.putExtra("name",model.getStreamerName());
+            intent.putExtra("image",model.getImageUrl());
+            intent.putStringArrayListExtra("joinedUsersList", model.getJoinedUsersList());
             context.startActivity(intent);
         });
         holder.liveNow.setText("Live Ended");

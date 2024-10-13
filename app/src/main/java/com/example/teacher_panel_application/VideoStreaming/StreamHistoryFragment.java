@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class StreamHistoryFragment extends Fragment {
 
@@ -46,20 +47,43 @@ public class StreamHistoryFragment extends Fragment {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         StreamModel model = dataSnapshot.getValue(StreamModel.class);
-                        modelList.add(model);
+                        if (model != null) {
+                            modelList.add(model);
+
+                            DataSnapshot joinedUsersSnapshot = dataSnapshot.child("joinedUsers");
+
+                            if (joinedUsersSnapshot.exists()) {
+                                ArrayList<String> joinedUsersList = new ArrayList<>();
+
+                                if (joinedUsersSnapshot.getValue() instanceof List) {
+                                    // If joinedUsers is a list
+                                    List<String> users = (List<String>) joinedUsersSnapshot.getValue();
+                                    joinedUsersList.addAll(users);
+                                } else if (joinedUsersSnapshot.getValue() instanceof Map) {
+                                    // If joinedUsers is a map
+                                    Map<String, Object> usersMap = (Map<String, Object>) joinedUsersSnapshot.getValue();
+                                    for (String key : usersMap.keySet()) {
+                                        joinedUsersList.add(key);  // Or add the value if you need the values
+                                    }
+                                }
+
+                                model.setJoinedUsersList(joinedUsersList);  // Assuming setJoinedUsersList() exists in StreamModel
+                            }
+                        }
                     }
-                    StreamingHistoryAdapter adapter = new StreamingHistoryAdapter(getContext(),modelList);
-                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+                    // Set up the adapter and RecyclerView after data retrieval
+                    StreamingHistoryAdapter adapter = new StreamingHistoryAdapter(getContext(), modelList);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
                     recyclerView.setAdapter(adapter);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

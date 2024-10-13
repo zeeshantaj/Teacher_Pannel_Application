@@ -1,26 +1,106 @@
 package com.example.teacher_panel_application.VideoStreaming;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.teacher_panel_application.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StreamDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_stream_details);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        TextView Title = findViewById(R.id.Title);
+        TextView time = findViewById(R.id.userTime);
+        ImageView imageView = findViewById(R.id.userImg);
+
+
+        Intent intent = getIntent();
+        String timeStr = intent.getStringExtra("liveId");
+        String titleStr = intent.getStringExtra("title");
+        String nameStr = intent.getStringExtra("name");
+        String image = intent.getStringExtra("image");
+
+        time.setText(timeStr);
+        Title.setText(titleStr);
+        Glide.with(this)
+                .load(image)
+                .into(imageView);
+
+        ArrayList<String> joinedUsersList = intent.getStringArrayListExtra("joinedUsersList");
+        if (joinedUsersList != null) {
+            for (String user : joinedUsersList) {
+                Log.d("User", "Joined User: " + user);
+                getUserInfo(user);
+
+
+            }
+        }
+    }
+    private void getUserInfo(String uid){
+        List<AttendeesModel> modelList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("StudentsInfo")
+                .child(uid);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    modelList.clear(); // Clear the list to avoid duplicate entries on data change
+
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        // Initialize a new AttendeesModel object for each child
+                        AttendeesModel model = new AttendeesModel();
+
+                        String name = snapshot1.child("name").getValue(String.class);
+                        String image = snapshot1.child("image").getValue(String.class);
+
+                        model.setName(name);
+                        model.setImage(image);
+
+                        // Add the model to the list
+                        modelList.add(model);
+                    }
+
+                    // Set up the adapter and RecyclerView after populating the list
+                    AttendeesAdapter adapter = new AttendeesAdapter(StreamDetailsActivity.this, modelList);
+                    RecyclerView recyclerView = findViewById(R.id.attendeesRv);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(StreamDetailsActivity.this));
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle the error
+                Toast.makeText(StreamDetailsActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
