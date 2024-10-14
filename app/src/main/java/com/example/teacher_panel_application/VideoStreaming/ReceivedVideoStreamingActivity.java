@@ -8,7 +8,9 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReceivedVideoStreamingActivity extends AppCompatActivity {
+    private TextView noOneTxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +44,7 @@ public class ReceivedVideoStreamingActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.videoRecycler);
         List<StreamModel> modelList = new ArrayList<>();
 
-
+        noOneTxt = findViewById(R.id.noOneTxt);
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("videoStreaming");
         reference.addValueEventListener(new ValueEventListener() {
@@ -54,6 +57,11 @@ public class ReceivedVideoStreamingActivity extends AppCompatActivity {
                             if (model.live){
                                 modelList.add(model);
                             }
+                        }
+                        if (modelList.size() > 0){
+                            noOneTxt.setVisibility(View.GONE);
+                        }else {
+                            noOneTxt.setVisibility(View.VISIBLE);
                         }
 
                     }

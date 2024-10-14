@@ -3,6 +3,7 @@ package com.example.teacher_panel_application.VideoStreaming;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public class StreamDetailsActivity extends AppCompatActivity {
     List<AttendeesModel> modelList = new ArrayList<>();
+    private TextView noOneTxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class StreamDetailsActivity extends AppCompatActivity {
 
         TextView Title = findViewById(R.id.Title);
         TextView time = findViewById(R.id.userTime);
+        noOneTxt = findViewById(R.id.noOneTxt);
         ImageView imageView = findViewById(R.id.userImg);
 
 
@@ -81,6 +84,11 @@ public class StreamDetailsActivity extends AppCompatActivity {
                     model.setName(name);
                     model.setImage(image);
                     modelList.add(model);
+                    if (modelList.size() > 0){
+                        noOneTxt.setVisibility(View.GONE);
+                    }else {
+                        noOneTxt.setVisibility(View.VISIBLE);
+                    }
                     // Set up the adapter and RecyclerView after populating the list
                     AttendeesAdapter adapter = new AttendeesAdapter(StreamDetailsActivity.this, modelList);
                     RecyclerView recyclerView = findViewById(R.id.attendeesRv);

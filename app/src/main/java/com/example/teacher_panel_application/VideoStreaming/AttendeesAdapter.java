@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.teacher_panel_application.History.StudyMaterial.Adapter.SubmittedModel;
-import com.example.teacher_panel_application.History.StudyMaterial.AssignmentActivity.AssignmentCheckingActivity;
 import com.example.teacher_panel_application.R;
 
 import java.util.List;
